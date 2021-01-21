@@ -2,18 +2,22 @@
 const { ipcMain, BrowserWindow } = require('electron');
 const path = require('path');
 
+let addUserWin;
 // 监听打开addUser窗口的消息
 ipcMain.on('open-addUser', () => {
-  let win = new BrowserWindow({
+  addUserWin = new BrowserWindow({
     width: 700,
     height: 500,
     webPreferences: {
       preload: path.join(__dirname, '../assets/addUser.js'),
     },
   });
-
-  win.on('close', () => {
-    win = null;
+  addUserWin.on('close', () => {
+    addUserWin = null;
   });
-  win.loadFile(path.join(__dirname, '../sections/addUser.html'));
+  addUserWin.loadFile(path.join(__dirname, '../sections/addUser.html'));
+});
+// 监听关闭addUser窗口的消息
+ipcMain.on('close-addUser', () => {
+  addUserWin.close();
 });

@@ -17,9 +17,8 @@ function renderUserRaws(users) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  const addUserBtn = document.getElementById('addUser');
-
   // 监听按钮点击事件
+  const addUserBtn = document.getElementById('addUser');
   addUserBtn.addEventListener('click', () => {
     ipcRenderer.send('open-addUser');
   });
