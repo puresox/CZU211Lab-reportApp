@@ -31,6 +31,7 @@ function renderUserRaws(users) {
     const delButton = userRaw.querySelector('button[name="del"]');
     delButton.addEventListener('click', async () => {
       await delUserById(user.id);
+      window.location.reload();
     });
     userRawsArea.append(userRaw); // 先修改userRaw再append，append后无法修改userRaw
   });

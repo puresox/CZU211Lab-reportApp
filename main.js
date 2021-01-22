@@ -1,7 +1,24 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
+/* eslint-disable import/no-extraneous-dependencies */
 const { app, BrowserWindow } = require('electron');
+const settings = require('electron-settings');
+const fs = require('fs');
 const path = require('path');
 require('./main-process/ipcMain');
+/**
+ * @description 初始化设置
+ */
+async function settingInit() {
+  let appDataPath = await settings.get('appDataPath');
+  if (!appDataPath) {
+    appDataPath = path.join(__dirname, './appData');
+    await settings.set('appDataPath', appDataPath);
+    fs.mkdirSync(appDataPath);
+    fs.writeFileSync(
+      path.join(appDataPath, './这是被试数据存储目录.txt'),
+      '这是被试数据存储目录'
+    );
+  }
+}
 /**
  * @description 创建主窗口
  */
@@ -14,12 +31,12 @@ function createWindow() {
     },
   });
   mainWindow.loadFile(path.join(__dirname, './index.html'));
-  mainWindow.on('focus', () => {
-    mainWindow.reload();
-  });
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(async () => {
+  await settingInit();
+  createWindow();
+});
 
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) createWindow();
