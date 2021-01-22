@@ -21,3 +21,15 @@ ipcMain.on('open-addUser', () => {
 ipcMain.on('close-addUser', () => {
   addUserWin.close();
 });
+// 监听打开userDetail窗口的消息
+ipcMain.on('open-userDetail', () => {
+  //
+});
+// 监听打开editUser窗口的消息
+ipcMain.on('open-editUser', () => {
+  //
+});
+// 监听关闭editUser窗口的消息
+ipcMain.on('close-editUser', () => {
+  //
+});
