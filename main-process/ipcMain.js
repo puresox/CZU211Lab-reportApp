@@ -6,9 +6,11 @@ let addUserWin;
 // 监听打开addUser窗口的消息
 ipcMain.on('open-addUser', () => {
   addUserWin = new BrowserWindow({
-    width: 700,
-    height: 500,
+    width: 400,
+    height: 300,
     webPreferences: {
+      enableRemoteModule: true,
+      nodeIntegration: true,
       preload: path.join(__dirname, '../assets/addUser.js'),
     },
   });

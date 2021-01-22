@@ -7,11 +7,11 @@ require('./main-process/ipcMain');
 /**
  * @description 初始化设置
  */
-async function settingInit() {
-  let appDataPath = await settings.get('appDataPath');
+function settingInit() {
+  let appDataPath = settings.getSync('appDataPath');
   if (!appDataPath) {
     appDataPath = path.join(__dirname, './appData');
-    await settings.set('appDataPath', appDataPath);
+    settings.setSync('appDataPath', appDataPath);
     fs.mkdirSync(appDataPath);
     fs.writeFileSync(
       path.join(appDataPath, './这是被试数据存储目录.txt'),
@@ -27,14 +27,16 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
+      enableRemoteModule: true,
+      nodeIntegration: true,
       preload: path.join(__dirname, './assets/index.js'),
     },
   });
   mainWindow.loadFile(path.join(__dirname, './index.html'));
 }
 
-app.whenReady().then(async () => {
-  await settingInit();
+app.whenReady().then(() => {
+  settingInit();
   createWindow();
 });
 
