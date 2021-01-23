@@ -1,6 +1,6 @@
 // All of the Node.js APIs are available in the process.
 // It has the same sandbox as a Chrome extension.
-/* eslint-disable import/no-extraneous-dependencies */
+// eslint-disable-next-line import/no-extraneous-dependencies
 const { ipcRenderer, shell } = require('electron');
 const path = require('path');
 const { getUsers, delUserById } = require('../db');

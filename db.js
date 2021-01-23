@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 const XLSX = require('xlsx');
 const settings = require('electron-settings');
 const fs = require('fs');
