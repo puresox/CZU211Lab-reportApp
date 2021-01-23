@@ -26,24 +26,20 @@ function getUsers() {
   userDirs.forEach((userDir) => {
     if (userDir.isDirectory()) {
       const userDataPath = path.join(appDataPath, `./${userDir.name}`);
-      const [userName] = userDir.name.split('_');
-      const wb = XLSX.readFile(path.join(userDataPath, `./${userName}.xlsx`));
+      const [xlsxName] = userDir.name.split('_');
+      const wb = XLSX.readFile(path.join(userDataPath, `./${xlsxName}.xlsx`));
       const ws = wb.Sheets[wb.SheetNames[0]];
       users.push({
         id: userDir.name,
-        name: userName,
-        age: ws.A1.v,
-        gender: ws.A2.v,
-        type: ws.B1.v,
+        name: ws.A2 ? ws.A2.v : '',
+        age: ws.B2 ? ws.B2.v : '',
+        gender: ws.C2 ? ws.C2.v : '',
+        type: ws.D2 ? ws.D2.v : '',
         userDataPath,
       });
     }
   });
   return users;
-}
-
-function getUserById(id) {
-  //
 }
 
 function addUser(name) {
@@ -62,13 +58,9 @@ function addUser(name) {
   XLSX.writeFile(wb, path.join(userDataPath, `./${name}.xlsx`));
 }
 
-function upgradeUser(id, name) {
-  //
-}
-
 function delUserById(id) {
   const userDataPath = path.join(appDataPath, `./${id}`);
   removeDir(userDataPath);
 }
 
-module.exports = { getUsers, getUserById, addUser, delUserById, upgradeUser };
+module.exports = { getUsers, addUser, delUserById };

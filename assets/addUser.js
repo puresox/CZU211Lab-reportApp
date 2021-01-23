@@ -1,7 +1,6 @@
 // All of the Node.js APIs are available in the process.
 // It has the same sandbox as a Chrome extension.
 // eslint-disable-next-line import/no-extraneous-dependencies
-const { ipcRenderer } = require('electron');
 const { addUser } = require('../db');
 
 function addUserTodb() {
@@ -15,6 +14,6 @@ window.addEventListener('DOMContentLoaded', () => {
   addUserBtn.addEventListener('click', () => {
     addUserBtn.disabled = true;
     addUserTodb();
-    ipcRenderer.send('close-addUser');
+    window.close();
   });
 });
