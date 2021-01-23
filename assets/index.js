@@ -2,8 +2,16 @@
 // It has the same sandbox as a Chrome extension.
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { ipcRenderer, shell } = require('electron');
+const settings = require('electron-settings');
 const path = require('path');
 const { getUsers, delUserById } = require('../db');
+
+const appDataPath = settings.getSync('appDataPath');
+// 显示数据存储路径
+function renderPath() {
+  const pathArea = document.getElementById('appDataPath');
+  pathArea.textContent = appDataPath;
+}
 // 渲染模板
 function renderUserRaws(users) {
   const userRawsArea = document.getElementById('userRawsArea');
@@ -45,10 +53,20 @@ window.addEventListener('DOMContentLoaded', () => {
   addUserBtn.addEventListener('click', () => {
     ipcRenderer.send('open-addUser');
   });
+  // 监听修改路径事件
+  const editPathBtn = document.getElementById('editPath');
+  editPathBtn.addEventListener('click', () => {
+    ipcRenderer.send('selectAppDataPath');
+  });
   // 生成用户列表
   const users = getUsers();
   renderUserRaws(users);
+  // 显示数据存储路径
+  renderPath();
 });
 window.onfocus = () => {
   window.location.reload();
 };
+ipcRenderer.on('selectedAppDataPath', (event, newAppDataPath) => {
+  settings.setSync('appDataPath', newAppDataPath);
+});

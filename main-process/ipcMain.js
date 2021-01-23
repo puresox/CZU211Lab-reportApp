@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-const { ipcMain, BrowserWindow } = require('electron');
+const { ipcMain, BrowserWindow, dialog } = require('electron');
 const path = require('path');
 
 let addUserWin;
@@ -35,4 +35,13 @@ ipcMain.on('open-userDetail', () => {
     userDetailWin = null;
   });
   userDetailWin.loadFile(path.join(__dirname, '../sections/userDetail.html'));
+});
+// 监听选择文件夹事件
+ipcMain.on('selectAppDataPath', (event) => {
+  const [dir] = dialog.showOpenDialogSync({
+    properties: ['openDirectory', 'promptToCreate'],
+  });
+  if (dir) {
+    event.sender.send('selectedAppDataPath', dir);
+  }
 });

@@ -13,10 +13,6 @@ function settingInit() {
     appDataPath = path.join(__dirname, './appData');
     settings.setSync('appDataPath', appDataPath);
     fs.mkdirSync(appDataPath);
-    fs.writeFileSync(
-      path.join(appDataPath, './这是被试数据存储目录.txt'),
-      '这是被试数据存储目录'
-    );
   }
 }
 /**
