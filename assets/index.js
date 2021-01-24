@@ -33,9 +33,9 @@ function renderUserRaws(users) {
     // 监听修改被试事件
     const editButton = userRaw.querySelector('button[name="edit"]');
     editButton.addEventListener('click', () => {
-      shell.showItemInFolder(
-        path.join(user.userDataPath, `./${user.name}.xlsx`)
-      );
+      const xlsxPath = path.join(user.userDataPath, `./${user.name}.xlsx`);
+      shell.showItemInFolder(xlsxPath);
+      shell.openPath(xlsxPath);
     });
     // 监听删除被试事件
     const delButton = userRaw.querySelector('button[name="del"]');
