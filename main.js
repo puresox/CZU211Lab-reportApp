@@ -12,7 +12,11 @@ function settingInit() {
   if (!appDataPath) {
     appDataPath = path.join(__dirname, './appData');
     settings.setSync('appDataPath', appDataPath);
-    fs.mkdirSync(appDataPath);
+    try {
+      fs.mkdirSync(appDataPath);
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 /**

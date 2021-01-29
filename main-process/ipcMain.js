@@ -38,10 +38,16 @@ ipcMain.on('open-userDetail', () => {
 });
 // 监听选择文件夹事件
 ipcMain.on('selectAppDataPath', (event) => {
-  const [dir] = dialog.showOpenDialogSync({
-    properties: ['openDirectory', 'promptToCreate'],
-  });
-  if (dir) {
-    event.sender.send('selectedAppDataPath', dir);
-  }
+  dialog
+    .showOpenDialog({
+      properties: ['openDirectory', 'promptToCreate'],
+    })
+    .then(({ canceled, filePaths: [dir] }) => {
+      if (!canceled && dir) {
+        event.sender.send('selectedAppDataPath', dir);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
