@@ -24,16 +24,16 @@ function getUsers() {
   const users = [];
   userDirs.forEach((userDir) => {
     if (userDir.isDirectory()) {
-      const userDataPath = path.join(appDataPath, `./${userDir.name}`);
       const [xlsxName] = userDir.name.split('_');
+      const userDataPath = path.join(appDataPath, `./${userDir.name}`);
       const wb = XLSX.readFile(path.join(userDataPath, `./${xlsxName}.xlsx`));
       const ws = wb.Sheets[wb.SheetNames[0]];
       users.push({
         id: userDir.name,
-        name: ws.A2 ? ws.A2.v : '',
+        name: ws.B1 ? ws.B1.v : '',
         age: ws.B2 ? ws.B2.v : '',
-        gender: ws.C2 ? ws.C2.v : '',
-        type: ws.D2 ? ws.D2.v : '',
+        gender: ws.B3 ? ws.B3.v : '',
+        type: ws.B4 ? ws.B4.v : '',
         userDataPath,
       });
     }
@@ -48,8 +48,10 @@ function addUser(name) {
   fs.mkdirSync(path.join(userDataPath, './训练中'));
   fs.mkdirSync(path.join(userDataPath, './训练后'));
   const xlsxData = [
-    ['姓名', '年龄', '性别（男/女）', '类型（健康/对照）'],
-    [name],
+    ['姓名', name],
+    ['年龄'],
+    ['性别（男/女）'],
+    ['类型（健康/对照）'],
   ];
   const ws = XLSX.utils.aoa_to_sheet(xlsxData);
   const wb = XLSX.utils.book_new();
