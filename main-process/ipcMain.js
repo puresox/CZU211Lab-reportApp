@@ -1,11 +1,10 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-const { ipcMain, BrowserWindow, dialog } = require('electron');
+const { ipcMain, BrowserWindow, dialog, screen } = require('electron');
 const path = require('path');
 
-let addUserWin;
-let userDetailWin;
 // 监听打开addUser窗口的消息
 ipcMain.on('open-addUser', () => {
+  let addUserWin;
   addUserWin = new BrowserWindow({
     width: 300,
     height: 200,
@@ -22,9 +21,10 @@ ipcMain.on('open-addUser', () => {
 });
 // 监听打开userDetail窗口的消息
 ipcMain.on('open-userDetail', () => {
+  let userDetailWin;
   userDetailWin = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 700,
+    height: screen.getPrimaryDisplay().size.height,
     webPreferences: {
       enableRemoteModule: true,
       nodeIntegration: true,

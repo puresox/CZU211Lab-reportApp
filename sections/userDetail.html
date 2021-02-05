@@ -7,7 +7,254 @@
     <link rel="stylesheet" href="../assets/userDetail.css" />
   </head>
   <body>
-    <div id="main"></div>
+    <button class="button" id="printReport">打印报告</button>
+    <!-- 1. 各电极位的各频段绝对功率值 -->
+    <div id="powerArea">
+      <h2>1. 各电极位的各频段绝对功率值</h2>
+      <div id="thetaPowerLine" class="lineChart"></div>
+      <div id="alphaPowerLine" class="lineChart"></div>
+      <div id="highBetaPowerLine" class="lineChart"></div>
+      <div id="gammaPowerLine" class="lineChart"></div>
+      <div id="powerBoxplot" class="boxplotChart"></div>
+      <table id="powerTopographicalMaps">
+        <caption>
+          训练前后各频段功率值地形图表
+        </caption>
+        <thead>
+          <tr>
+            <th></th>
+            <th>训练前</th>
+            <th>训练后</th>
+            <th>训练前后差值</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Theta</th>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>Alpha</th>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>高Beta</th>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>Gamma</th>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- 2.	Alpha左右脑不对称分数（AIA） -->
+    <div id="aiaArea">
+      <h2>2. Alpha左右脑不对称分数（AIA）</h2>
+      <table id="aiaTable">
+        <caption>
+          训练前后不同脑区alpha不对称分数值
+        </caption>
+        <thead>
+          <tr>
+            <th colspan="2">不同脑区电极组合</th>
+            <th colspan="2">A1</th>
+            <th colspan="2">A2</th>
+          </tr>
+          <tr>
+            <th>L</th>
+            <th>R</th>
+            <th>训练前</th>
+            <th>训练前</th>
+            <th>训练前</th>
+            <th>训练前</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>F3</th>
+            <th>F4</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>(Fp1, F3, F7)</th>
+            <th>(Fp2, F4, F8)</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>(T3, T5)</th>
+            <th>(T4, T6)</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>(P3, P7, O1, C3)</th>
+            <th>(P4, P8, O2, C4)</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>(Fp1, F3, F7, T3, T5, P3, P7, O1, C3)</th>
+            <th>(Fp2, F4, F8, T4, T6, P4, P8, O2, C4)</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- 3.	频谱不对称指数（SASI） -->
+    <div id="sasiArea">
+      <h2>3. 频谱不对称指数（SASI）</h2>
+      <div id="closeSasiLine" class="lineChart"></div>
+      <div id="openSasiLine" class="lineChart"></div>
+      <table id="sasiTopographicalMaps">
+        <caption>
+          静息态闭眼、睁眼SASI值对照图（训练前后）
+        </caption>
+        <thead>
+          <tr>
+            <th></th>
+            <th>训练前</th>
+            <th>训练后</th>
+            <th>训练前后差值</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>闭眼</th>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>睁眼</th>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- 4. 去趋势波动（DFA） -->
+    <div id="dfaArea">
+      <h2>4. 去趋势波动（DFA）</h2>
+      <div id="closeDfaLine" class="lineChart"></div>
+      <div id="openDfaLine" class="lineChart"></div>
+      <table id="dfaTopographicalMaps">
+        <caption>
+          静息态闭眼、睁眼DFA值地形图（训练前后）
+        </caption>
+        <thead>
+          <tr>
+            <th></th>
+            <th>训练前</th>
+            <th>训练后</th>
+            <th>训练前后差值</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>闭眼</th>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>睁眼</th>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- 5. 脑网络构建（基于相位锁定指数） -->
+    <div id="plvArea">
+      <h2>5. 脑网络构建（基于相位锁定指数）</h2>
+      <figure>
+        <img src="" alt="theta频段被试连接矩阵" class="brainNetMap" />
+        <figcaption>theta频段被试连接矩阵</figcaption>
+      </figure>
+      <figure>
+        <img src="" alt="alpha频段被试连接矩阵" class="brainNetMap" />
+        <figcaption>alpha频段被试连接矩阵</figcaption>
+      </figure>
+      <figure>
+        <img src="" alt="theta频段被试连接拓扑图" class="brainNetMap" />
+        <figcaption>theta频段被试连接拓扑图</figcaption>
+      </figure>
+      <figure>
+        <img src="" alt="alpha频段被试连接拓扑图" class="brainNetMap" />
+        <figcaption>alpha频段被试连接拓扑图</figcaption>
+      </figure>
+    </div>
+    <!-- 6. 脑网络参数 -->
+    <div id="aucArea">
+      <h2>6. 脑网络参数</h2>
+      <table id="aucTable">
+        <caption>
+          训练前后的theta频段和alpha频段网络参数对应的曲面下面积
+        </caption>
+        <thead>
+          <tr>
+            <th rowspan="2"></th>
+            <th colspan="2">theta频段</th>
+            <th colspan="2">alpha频段</th>
+          </tr>
+          <tr>
+            <th>训练前</th>
+            <th>训练后</th>
+            <th>训练前</th>
+            <th>训练后</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>强度AUC</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>平均特征路径强度AUC</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>平均聚类系数AUC</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pageHeader">页眉</div>
+    <div class="pageFooter">页脚</div>
     <script src="../assets/userDetail.js"></script>
   </body>
 </html>
