@@ -28,7 +28,7 @@
     "prettier": "^2.2.1"
   },
   "dependencies": {
-    "echarts": "^5.0.1",
+    "echarts": "^5.0.2",
     "electron-settings": "^4.0.2",
     "electron-squirrel-startup": "^1.0.0",
     "uuid": "^8.3.2",
