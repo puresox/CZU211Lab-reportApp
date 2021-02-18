@@ -3,20 +3,16 @@
   width: 600px;
   height: 250px;
 }
-
 .topographicalMap {
   height: 150px;
 }
-
 td {
   text-align: center;
 }
-
 #aiaTable th {
   width: 100px;
   word-wrap: break-word;
 }
-
 #aiaArea table,
 #aiaArea th,
 #aiaArea td,
@@ -25,35 +21,28 @@ td {
 #aucArea td {
   border: 1px solid black;
 }
-
-.pageHeader,
-.pageFooter {
-  display: none;
-}
-
+/* 打印样式 */
 @media print {
+  @page {
+    size: A4 portrait;
+    margin-top: 2cm;
+    margin-bottom: 1cm;
+  }
   body {
-    margin: 1cm;
+    color: #000;
+    background: #fff;
   }
   #printReport {
     display: none;
   }
-  div,
-  table {
-    page-break-after: auto;
-    page-break-inside: avoid;
+  h2 {
     page-break-before: auto;
+    page-break-after: avoid;
   }
-  .pageHeader,
-  .pageFooter {
-    display: unset;
-  }
-  .pageHeader {
-    position: fixed;
-    top: 0;
-  }
-  .pageFooter {
-    position: fixed;
-    bottom: 0;
+  div,
+  figure,
+  .lineChart,
+  .boxplotChart {
+    page-break-inside: avoid;
   }
 }

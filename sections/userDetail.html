@@ -7,7 +7,10 @@
     <link rel="stylesheet" href="../assets/userDetail.css" />
   </head>
   <body>
-    <button class="button" id="printReport">打印报告</button>
+    <div id="printReport">
+      <select id="printerSelect"></select>
+      <button class="button" id="printButton">打印报告</button>
+    </div>
     <!-- 1. 各电极位的各频段绝对功率值 -->
     <div id="powerArea">
       <h2>1. 各电极位的各频段绝对功率值</h2>
@@ -253,8 +256,6 @@
         </tbody>
       </table>
     </div>
-    <div class="pageHeader">页眉</div>
-    <div class="pageFooter">页脚</div>
     <script src="../assets/userDetail.js"></script>
   </body>
 </html>

@@ -44,7 +44,7 @@ ipcMain.on('selectAppDataPath', (event) => {
     })
     .then(({ canceled, filePaths: [dir] }) => {
       if (!canceled && dir) {
-        event.sender.send('selectedAppDataPath', dir);
+        event.reply('selectedAppDataPath', dir);
       }
     })
     .catch((err) => {

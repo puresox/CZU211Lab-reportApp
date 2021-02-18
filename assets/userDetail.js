@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+const webContents = require('electron').remote.getCurrentWebContents();
 const echarts = require('echarts');
 
 function getOptionTemplate(titleText, xAxisName, yAxisName) {
@@ -48,7 +50,9 @@ function getOptionTemplate(titleText, xAxisName, yAxisName) {
 }
 
 function getPowerLineChart(divId, titleText, dataList) {
-  const myChart = echarts.init(document.getElementById(divId));
+  const myChart = echarts.init(document.getElementById(divId), null, {
+    renderer: 'svg',
+  });
   const option = getOptionTemplate(titleText, '电极位', '绝对功率');
   option.series = [
     {
@@ -66,7 +70,9 @@ function getPowerLineChart(divId, titleText, dataList) {
 }
 
 function getSasiLineChart(divId, titleText, dataList) {
-  const myChart = echarts.init(document.getElementById(divId));
+  const myChart = echarts.init(document.getElementById(divId), null, {
+    renderer: 'svg',
+  });
   const option = getOptionTemplate(titleText, '电极位', 'SASI值');
   option.series = [
     {
@@ -84,7 +90,9 @@ function getSasiLineChart(divId, titleText, dataList) {
 }
 
 function getDfaLineChart(divId, titleText, dataList) {
-  const myChart = echarts.init(document.getElementById(divId));
+  const myChart = echarts.init(document.getElementById(divId), null, {
+    renderer: 'svg',
+  });
   const option = getOptionTemplate(titleText, '电极位', 'DFA值');
   option.series = [
     {
@@ -102,7 +110,9 @@ function getDfaLineChart(divId, titleText, dataList) {
 }
 
 function getPowerBoxplotChart(divId, titleText, dataList) {
-  const myChart = echarts.init(document.getElementById(divId));
+  const myChart = echarts.init(document.getElementById(divId), null, {
+    renderer: 'svg',
+  });
   const option = getOptionTemplate(titleText, '指标', '绝对功率');
   option.xAxis.data = ['P3 Beta波', 'P4 Beta波', 'F3 Alpha波', 'F4 Alpha波'];
   option.dataZoom = undefined;
@@ -247,16 +257,38 @@ function renderAucArea() {
   });
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-  // 监听打印报告事件
-  const printReportBtn = document.getElementById('printReport');
-  printReportBtn.addEventListener('click', () => {
-    window.print();
+function renderPrinters() {
+  // 获取打印设备
+  const printers = webContents.getPrinters();
+  const printerSelect = document.getElementById('printerSelect');
+  printers.forEach((printer) => {
+    const option = document.createElement('option');
+    option.text = printer.name;
+    option.value = printer.name;
+    printerSelect.appendChild(option);
   });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  renderPrinters();
   renderPowerArea();
   renderAiaArea();
   renderSasiArea();
   renderDfaArea();
   renderPlvArea();
   renderAucArea();
+  // 监听打印报告事件
+  const printReportBtn = document.getElementById('printButton');
+  printReportBtn.addEventListener('click', () => {
+    const deviceName = document.getElementById('printerSelect').value;
+    const options = {
+      silent: true,
+      deviceName,
+      header: '年龄：',
+      footer: '姓名：',
+    };
+    webContents.print(options, (success, errorType) => {
+      if (!success) console.log(errorType);
+    });
+  });
 });
