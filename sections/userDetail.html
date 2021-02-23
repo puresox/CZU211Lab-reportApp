@@ -15,9 +15,23 @@
     <div id="powerArea">
       <h2>1. 各电极位的各频段绝对功率值</h2>
       <div id="thetaPowerLine" class="lineChart"></div>
+      <p>
+        Theta频段(4-8Hz)：与情绪加工有关；与健康被试相比，抑郁症患者的Theta频段绝对功率更高。
+        主要关注。
+      </p>
       <div id="alphaPowerLine" class="lineChart"></div>
+      <p>
+        Alpha频段(8-13Hz)：反映大脑的不活动性和放松；抑郁症患者大脑左侧的Alpha频段功率更高，右侧的Alpha功率更低。主要关注额区电极（左侧（10，11，12，19），右侧（5，2，60，56））。
+      </p>
       <div id="highBetaPowerLine" class="lineChart"></div>
+      <p>
+        高Beta频段(20-30Hz)：与抑郁患者常见的焦虑和反刍思维有关；Beta波活动增强与抑郁症的反复发作呈正相关，抑郁症患者大脑两侧前部脑区的Beta波绝对功率更高。
+        主要关注P3、P4电极（27、45）。
+      </p>
       <div id="gammaPowerLine" class="lineChart"></div>
+      <p>
+        Gamma频段(30-45Hz)：与注意和感觉系统有关，可能与情绪波动有关；适当的gamma波功率可以保证情绪平稳；抑郁症患者的gamma波功率较低。
+      </p>
       <div id="powerBoxplot" class="boxplotChart"></div>
       <table id="powerTopographicalMaps">
         <caption>
@@ -99,24 +113,32 @@
             <td></td>
           </tr>
           <tr>
-            <th>(T3, T5)</th>
-            <th>(T4, T6)</th>
+            <th>(Fp1, F3, F7, F1, F5, AF3)</th>
+            <th>(Fp2, F4, F8, F2, F6, AF4)</th>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
           </tr>
           <tr>
-            <th>(P3, P7, O1, C3)</th>
-            <th>(P4, P8, O2, C4)</th>
+            <th>(P3, P7)</th>
+            <th>(P4, P8)</th>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
           </tr>
           <tr>
-            <th>(Fp1, F3, F7, T3, T5, P3, P7, O1, C3)</th>
-            <th>(Fp2, F4, F8, T4, T6, P4, P8, O2, C4)</th>
+            <th>O1</th>
+            <th>O2</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>O3</th>
+            <th>O4</th>
             <td></td>
             <td></td>
             <td></td>
@@ -124,10 +146,18 @@
           </tr>
         </tbody>
       </table>
+      <p>
+        alpha频段偏侧化，度量了大脑半球之间特别是额电极之间的相对alpha频段活跃度。左侧额脑活动与接近行为有关，右侧额脑活动与远离行为有关。抑郁患者左侧alpha频段增强表明活跃度降低，表明缺乏接近行为。
+        不对称分数A1、A2增大，说明抑郁程度减轻。
+      </p>
     </div>
     <!-- 3.	频谱不对称指数（SASI） -->
     <div id="sasiArea">
       <h2>3. 频谱不对称指数（SASI）</h2>
+      <p>
+        抑郁患者在各个导联的SASI值基本都为正值，而健康者基本都为负值。抑郁组的左右额区、颞区、顶区存在较高的
+        SASI值，而健康者各个区域相对平缓。 SASI值降低说明抑郁程度减轻。
+      </p>
       <div id="closeSasiLine" class="lineChart"></div>
       <div id="openSasiLine" class="lineChart"></div>
       <table id="sasiTopographicalMaps">
@@ -161,6 +191,11 @@
     <!-- 4. 去趋势波动（DFA） -->
     <div id="dfaArea">
       <h2>4. 去趋势波动（DFA）</h2>
+      <p>
+        抑郁患者在 1~51 导联的 SE 值大于健康者，在 52-61 导联的 SE 值差异不大。
+        抑郁患者和健康者的SE值从前脑到后脑都呈递减趋势；同时，健康者前额叶边缘处和颞叶两侧的SE
+        值分布更加集中。 DFA值降低说明抑郁程度降低。
+      </p>
       <div id="closeDfaLine" class="lineChart"></div>
       <div id="openDfaLine" class="lineChart"></div>
       <table id="dfaTopographicalMaps">
@@ -194,6 +229,9 @@
     <!-- 5. 脑网络构建（基于相位锁定指数） -->
     <div id="plvArea">
       <h2>5. 脑网络构建（基于相位锁定指数）</h2>
+      <p>
+        越接近1说明两个导联之间的连接同步性越强，抑郁症患者相比于健康对照组在alpha频段和theta频段的连接强度更高。（训练前后连接强度降低说明抑郁状态改善）。
+      </p>
       <figure>
         <img src="" alt="theta频段被试连接矩阵" class="brainNetMap" />
         <figcaption>theta频段被试连接矩阵</figcaption>
@@ -202,6 +240,12 @@
         <img src="" alt="alpha频段被试连接矩阵" class="brainNetMap" />
         <figcaption>alpha频段被试连接矩阵</figcaption>
       </figure>
+      <p>
+        每个节点的颜色代表单个导联和其他导联连接边的数量，而连接强度则使用粗细来表示，连接线黑色的深浅表明了电极与电极之间连接强度值大小。
+        抑郁患者在 theta
+        频段下，大脑左下颞叶的连接紧密程度高于健康者，而在右颞和右额叶的连接紧密程度和强度低于健康者，抑郁患者整体的连接程度较为均衡，对照组右半球的连接紧密程度比左半球要高。抑郁患者在alpha
+        频段下，大脑右额叶的连接紧密程度低于健康者，而在左颞的连接程度和强度高于健康者。
+      </p>
       <figure>
         <img src="" alt="theta频段被试连接拓扑图" class="brainNetMap" />
         <figcaption>theta频段被试连接拓扑图</figcaption>
@@ -214,6 +258,7 @@
     <!-- 6. 脑网络参数 -->
     <div id="aucArea">
       <h2>6. 脑网络参数</h2>
+      <p>训练前后网络参数降低说明抑郁状态改善</p>
       <table id="aucTable">
         <caption>
           训练前后的theta频段和alpha频段网络参数对应的曲面下面积
