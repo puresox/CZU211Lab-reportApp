@@ -19,6 +19,14 @@ npm start
 
 Note: If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.
 
+## 注意事项
+
+1. npm 要换源，electron 也要换源。
+2. matlab 代码文档。
+3. 额外安装 python，matlab。
+4. 安装用于 Python 的 MATLAB 引擎 API。
+5. 安装其他库。
+
 ## License
 
 [CC0 1.0 (Public Domain)](LICENSE.md)
