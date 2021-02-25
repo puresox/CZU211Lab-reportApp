@@ -24,7 +24,7 @@ Note: If you're using Linux Bash for Windows, [see this guide](https://www.howto
 1. npm 要换源，electron 也要换源。
 2. matlab 代码文档。
 3. 额外安装 python，matlab。
-4. 安装用于 Python 的 MATLAB 引擎 API。
+4. 安装用于 Python 的 MATLAB 引擎 API（在默认位置安装）。
 5. 安装其他库。
 
 ## License

@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "C:\\Users\\10748\\.virtualenvs\\matlab-engine-for-python-YOtp9JHU\\Scripts\\python.exe"
+  "python.pythonPath": "C:\\Users\\10748\\.virtualenvs\\matlab-engine-for-python-YOtp9JHU\\Scripts\\python.exe",
+  "python.linting.flake8Args": ["--max-line-length=200"]
 }

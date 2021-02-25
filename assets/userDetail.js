@@ -285,7 +285,7 @@ window.addEventListener('DOMContentLoaded', () => {
       silent: true,
       deviceName,
       header: '年龄：',
-      footer: '姓名：',
+      footer: '姓名：   年龄：    性别：',
     };
     webContents.print(options, (success, errorType) => {
       if (!success) console.log(errorType);
