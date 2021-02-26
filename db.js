@@ -47,6 +47,7 @@ function addUser(name) {
   fs.mkdirSync(path.join(userDataPath, './训练前'));
   fs.mkdirSync(path.join(userDataPath, './训练中'));
   fs.mkdirSync(path.join(userDataPath, './训练后'));
+  fs.mkdirSync(path.join(userDataPath, './数据缓存'));
   const xlsxData = [
     ['姓名', name],
     ['年龄'],

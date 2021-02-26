@@ -4,8 +4,7 @@ const path = require('path');
 
 // 监听打开addUser窗口的消息
 ipcMain.on('open-addUser', () => {
-  let addUserWin;
-  addUserWin = new BrowserWindow({
+  let addUserWin = new BrowserWindow({
     width: 300,
     height: 200,
     webPreferences: {
@@ -20,9 +19,8 @@ ipcMain.on('open-addUser', () => {
   addUserWin.loadFile(path.join(__dirname, '../sections/addUser.html'));
 });
 // 监听打开userDetail窗口的消息
-ipcMain.on('open-userDetail', () => {
-  let userDetailWin;
-  userDetailWin = new BrowserWindow({
+ipcMain.on('open-userDetail', (event, user) => {
+  let userDetailWin = new BrowserWindow({
     width: 700,
     height: screen.getPrimaryDisplay().size.height,
     webPreferences: {
@@ -30,6 +28,9 @@ ipcMain.on('open-userDetail', () => {
       nodeIntegration: true,
       // preload: path.join(__dirname, '../assets/userDetail.js'),
     },
+  });
+  userDetailWin.webContents.on('dom-ready', () => {
+    userDetailWin.webContents.send('getUser', user);
   });
   userDetailWin.on('close', () => {
     userDetailWin = null;

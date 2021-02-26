@@ -28,7 +28,7 @@ function renderUserRaws(users) {
     // 监听查看被试事件
     const detailButton = userRaw.querySelector('button[name="detail"]');
     detailButton.addEventListener('click', () => {
-      ipcRenderer.send('open-userDetail');
+      ipcRenderer.send('open-userDetail', user);
     });
     // 监听修改被试事件
     const editButton = userRaw.querySelector('button[name="edit"]');

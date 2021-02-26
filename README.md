@@ -25,7 +25,9 @@ Note: If you're using Linux Bash for Windows, [see this guide](https://www.howto
 2. matlab 代码文档。
 3. 额外安装 python，matlab。
 4. 安装用于 Python 的 MATLAB 引擎 API（在默认位置安装）。
-5. 安装其他库。
+5. MATLAB安装EEGLAB。
+6. 安装其他库。
+7. 数据文件以o结尾表示睁眼，以c结尾表示闭眼。
 
 ## License
 

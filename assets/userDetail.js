@@ -1,6 +1,25 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const webContents = require('electron').remote.getCurrentWebContents();
+// eslint-disable-next-line import/no-extraneous-dependencies
+const { ipcRenderer } = require('electron');
 const echarts = require('echarts');
+const path = require('path');
+const fs = require('fs');
+// eslint-disable-next-line import/no-dynamic-require
+const calcIndexes = require(path.join(process.cwd(), './assets/calcIndexes'));
+
+const pythonPath = String.raw`C:\Users\10748\.virtualenvs\matlab-engine-for-python-YOtp9JHU\Scripts\python.exe`;
+
+const userDataPaths = {
+  before: {
+    eyeOpen: null,
+    eyeClose: null,
+  },
+  after: {
+    eyeOpen: null,
+    eyeClose: null,
+  },
+};
 
 function getOptionTemplate(titleText, xAxisName, yAxisName) {
   const xAxisData = Array.from({ length: 64 }, (_, i) => i + 1); // 横坐标是64导联
@@ -185,6 +204,8 @@ function renderPowerArea() {
 }
 
 function renderAiaArea() {
+  // 获取数据
+  const A1 = calcIndexes.AIA(userDataPaths.before);
   // 表格
   const tableCells = document.querySelectorAll('#aiaTable tbody td');
   tableCells.forEach((tableCell) => {
@@ -269,8 +290,56 @@ function renderPrinters() {
   });
 }
 
+function getUserDataPaths(userDataPath) {
+  const userBeforeDir = fs.readdirSync(path.join(userDataPath, './训练前'), {
+    withFileTypes: true,
+  });
+  userBeforeDir.forEach((userBefore) => {
+    if (!userBefore.isDirectory()) {
+      if (userBefore.name.endsWith('o.mat')) {
+        userDataPaths.before.eyeOpen = path.join(
+          userDataPath,
+          './训练前',
+          userBefore.name
+        );
+      } else if (userBefore.name.endsWith('c.mat')) {
+        userDataPaths.before.eyeClose = path.join(
+          userDataPath,
+          './训练前',
+          userBefore.name
+        );
+      }
+    }
+  });
+  const userAfterDir = fs.readdirSync(path.join(userDataPath, './训练后'), {
+    withFileTypes: true,
+  });
+  userAfterDir.forEach((userAfter) => {
+    if (!userAfter.isDirectory()) {
+      if (userAfter.name.endsWith('o.mat')) {
+        userDataPaths.after.eyeOpen = path.join(
+          userDataPath,
+          './训练后',
+          userAfter.name
+        );
+      } else if (userAfter.name.endsWith('c.mat')) {
+        userDataPaths.after.eyeClose = path.join(
+          userDataPath,
+          './训练后',
+          userAfter.name
+        );
+      }
+    }
+  });
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   renderPrinters();
+});
+
+ipcRenderer.on('getUser', (event, user) => {
+  const { name: username, age, gender, userDataPath } = user;
+  getUserDataPaths(userDataPath);
   renderPowerArea();
   renderAiaArea();
   renderSasiArea();
@@ -285,7 +354,7 @@ window.addEventListener('DOMContentLoaded', () => {
       silent: true,
       deviceName,
       header: '年龄：',
-      footer: '姓名：   年龄：    性别：',
+      footer: `姓名：${username}    年龄：${age}    性别：${gender}`,
     };
     webContents.print(options, (success, errorType) => {
       if (!success) console.log(errorType);
