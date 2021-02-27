@@ -1,4 +1,5 @@
-# 输出一维数组的字符串
+# 保存图片
+import json
 import os
 import sys
 
@@ -8,6 +9,6 @@ eng = matlab.engine.start_matlab()
 # 切换到当前文件夹
 currentDir = os.path.dirname(__file__)
 eng.cd(currentDir)
-dataPath = sys.argv[1]
-SASIresult = eng.SASImain(dataPath)  # 返回二维矩阵
-print(SASIresult[0])
+datavector = json.loads(sys.argv[1])
+picPath = sys.argv[2]
+eng.getTopoplot(datavector, picPath)

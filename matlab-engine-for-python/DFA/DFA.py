@@ -1,3 +1,4 @@
+# 输出一维数组的字符串
 import os
 import sys
 
@@ -8,5 +9,5 @@ eng = matlab.engine.start_matlab()
 currentDir = os.path.dirname(__file__)
 eng.cd(currentDir)
 dataPath = sys.argv[1]
-DFAresult = eng.mainDFAchannels(dataPath)
-print(DFAresult)
+DFAresult = eng.mainDFAchannels(dataPath)  # 返回二维矩阵
+print(DFAresult[0])

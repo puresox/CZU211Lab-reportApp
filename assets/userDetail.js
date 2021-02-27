@@ -8,8 +8,6 @@ const fs = require('fs');
 // eslint-disable-next-line import/no-dynamic-require
 const calcIndexes = require(path.join(process.cwd(), './assets/calcIndexes'));
 
-const pythonPath = String.raw`C:\Users\10748\.virtualenvs\matlab-engine-for-python-YOtp9JHU\Scripts\python.exe`;
-
 const userDataPaths = {
   before: {
     eyeOpen: null,
@@ -68,7 +66,7 @@ function getOptionTemplate(titleText, xAxisName, yAxisName) {
   };
 }
 
-function getPowerLineChart(divId, titleText, dataList) {
+function getPowerLineChart(divId, titleText) {
   const myChart = echarts.init(document.getElementById(divId), null, {
     renderer: 'svg',
   });
@@ -77,38 +75,28 @@ function getPowerLineChart(divId, titleText, dataList) {
     {
       name: '训练前',
       type: 'line',
-      data: dataList[0],
+      data: [],
     },
     {
       name: '训练后',
       type: 'line',
-      data: dataList[1],
+      data: [],
     },
   ];
   myChart.setOption(option);
 }
 
-function getSasiLineChart(divId, titleText, dataList) {
+function getSasiLineChart(divId, titleText) {
   const myChart = echarts.init(document.getElementById(divId), null, {
     renderer: 'svg',
   });
   const option = getOptionTemplate(titleText, '电极位', 'SASI值');
-  option.series = [
-    {
-      name: '训练前',
-      type: 'line',
-      data: dataList[0],
-    },
-    {
-      name: '训练后',
-      type: 'line',
-      data: dataList[1],
-    },
-  ];
   myChart.setOption(option);
+  myChart.showLoading();
+  return myChart;
 }
 
-function getDfaLineChart(divId, titleText, dataList) {
+function getDfaLineChart(divId, titleText) {
   const myChart = echarts.init(document.getElementById(divId), null, {
     renderer: 'svg',
   });
@@ -117,18 +105,18 @@ function getDfaLineChart(divId, titleText, dataList) {
     {
       name: '训练前',
       type: 'line',
-      data: dataList[0],
+      data: [],
     },
     {
       name: '训练后',
       type: 'line',
-      data: dataList[1],
+      data: [],
     },
   ];
   myChart.setOption(option);
 }
 
-function getPowerBoxplotChart(divId, titleText, dataList) {
+function getPowerBoxplotChart(divId, titleText) {
   const myChart = echarts.init(document.getElementById(divId), null, {
     renderer: 'svg',
   });
@@ -139,12 +127,12 @@ function getPowerBoxplotChart(divId, titleText, dataList) {
     {
       name: '训练前',
       type: 'boxplot',
-      data: dataList[0],
+      data: [],
     },
     {
       name: '训练后',
       type: 'boxplot',
-      data: dataList[1],
+      data: [],
     },
   ];
   myChart.setOption(option);
@@ -205,25 +193,86 @@ function renderPowerArea() {
 
 function renderAiaArea() {
   // 获取数据
-  const A1 = calcIndexes.AIA(userDataPaths.before);
-  // 表格
-  const tableCells = document.querySelectorAll('#aiaTable tbody td');
-  tableCells.forEach((tableCell) => {
-    tableCell.insertAdjacentText('afterbegin', '1');
-  });
+  calcIndexes
+    .AIA([
+      [userDataPaths.before.eyeClose, userDataPaths.after.eyeClose],
+      [userDataPaths.before.eyeOpen, userDataPaths.after.eyeOpen],
+    ])
+    .then(([eyeClose, eyeOpen]) => {
+      // 处理闭眼数据
+      const ClosetableCells = document.querySelectorAll(
+        '#CloseAiaTable tbody td'
+      );
+      eyeClose.flat().forEach((num, index) => {
+        ClosetableCells[index].insertAdjacentText('afterbegin', num.toFixed(3));
+      });
+      // 处理睁眼数据
+      const OpentableCells = document.querySelectorAll(
+        '#OpenAiaTable tbody td'
+      );
+      eyeOpen.flat().forEach((num, index) => {
+        OpentableCells[index].insertAdjacentText('afterbegin', num.toFixed(3));
+      });
+    });
 }
 
 function renderSasiArea() {
-  // SASI特征值对照-闭眼
-  getSasiLineChart('closeSasiLine', 'SASI特征值对照-闭眼', [
-    Array.from({ length: 64 }, (_, i) => i + 1),
-    Array.from({ length: 64 }, (_, i) => i + 2),
-  ]);
-  // SASI特征值对照-睁眼
-  getSasiLineChart('openSasiLine', 'SASI特征值对照-睁眼', [
-    Array.from({ length: 64 }, (_, i) => i + 1),
-    Array.from({ length: 64 }, (_, i) => i + 2),
-  ]);
+  // 初始化：SASI特征值对照-闭眼
+  const closeSASILine = getSasiLineChart(
+    'closeSasiLine',
+    'SASI特征值对照-闭眼'
+  );
+  // 初始化：SASI特征值对照-睁眼
+  const openSASILine = getSasiLineChart('openSasiLine', 'SASI特征值对照-睁眼');
+  // 更新：SASI特征值对照-闭眼
+  const eyeClosePromise = Promise.all([
+    calcIndexes.SASI(userDataPaths.before.eyeClose),
+    calcIndexes.SASI(userDataPaths.after.eyeClose),
+  ]).then(([beforeEyeClose, afterEyeClose]) => {
+    closeSASILine.hideLoading();
+    closeSASILine.setOption({
+      series: [
+        {
+          name: '训练前',
+          type: 'line',
+          data: beforeEyeClose,
+        },
+        {
+          name: '训练后',
+          type: 'line',
+          data: afterEyeClose,
+        },
+      ],
+    });
+    return [beforeEyeClose, afterEyeClose];
+  });
+  // 更新：SASI特征值对照-睁眼
+  const eyeOpenPromise = Promise.all([
+    calcIndexes.SASI(userDataPaths.before.eyeOpen),
+    calcIndexes.SASI(userDataPaths.after.eyeOpen),
+  ]).then(([beforeEyeOpen, afterEyeOpen]) => {
+    openSASILine.hideLoading();
+    openSASILine.setOption({
+      series: [
+        {
+          name: '训练前',
+          type: 'line',
+          data: beforeEyeOpen,
+        },
+        {
+          name: '训练后',
+          type: 'line',
+          data: afterEyeOpen,
+        },
+      ],
+    });
+    return [beforeEyeOpen, afterEyeOpen];
+  });
+  Promise.all([eyeClosePromise, eyeOpenPromise]).then(
+    ([[beforeEyeClose, afterEyeClose], [beforeEyeOpen, afterEyeOpen]]) => {
+      console.log(values);
+    }
+  );
   // 地形图
   const topographicalMapCells = document.querySelectorAll(
     '#sasiTopographicalMaps tbody td'

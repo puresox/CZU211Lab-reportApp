@@ -1,27 +1,33 @@
-.lineChart,
-.boxplotChart {
-  width: 600px;
-  height: 250px;
+/* 通用样式 */
+@media all {
+  .lineChart,
+  .boxplotChart {
+    width: 600px;
+    height: 250px;
+  }
+  .topographicalMap {
+    height: 150px;
+  }
+  td {
+    text-align: center;
+  }
+  #aiaTable th {
+    width: 100px;
+    word-wrap: break-word;
+  }
+  #aiaArea table,
+  #aiaArea th,
+  #aiaArea td,
+  #aucArea table,
+  #aucArea th,
+  #aucArea td {
+    border: 1px solid black;
+  }
 }
-.topographicalMap {
-  height: 150px;
+/* 屏幕显示时样式 */
+@media screen {
 }
-td {
-  text-align: center;
-}
-#aiaTable th {
-  width: 100px;
-  word-wrap: break-word;
-}
-#aiaArea table,
-#aiaArea th,
-#aiaArea td,
-#aucArea table,
-#aucArea th,
-#aucArea td {
-  border: 1px solid black;
-}
-/* 打印样式 */
+/* 打印时样式 */
 @media print {
   @page {
     size: A4 portrait;
