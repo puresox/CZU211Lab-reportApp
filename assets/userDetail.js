@@ -8,6 +8,7 @@ const fs = require('fs');
 // eslint-disable-next-line import/no-dynamic-require
 const calcIndexes = require(path.join(process.cwd(), './assets/calcIndexes'));
 
+let userInfo;
 const userDataPaths = {
   before: {
     eyeOpen: null,
@@ -224,66 +225,81 @@ function renderSasiArea() {
   );
   // 初始化：SASI特征值对照-睁眼
   const openSASILine = getSasiLineChart('openSasiLine', 'SASI特征值对照-睁眼');
-  // 更新：SASI特征值对照-闭眼
-  const eyeClosePromise = Promise.all([
-    calcIndexes.SASI(userDataPaths.before.eyeClose),
-    calcIndexes.SASI(userDataPaths.after.eyeClose),
-  ]).then(([beforeEyeClose, afterEyeClose]) => {
-    closeSASILine.hideLoading();
-    closeSASILine.setOption({
-      series: [
-        {
-          name: '训练前',
-          type: 'line',
-          data: beforeEyeClose,
-        },
-        {
-          name: '训练后',
-          type: 'line',
-          data: afterEyeClose,
-        },
-      ],
-    });
-    return [beforeEyeClose, afterEyeClose];
-  });
-  // 更新：SASI特征值对照-睁眼
-  const eyeOpenPromise = Promise.all([
-    calcIndexes.SASI(userDataPaths.before.eyeOpen),
-    calcIndexes.SASI(userDataPaths.after.eyeOpen),
-  ]).then(([beforeEyeOpen, afterEyeOpen]) => {
-    openSASILine.hideLoading();
-    openSASILine.setOption({
-      series: [
-        {
-          name: '训练前',
-          type: 'line',
-          data: beforeEyeOpen,
-        },
-        {
-          name: '训练后',
-          type: 'line',
-          data: afterEyeOpen,
-        },
-      ],
-    });
-    return [beforeEyeOpen, afterEyeOpen];
-  });
-  Promise.all([eyeClosePromise, eyeOpenPromise]).then(
-    ([[beforeEyeClose, afterEyeClose], [beforeEyeOpen, afterEyeOpen]]) => {
-      console.log(values);
-    }
-  );
-  // 地形图
-  const topographicalMapCells = document.querySelectorAll(
-    '#sasiTopographicalMaps tbody td'
-  );
-  topographicalMapCells.forEach((topographicalMapCell) => {
-    const img = document.createElement('img');
-    img.src =
-      '../appData/刘禹超_69a88b69-3f4c-4daf-a264-a58254c73799/训练前/2.png';
-    img.className = 'topographicalMap';
-    topographicalMapCell.appendChild(img);
-  });
+  // 异步更新数据
+  calcIndexes
+    .SASI([
+      userDataPaths.before.eyeClose,
+      userDataPaths.after.eyeClose,
+      userDataPaths.before.eyeOpen,
+      userDataPaths.after.eyeOpen,
+    ])
+    .then(
+      async ([beforeEyeClose, afterEyeClose, beforeEyeOpen, afterEyeOpen]) => {
+        // 更新：SASI特征值对照-闭眼
+        closeSASILine.hideLoading();
+        closeSASILine.setOption({
+          series: [
+            {
+              name: '训练前',
+              type: 'line',
+              data: beforeEyeClose,
+            },
+            {
+              name: '训练后',
+              type: 'line',
+              data: afterEyeClose,
+            },
+          ],
+        });
+        // 更新：SASI特征值对照-睁眼
+        openSASILine.hideLoading();
+        openSASILine.setOption({
+          series: [
+            {
+              name: '训练前',
+              type: 'line',
+              data: beforeEyeOpen,
+            },
+            {
+              name: '训练后',
+              type: 'line',
+              data: afterEyeOpen,
+            },
+          ],
+        });
+        const datavectors = [
+          {
+            datas: [beforeEyeClose, afterEyeClose],
+            picPaths: [
+              path.join(userInfo.userDataPath, './数据缓存', 'SASIc1.png'),
+              path.join(userInfo.userDataPath, './数据缓存', 'SASIc2.png'),
+              path.join(userInfo.userDataPath, './数据缓存', 'SASIc3.png'),
+            ],
+          },
+          {
+            datas: [beforeEyeOpen, afterEyeOpen],
+            picPaths: [
+              path.join(userInfo.userDataPath, './数据缓存', 'SASIo1.png'),
+              path.join(userInfo.userDataPath, './数据缓存', 'SASIo2.png'),
+              path.join(userInfo.userDataPath, './数据缓存', 'SASIo3.png'),
+            ],
+          },
+        ];
+        await calcIndexes.getTopoplot(datavectors);
+        // 地形图
+        const topographicalMapCells = document.querySelectorAll(
+          '#sasiTopographicalMaps tbody td'
+        );
+        datavectors.forEach(({ picPaths }, i) => {
+          picPaths.forEach((picPath, j) => {
+            const img = document.createElement('img');
+            img.src = picPath;
+            img.className = 'topographicalMap';
+            topographicalMapCells[3 * i + j].appendChild(img);
+          });
+        });
+      }
+    );
 }
 
 function renderDfaArea() {
@@ -339,7 +355,8 @@ function renderPrinters() {
   });
 }
 
-function getUserDataPaths(userDataPath) {
+function getUserDataPaths() {
+  const { userDataPath } = userInfo;
   const userBeforeDir = fs.readdirSync(path.join(userDataPath, './训练前'), {
     withFileTypes: true,
   });
@@ -387,14 +404,15 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 ipcRenderer.on('getUser', (event, user) => {
-  const { name: username, age, gender, userDataPath } = user;
-  getUserDataPaths(userDataPath);
-  renderPowerArea();
+  userInfo = user;
+  const { name: username, age, gender } = userInfo;
+  getUserDataPaths();
+  // renderPowerArea();
   renderAiaArea();
   renderSasiArea();
-  renderDfaArea();
-  renderPlvArea();
-  renderAucArea();
+  // renderDfaArea();
+  // renderPlvArea();
+  // renderAucArea();
   // 监听打印报告事件
   const printReportBtn = document.getElementById('printButton');
   printReportBtn.addEventListener('click', () => {

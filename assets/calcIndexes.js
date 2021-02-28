@@ -25,24 +25,19 @@ async function spawnChild(command, args = []) {
 
 /**
  * @description 生成训练前、训练后、训练前后差值的地形图
- * @param {*} datavectors 训练前后的数据
- * @param {*} picPaths 地形图存储地址
+ * @param {*} datavectors [{datas:[训练前一维数组,训练后一维数组],picPaths:[地形图存储地址]}]
  */
-async function getTopoplots(datavectors, picPaths) {
+async function getTopoplot(datavectors) {
   const getTopoplotPath = path.join(
     __dirname,
     '../matlab-engine-for-python/topoplot/getTopoplot.py'
   );
-  await spawnChild(pythonPath, [
-    getTopoplotPath,
-    JSON.stringify(datavectors),
-    JSON.stringify(picPaths),
-  ]);
+  await spawnChild(pythonPath, [getTopoplotPath, JSON.stringify(datavectors)]);
 }
 /**
  * @description 生成AIA表格数据
- * @param {*} datas [[训练前数据,训练后数据]]
- * @returns [AIA表格数据]
+ * @param {*} datas [[训练前mat数据,训练后mat数据]]
+ * @returns [AIA表格二维数组]
  */
 async function AIA(datas) {
   const AIAPath = path.join(
@@ -55,7 +50,11 @@ async function AIA(datas) {
   ]).then(({ stdout }) => JSON.parse(stdout));
   return AIAResult;
 }
-
+/**
+ * @description 生成SASI数据
+ * @param {*} datas [mat数据]
+ * @returns [SASI一维数组]
+ */
 async function SASI(datas) {
   const SASIPath = path.join(
     __dirname,
@@ -67,7 +66,11 @@ async function SASI(datas) {
   ]).then(({ stdout }) => JSON.parse(stdout));
   return SASIResult;
 }
-
+/**
+ * @description 生成DFA数据
+ * @param {*} datas [mat数据]
+ * @returns [DFA一维数组]
+ */
 async function DFA(datas) {
   const DFAPath = path.join(
     __dirname,
@@ -80,4 +83,4 @@ async function DFA(datas) {
   return DFAResult;
 }
 
-module.exports = { getTopoplot: getTopoplots, AIA, SASI, DFA };
+module.exports = { getTopoplot, AIA, SASI, DFA };

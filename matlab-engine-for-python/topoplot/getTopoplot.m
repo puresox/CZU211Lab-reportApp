@@ -1,5 +1,5 @@
 function []=getTopoplot(datavector,picPath)
-warn off;
+warning off;
 load('chanlocs64.mat','chanlocs');
 %作图不显示
 figure('visible','off');
