@@ -1,12 +1,22 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+const { ipcRenderer } = require('electron');
 const XLSX = require('xlsx');
-const settings = require('electron-settings');
 const fs = require('fs');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
-const appDataPath = settings.getSync('appDataPath');
+async function getAppDataPath() {
+  ipcRenderer.send('getSetting', 'appDataPath');
 
-function removeDir(dir) {
+  const appDataPath = await new Promise((resolve) => {
+    ipcRenderer.on('gottenSetting', (event, value) => {
+      resolve(value);
+    });
+  });
+  return appDataPath;
+}
+
+async function removeDir(dir) {
   const files = fs.readdirSync(dir, { withFileTypes: true });
   files.forEach((file) => {
     const newPath = path.join(dir, file.name);
@@ -19,7 +29,8 @@ function removeDir(dir) {
   fs.rmdirSync(dir);
 }
 
-function getUsers() {
+async function getUsers() {
+  const appDataPath = await getAppDataPath();
   const userDirs = fs.readdirSync(appDataPath, { withFileTypes: true });
   const users = [];
   userDirs.forEach((userDir) => {
@@ -41,7 +52,8 @@ function getUsers() {
   return users;
 }
 
-function addUser(name) {
+async function addUser(name) {
+  const appDataPath = await getAppDataPath();
   const userDataPath = path.join(appDataPath, `./${name}_${uuidv4()}`);
   fs.mkdirSync(userDataPath);
   fs.mkdirSync(path.join(userDataPath, './训练前'));
@@ -60,7 +72,8 @@ function addUser(name) {
   XLSX.writeFile(wb, path.join(userDataPath, `./${name}.xlsx`));
 }
 
-function delUserById(id) {
+async function delUserById(id) {
+  const appDataPath = await getAppDataPath();
   const userDataPath = path.join(appDataPath, `./${id}`);
   removeDir(userDataPath);
 }

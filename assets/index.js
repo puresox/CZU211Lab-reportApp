@@ -2,13 +2,11 @@
 // It has the same sandbox as a Chrome extension.
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { ipcRenderer, shell } = require('electron');
-const settings = require('electron-settings');
 const path = require('path');
 const { getUsers, delUserById } = require('../db');
 
-const appDataPath = settings.getSync('appDataPath');
 // 显示数据存储路径
-function renderPath() {
+function renderPath(appDataPath) {
   const pathArea = document.getElementById('appDataPath');
   pathArea.textContent = appDataPath;
 }
@@ -39,15 +37,16 @@ function renderUserRaws(users) {
     });
     // 监听删除被试事件
     const delButton = userRaw.querySelector('button[name="del"]');
-    delButton.addEventListener('click', () => {
-      delUserById(user.id);
+    delButton.addEventListener('click', async () => {
+      await delUserById(user.id);
       window.location.reload();
     });
     userRawsArea.append(userRaw); // 先修改userRaw再append，append后无法修改userRaw
   });
 }
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
+  ipcRenderer.send('getSetting', 'appDataPath');
   // 监听添加被试事件
   const addUserBtn = document.getElementById('addUser');
   addUserBtn.addEventListener('click', () => {
@@ -59,14 +58,16 @@ window.addEventListener('DOMContentLoaded', () => {
     ipcRenderer.send('selectAppDataPath');
   });
   // 生成用户列表
-  const users = getUsers();
+  const users = await getUsers();
   renderUserRaws(users);
-  // 显示数据存储路径
-  renderPath();
 });
 window.onfocus = () => {
   window.location.reload();
 };
 ipcRenderer.on('selectedAppDataPath', (event, newAppDataPath) => {
-  settings.setSync('appDataPath', newAppDataPath);
+  ipcRenderer.send('setSetting', 'appDataPath', newAppDataPath);
+});
+ipcRenderer.on('gottenSetting', (event, value) => {
+  // 显示数据存储路径
+  renderPath(value);
 });

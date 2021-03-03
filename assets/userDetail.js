@@ -1,6 +1,4 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-const webContents = require('electron').remote.getCurrentWebContents();
-// eslint-disable-next-line import/no-extraneous-dependencies
 const { ipcRenderer } = require('electron');
 const echarts = require('echarts');
 const path = require('path');
@@ -192,32 +190,25 @@ function renderPowerArea() {
   });
 }
 
-function renderAiaArea() {
+async function renderAiaArea() {
   // 获取数据
-  calcIndexes
-    .AIA([
-      [userDataPaths.before.eyeClose, userDataPaths.after.eyeClose],
-      [userDataPaths.before.eyeOpen, userDataPaths.after.eyeOpen],
-    ])
-    .then(([eyeClose, eyeOpen]) => {
-      // 处理闭眼数据
-      const ClosetableCells = document.querySelectorAll(
-        '#CloseAiaTable tbody td'
-      );
-      eyeClose.flat().forEach((num, index) => {
-        ClosetableCells[index].insertAdjacentText('afterbegin', num.toFixed(3));
-      });
-      // 处理睁眼数据
-      const OpentableCells = document.querySelectorAll(
-        '#OpenAiaTable tbody td'
-      );
-      eyeOpen.flat().forEach((num, index) => {
-        OpentableCells[index].insertAdjacentText('afterbegin', num.toFixed(3));
-      });
-    });
+  const [eyeClose, eyeOpen] = await calcIndexes.AIA([
+    [userDataPaths.before.eyeClose, userDataPaths.after.eyeClose],
+    [userDataPaths.before.eyeOpen, userDataPaths.after.eyeOpen],
+  ]);
+  // 处理闭眼数据
+  const ClosetableCells = document.querySelectorAll('#closeAiaTable tbody td');
+  eyeClose.flat().forEach((num, index) => {
+    ClosetableCells[index].insertAdjacentText('afterbegin', num.toFixed(3));
+  });
+  // 处理睁眼数据
+  const OpentableCells = document.querySelectorAll('#openAiaTable tbody td');
+  eyeOpen.flat().forEach((num, index) => {
+    OpentableCells[index].insertAdjacentText('afterbegin', num.toFixed(3));
+  });
 }
 
-function renderSasiArea() {
+async function renderSasiArea() {
   // 初始化：SASI特征值对照-闭眼
   const closeSASILine = getSasiLineChart(
     'closeSasiLine',
@@ -226,80 +217,80 @@ function renderSasiArea() {
   // 初始化：SASI特征值对照-睁眼
   const openSASILine = getSasiLineChart('openSasiLine', 'SASI特征值对照-睁眼');
   // 异步更新数据
-  calcIndexes
-    .SASI([
-      userDataPaths.before.eyeClose,
-      userDataPaths.after.eyeClose,
-      userDataPaths.before.eyeOpen,
-      userDataPaths.after.eyeOpen,
-    ])
-    .then(
-      async ([beforeEyeClose, afterEyeClose, beforeEyeOpen, afterEyeOpen]) => {
-        // 更新：SASI特征值对照-闭眼
-        closeSASILine.hideLoading();
-        closeSASILine.setOption({
-          series: [
-            {
-              name: '训练前',
-              type: 'line',
-              data: beforeEyeClose,
-            },
-            {
-              name: '训练后',
-              type: 'line',
-              data: afterEyeClose,
-            },
-          ],
-        });
-        // 更新：SASI特征值对照-睁眼
-        openSASILine.hideLoading();
-        openSASILine.setOption({
-          series: [
-            {
-              name: '训练前',
-              type: 'line',
-              data: beforeEyeOpen,
-            },
-            {
-              name: '训练后',
-              type: 'line',
-              data: afterEyeOpen,
-            },
-          ],
-        });
-        const datavectors = [
-          {
-            datas: [beforeEyeClose, afterEyeClose],
-            picPaths: [
-              path.join(userInfo.userDataPath, './数据缓存', 'SASIc1.png'),
-              path.join(userInfo.userDataPath, './数据缓存', 'SASIc2.png'),
-              path.join(userInfo.userDataPath, './数据缓存', 'SASIc3.png'),
-            ],
-          },
-          {
-            datas: [beforeEyeOpen, afterEyeOpen],
-            picPaths: [
-              path.join(userInfo.userDataPath, './数据缓存', 'SASIo1.png'),
-              path.join(userInfo.userDataPath, './数据缓存', 'SASIo2.png'),
-              path.join(userInfo.userDataPath, './数据缓存', 'SASIo3.png'),
-            ],
-          },
-        ];
-        await calcIndexes.getTopoplot(datavectors);
-        // 地形图
-        const topographicalMapCells = document.querySelectorAll(
-          '#sasiTopographicalMaps tbody td'
-        );
-        datavectors.forEach(({ picPaths }, i) => {
-          picPaths.forEach((picPath, j) => {
-            const img = document.createElement('img');
-            img.src = picPath;
-            img.className = 'topographicalMap';
-            topographicalMapCells[3 * i + j].appendChild(img);
-          });
-        });
-      }
-    );
+  const [
+    beforeEyeClose,
+    afterEyeClose,
+    beforeEyeOpen,
+    afterEyeOpen,
+  ] = await calcIndexes.SASI([
+    userDataPaths.before.eyeClose,
+    userDataPaths.after.eyeClose,
+    userDataPaths.before.eyeOpen,
+    userDataPaths.after.eyeOpen,
+  ]);
+  // 更新：SASI特征值对照-闭眼
+  closeSASILine.hideLoading();
+  closeSASILine.setOption({
+    series: [
+      {
+        name: '训练前',
+        type: 'line',
+        data: beforeEyeClose,
+      },
+      {
+        name: '训练后',
+        type: 'line',
+        data: afterEyeClose,
+      },
+    ],
+  });
+  // 更新：SASI特征值对照-睁眼
+  openSASILine.hideLoading();
+  openSASILine.setOption({
+    series: [
+      {
+        name: '训练前',
+        type: 'line',
+        data: beforeEyeOpen,
+      },
+      {
+        name: '训练后',
+        type: 'line',
+        data: afterEyeOpen,
+      },
+    ],
+  });
+  const datavectors = [
+    {
+      datas: [beforeEyeClose, afterEyeClose],
+      picPaths: [
+        path.join(userInfo.userDataPath, './数据缓存', 'SASIc1.png'),
+        path.join(userInfo.userDataPath, './数据缓存', 'SASIc2.png'),
+        path.join(userInfo.userDataPath, './数据缓存', 'SASIc3.png'),
+      ],
+    },
+    {
+      datas: [beforeEyeOpen, afterEyeOpen],
+      picPaths: [
+        path.join(userInfo.userDataPath, './数据缓存', 'SASIo1.png'),
+        path.join(userInfo.userDataPath, './数据缓存', 'SASIo2.png'),
+        path.join(userInfo.userDataPath, './数据缓存', 'SASIo3.png'),
+      ],
+    },
+  ];
+  await calcIndexes.getTopoplot(datavectors);
+  // 地形图
+  const topographicalMapCells = document.querySelectorAll(
+    '#sasiTopographicalMaps tbody td'
+  );
+  datavectors.forEach(({ picPaths }, i) => {
+    picPaths.forEach((picPath, j) => {
+      const img = document.createElement('img');
+      img.src = picPath;
+      img.className = 'topographicalMap';
+      topographicalMapCells[3 * i + j].appendChild(img);
+    });
+  });
 }
 
 function renderDfaArea() {
@@ -326,12 +317,123 @@ function renderDfaArea() {
   });
 }
 
-function renderPlvArea() {
-  const brainNetMaps = document.querySelectorAll('#plvArea img');
-  brainNetMaps.forEach((brainNetMap) => {
-    // eslint-disable-next-line no-param-reassign
-    brainNetMap.src =
-      '../appData/刘禹超_69a88b69-3f4c-4daf-a264-a58254c73799/训练前/3.png';
+async function renderPlvArea() {
+  const datavectors = [
+    {
+      data: userDataPaths.before.eyeClose,
+      picPaths: [
+        path.join(
+          userInfo.userDataPath,
+          './数据缓存',
+          'PLVCloseBeforeTheta1.png'
+        ),
+        path.join(
+          userInfo.userDataPath,
+          './数据缓存',
+          'PLVCloseBeforeAlpha1.png'
+        ),
+        path.join(
+          userInfo.userDataPath,
+          './数据缓存',
+          'PLVCloseBeforeTheta2.png'
+        ),
+        path.join(
+          userInfo.userDataPath,
+          './数据缓存',
+          'PLVCloseBeforeAlpha2.png'
+        ),
+      ],
+    },
+    {
+      data: userDataPaths.after.eyeClose,
+      picPaths: [
+        path.join(
+          userInfo.userDataPath,
+          './数据缓存',
+          'PLVCloseAfterTheta1.png'
+        ),
+        path.join(
+          userInfo.userDataPath,
+          './数据缓存',
+          'PLVCloseAfterAlpha1.png'
+        ),
+        path.join(
+          userInfo.userDataPath,
+          './数据缓存',
+          'PLVCloseAfterTheta2.png'
+        ),
+        path.join(
+          userInfo.userDataPath,
+          './数据缓存',
+          'PLVCloseAfterAlpha2.png'
+        ),
+      ],
+    },
+    {
+      data: userDataPaths.before.eyeOpen,
+      picPaths: [
+        path.join(
+          userInfo.userDataPath,
+          './数据缓存',
+          'PLVOpenBeforeTheta1.png'
+        ),
+        path.join(
+          userInfo.userDataPath,
+          './数据缓存',
+          'PLVOpenBeforeAlpha1.png'
+        ),
+        path.join(
+          userInfo.userDataPath,
+          './数据缓存',
+          'PLVOpenBeforeTheta2.png'
+        ),
+        path.join(
+          userInfo.userDataPath,
+          './数据缓存',
+          'PLVOpenBeforeAlpha2.png'
+        ),
+      ],
+    },
+    {
+      data: userDataPaths.after.eyeOpen,
+      picPaths: [
+        path.join(
+          userInfo.userDataPath,
+          './数据缓存',
+          'PLVOpenAfterTheta1.png'
+        ),
+        path.join(
+          userInfo.userDataPath,
+          './数据缓存',
+          'PLVOpenAfterAlpha1.png'
+        ),
+        path.join(
+          userInfo.userDataPath,
+          './数据缓存',
+          'PLVOpenAfterTheta2.png'
+        ),
+        path.join(
+          userInfo.userDataPath,
+          './数据缓存',
+          'PLVOpenAfterAlpha2.png'
+        ),
+      ],
+    },
+  ];
+  const [
+    beforeEyeClose,
+    afterEyeClose,
+    beforeEyeOpen,
+    afterEyeOpen,
+  ] = await calcIndexes.PLV(datavectors);
+  const brainNetMapsCells = document.querySelectorAll('#plvArea tbody td');
+  datavectors.forEach(({ picPaths }, i) => {
+    picPaths.forEach((picPath, j) => {
+      const img = document.createElement('img');
+      img.src = picPath;
+      img.className = 'brainNetMap';
+      topographicalMapCells[3 * i + j].appendChild(img);
+    });
   });
 }
 
@@ -340,18 +442,6 @@ function renderAucArea() {
   const tableCells = document.querySelectorAll('#aucTable tbody td');
   tableCells.forEach((tableCell) => {
     tableCell.insertAdjacentText('afterbegin', '1');
-  });
-}
-
-function renderPrinters() {
-  // 获取打印设备
-  const printers = webContents.getPrinters();
-  const printerSelect = document.getElementById('printerSelect');
-  printers.forEach((printer) => {
-    const option = document.createElement('option');
-    option.text = printer.name;
-    option.value = printer.name;
-    printerSelect.appendChild(option);
   });
 }
 
@@ -399,17 +489,15 @@ function getUserDataPaths() {
   });
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-  renderPrinters();
-});
+window.addEventListener('DOMContentLoaded', () => {});
 
 ipcRenderer.on('getUser', (event, user) => {
   userInfo = user;
   const { name: username, age, gender } = userInfo;
   getUserDataPaths();
   // renderPowerArea();
-  renderAiaArea();
-  renderSasiArea();
+  // renderAiaArea();
+  // renderSasiArea();
   // renderDfaArea();
   // renderPlvArea();
   // renderAucArea();
@@ -423,8 +511,16 @@ ipcRenderer.on('getUser', (event, user) => {
       header: '年龄：',
       footer: `姓名：${username}    年龄：${age}    性别：${gender}`,
     };
-    webContents.print(options, (success, errorType) => {
-      if (!success) console.log(errorType);
-    });
+    ipcRenderer.send('print', options);
+  });
+});
+
+ipcRenderer.on('getPrinters', (event, printers) => {
+  const printerSelect = document.getElementById('printerSelect');
+  printers.forEach((printer) => {
+    const option = document.createElement('option');
+    option.text = printer.name;
+    option.value = printer.name;
+    printerSelect.appendChild(option);
   });
 });

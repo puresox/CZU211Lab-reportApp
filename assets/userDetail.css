@@ -5,16 +5,26 @@
     width: 600px;
     height: 250px;
   }
-  .topographicalMap {
+  .topographicalMap,
+  .brainNetMap {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+  }
+  .topographicalMapTable td,
+  .brainNetMap td {
     height: 150px;
   }
   td {
     text-align: center;
   }
-  #aiaArea th {
+  #aiaArea th,
+  #aucArea th {
     width: 100px;
     word-wrap: break-word;
   }
+  /* 文字表边框 */
   #aiaArea table,
   #aiaArea th,
   #aiaArea td,

@@ -82,5 +82,21 @@ async function DFA(datas) {
   ]).then(({ stdout }) => JSON.parse(stdout));
   return DFAResult;
 }
+/**
+ * @description 生成脑网络图片和AUC数据
+ * @param {*} datavectors [{data:mat数据,picPaths:[theta矩阵图存储地址,alpha矩阵图存储地址,theta拓扑图存储地址,alpha拓扑图存储地址,]}]
+ * @returns [[aucs,aucpath,auccluster]]
+ */
+async function PLV(datavectors) {
+  const PLVPath = path.join(
+    __dirname,
+    '../matlab-engine-for-python/PLV/PLV.py'
+  );
+  const PLVResult = await spawnChild(pythonPath, [
+    PLVPath,
+    JSON.stringify(datavectors),
+  ]).then(({ stdout }) => JSON.parse(stdout));
+  return PLVResult;
+}
 
-module.exports = { getTopoplot, AIA, SASI, DFA };
+module.exports = { getTopoplot, AIA, SASI, DFA, PLV };

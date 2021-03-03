@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { ipcMain, BrowserWindow, dialog, screen } = require('electron');
+const settings = require('electron-settings');
 const path = require('path');
 
 // 监听打开addUser窗口的消息
@@ -8,7 +9,6 @@ ipcMain.on('open-addUser', () => {
     width: 300,
     height: 200,
     webPreferences: {
-      enableRemoteModule: true,
       nodeIntegration: true,
       preload: path.join(__dirname, '../assets/addUser.js'),
     },
@@ -24,13 +24,17 @@ ipcMain.on('open-userDetail', (event, user) => {
     width: 700,
     height: screen.getPrimaryDisplay().size.height,
     webPreferences: {
-      enableRemoteModule: true,
       nodeIntegration: true,
+      contextIsolation: false,
       // preload: path.join(__dirname, '../assets/userDetail.js'),
     },
   });
   userDetailWin.webContents.on('dom-ready', () => {
+    // 传递用户信息
     userDetailWin.webContents.send('getUser', user);
+    // 获取打印设备
+    const printers = userDetailWin.webContents.getPrinters();
+    userDetailWin.webContents.send('getPrinters', printers);
   });
   userDetailWin.on('close', () => {
     userDetailWin = null;
@@ -51,4 +55,21 @@ ipcMain.on('selectAppDataPath', (event) => {
     .catch((err) => {
       console.log(err);
     });
+});
+// 监听打印事件
+ipcMain.on('print', (event, options) => {
+  BrowserWindow.getFocusedWindow().webContents.print(
+    options,
+    (success, errorType) => {
+      if (!success) console.log(errorType);
+    }
+  );
+});
+// 监听获取设置事件
+ipcMain.on('getSetting', (event, key) => {
+  event.reply('gottenSetting', settings.getSync(key));
+});
+// 监听设置设置事件
+ipcMain.on('setSetting', (event, key, value) => {
+  settings.setSync(key, value);
 });

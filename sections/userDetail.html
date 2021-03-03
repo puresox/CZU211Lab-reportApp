@@ -2,6 +2,15 @@
 <html>
   <head>
     <meta charset="UTF-8" />
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'"
+    />
+    <meta
+      http-equiv="X-Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'"
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>被试报告</title>
     <link rel="stylesheet" href="../assets/userDetail.css" />
@@ -33,7 +42,7 @@
         Gamma频段(30-45Hz)：与注意和感觉系统有关，可能与情绪波动有关；适当的gamma波功率可以保证情绪平稳；抑郁症患者的gamma波功率较低。
       </p>
       <div id="powerBoxplot" class="boxplotChart"></div>
-      <table id="powerTopographicalMaps">
+      <table id="powerTopographicalMaps" class="topographicalMapTable">
         <caption>
           训练前后各频段功率值地形图表
         </caption>
@@ -76,7 +85,7 @@
     <!-- 2.	Alpha左右脑不对称分数（AIA） -->
     <div id="aiaArea">
       <h2>2. Alpha左右脑不对称分数（AIA）</h2>
-      <table id="CloseAiaTable">
+      <table id="closeAiaTable">
         <caption>
           训练前后不同脑区alpha不对称分数值（闭眼）
         </caption>
@@ -146,7 +155,7 @@
           </tr>
         </tbody>
       </table>
-      <table id="OpenAiaTable">
+      <table id="openAiaTable">
         <caption>
           训练前后不同脑区alpha不对称分数值（睁眼）
         </caption>
@@ -230,7 +239,7 @@
       </p>
       <div id="closeSasiLine" class="lineChart"></div>
       <div id="openSasiLine" class="lineChart"></div>
-      <table id="sasiTopographicalMaps">
+      <table id="sasiTopographicalMaps" class="topographicalMapTable">
         <caption>
           静息态闭眼、睁眼SASI值对照图（训练前后）
         </caption>
@@ -268,7 +277,7 @@
       </p>
       <div id="closeDfaLine" class="lineChart"></div>
       <div id="openDfaLine" class="lineChart"></div>
-      <table id="dfaTopographicalMaps">
+      <table id="dfaTopographicalMaps" class="topographicalMapTable">
         <caption>
           静息态闭眼、睁眼DFA值地形图（训练前后）
         </caption>
@@ -300,38 +309,135 @@
     <div id="plvArea">
       <h2>5. 脑网络构建（基于相位锁定指数）</h2>
       <p>
-        越接近1说明两个导联之间的连接同步性越强，抑郁症患者相比于健康对照组在alpha频段和theta频段的连接强度更高。（训练前后连接强度降低说明抑郁状态改善）。
+        连接矩阵越接近1说明两个导联之间的连接同步性越强，抑郁症患者相比于健康对照组在alpha频段和theta频段的连接强度更高。（训练前后连接强度降低说明抑郁状态改善）。
       </p>
-      <figure>
-        <img src="" alt="theta频段被试连接矩阵" class="brainNetMap" />
-        <figcaption>theta频段被试连接矩阵</figcaption>
-      </figure>
-      <figure>
-        <img src="" alt="alpha频段被试连接矩阵" class="brainNetMap" />
-        <figcaption>alpha频段被试连接矩阵</figcaption>
-      </figure>
       <p>
-        每个节点的颜色代表单个导联和其他导联连接边的数量，而连接强度则使用粗细来表示，连接线黑色的深浅表明了电极与电极之间连接强度值大小。
+        连接拓扑图每个节点的颜色代表单个导联和其他导联连接边的数量，而连接强度则使用粗细来表示，连接线黑色的深浅表明了电极与电极之间连接强度值大小。
         抑郁患者在 theta
         频段下，大脑左下颞叶的连接紧密程度高于健康者，而在右颞和右额叶的连接紧密程度和强度低于健康者，抑郁患者整体的连接程度较为均衡，对照组右半球的连接紧密程度比左半球要高。抑郁患者在alpha
         频段下，大脑右额叶的连接紧密程度低于健康者，而在左颞的连接程度和强度高于健康者。
       </p>
-      <figure>
-        <img src="" alt="theta频段被试连接拓扑图" class="brainNetMap" />
-        <figcaption>theta频段被试连接拓扑图</figcaption>
-      </figure>
-      <figure>
-        <img src="" alt="alpha频段被试连接拓扑图" class="brainNetMap" />
-        <figcaption>alpha频段被试连接拓扑图</figcaption>
-      </figure>
+      <table id="closePlvTable" class="brainNetMap">
+        <caption>
+          训练前后的theta频段和alpha频段连接矩阵和连接拓扑图（闭眼）
+        </caption>
+        <thead>
+          <tr>
+            <th colspan="2"></th>
+            <th>训练前</th>
+            <th>训练后</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th rowspan="2">连接矩阵</th>
+            <th>theta频段</th>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>alpha频段</th>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th rowspan="2">连接拓扑图</th>
+            <th>theta频段</th>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>alpha频段</th>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+      <table id="openPlvTable" class="brainNetMap">
+        <caption>
+          训练前后的theta频段和alpha频段连接矩阵和连接拓扑图（睁眼）
+        </caption>
+        <thead>
+          <tr>
+            <th colspan="2"></th>
+            <th>训练前</th>
+            <th>训练后</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th rowspan="2">连接矩阵</th>
+            <th>theta频段</th>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>alpha频段</th>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th rowspan="2">连接拓扑图</th>
+            <th>theta频段</th>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>alpha频段</th>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <!-- 6. 脑网络参数 -->
     <div id="aucArea">
       <h2>6. 脑网络参数</h2>
       <p>训练前后网络参数降低说明抑郁状态改善</p>
-      <table id="aucTable">
+      <table id="closeAucTable">
         <caption>
-          训练前后的theta频段和alpha频段网络参数对应的曲面下面积
+          训练前后的theta频段和alpha频段网络参数对应的曲面下面积（闭眼）
+        </caption>
+        <thead>
+          <tr>
+            <th rowspan="2"></th>
+            <th colspan="2">theta频段</th>
+            <th colspan="2">alpha频段</th>
+          </tr>
+          <tr>
+            <th>训练前</th>
+            <th>训练后</th>
+            <th>训练前</th>
+            <th>训练后</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>强度AUC</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>平均特征路径强度AUC</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>平均聚类系数AUC</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+      <table id="openAucTable">
+        <caption>
+          训练前后的theta频段和alpha频段网络参数对应的曲面下面积（睁眼）
         </caption>
         <thead>
           <tr>
