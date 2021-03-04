@@ -1,5 +1,5 @@
 function result=AUC(fg)
-warning off;
+warning('off','all');
 count=1;
 for p = 0.01:0.01:0.8
     aij = threshold_proportional(fg, p);

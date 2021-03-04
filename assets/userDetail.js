@@ -420,28 +420,27 @@ async function renderPlvArea() {
       ],
     },
   ];
-  const [
-    beforeEyeClose,
-    afterEyeClose,
-    beforeEyeOpen,
-    afterEyeOpen,
-  ] = await calcIndexes.PLV(datavectors);
+  const AUCResult = await calcIndexes.PLV(datavectors);
   const brainNetMapsCells = document.querySelectorAll('#plvArea tbody td');
   datavectors.forEach(({ picPaths }, i) => {
     picPaths.forEach((picPath, j) => {
       const img = document.createElement('img');
       img.src = picPath;
       img.className = 'brainNetMap';
-      topographicalMapCells[3 * i + j].appendChild(img);
+      brainNetMapsCells[8 * Math.floor(i / 2) + 2 * j + (i % 2)].appendChild(
+        img
+      );
     });
   });
-}
-
-function renderAucArea() {
-  // 表格
-  const tableCells = document.querySelectorAll('#aucTable tbody td');
-  tableCells.forEach((tableCell) => {
-    tableCell.insertAdjacentText('afterbegin', '1');
+  const tableCells = document.querySelectorAll('#aucArea tbody td');
+  AUCResult.forEach((data, i) => {
+    data.forEach((ranges, j) => {
+      ranges.forEach((auc, k) => {
+        tableCells[
+          12 * Math.floor(i / 2) + 2 * j + 4 * k + (i % 2)
+        ].insertAdjacentText('afterbegin', auc.toFixed(3));
+      });
+    });
   });
 }
 
@@ -499,8 +498,7 @@ ipcRenderer.on('getUser', (event, user) => {
   // renderAiaArea();
   // renderSasiArea();
   // renderDfaArea();
-  // renderPlvArea();
-  // renderAucArea();
+  renderPlvArea();
   // 监听打印报告事件
   const printReportBtn = document.getElementById('printButton');
   printReportBtn.addEventListener('click', () => {

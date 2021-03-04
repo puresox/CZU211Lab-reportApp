@@ -20,7 +20,16 @@ async function spawnChild(command, args = []) {
   if (exitCode) {
     throw new Error(`subprocess error exit ${exitCode}, ${error}`);
   }
-  return { stdout: data, stderr: error, exitCode };
+  // 返回最后一次输出
+  const stdoutArray = data.toString().split('\n');
+  let stdoutResult = '';
+  for (let i = stdoutArray.length - 1; i >= 0; i -= 1) {
+    if (stdoutArray[i] !== '') {
+      stdoutResult = stdoutArray[i];
+      break;
+    }
+  }
+  return { stdout: stdoutResult, stderr: error, exitCode };
 }
 
 /**
@@ -85,7 +94,7 @@ async function DFA(datas) {
 /**
  * @description 生成脑网络图片和AUC数据
  * @param {*} datavectors [{data:mat数据,picPaths:[theta矩阵图存储地址,alpha矩阵图存储地址,theta拓扑图存储地址,alpha拓扑图存储地址,]}]
- * @returns [[aucs,aucpath,auccluster]]
+ * @returns [[[thetaaucs,thetaaucpath,thetaauccluster],[alphaaucs,alphaaucpath,alphaauccluster]]]
  */
 async function PLV(datavectors) {
   const PLVPath = path.join(

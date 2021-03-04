@@ -1,6 +1,6 @@
 # 生成脑网络图片和AUC数据
 # input:[{data:mat数据,picPaths:[theta矩阵图存储地址,alpha矩阵图存储地址,theta拓扑图存储地址,alpha拓扑图存储地址,]}]
-# output:[[aucs,aucpath,auccluster]]
+# output:[[[thetaaucs,thetaaucpath,thetaauccluster],[alphaaucs,alphaaucpath,alphaauccluster]]]
 import json
 import os
 import sys

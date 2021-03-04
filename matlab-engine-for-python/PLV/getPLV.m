@@ -1,5 +1,5 @@
 function PLVResult=getPLV(dataPath,range,picPath1,picPath2)
-warning off;
+warning('off','all');
 load(dataPath);
 
 a=EEG.data;
