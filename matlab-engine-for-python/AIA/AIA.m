@@ -17,8 +17,8 @@ for i=1:64
     lpxx=Pxx(:,i);
     %     P=10*log10(lpxx);
     %     plot(f,P);
-    [lfa,pxxl]=fenzi(f,lpxx);%分子
-    [lfall,pxxall]=fenmu(f,lpxx);%分母
+    [~,pxxl]=fenzi(f,lpxx);%分子
+    [~,pxxall]=fenmu(f,lpxx);%分母
     W(i)=sum(pxxl)/sum(pxxall);
 end
 W10=W(:,10);%Fp1

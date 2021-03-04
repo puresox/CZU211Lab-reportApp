@@ -10,7 +10,7 @@ for p = 0.01:0.01:0.8
     count=count+1;
 end
 
-P=0.01:0.01:0.8;
+% P=0.01:0.01:0.8;
 %plot(P,Strength);
 %figure;plot(P,cluster);
 aucs=sum(Strength)*0.01/2;

@@ -6,7 +6,7 @@ Alphaploy=[];
 for i=1:64
     data=EEG.data';
     DATA=data(:,i);
-    [D,Alpha1]=DFA_main(DATA);
+    [~,Alpha1]=DFA_main(DATA);
     Alphaploy(i)=Alpha1;
     %     disp(i);
 end

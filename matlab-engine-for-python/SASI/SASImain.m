@@ -15,7 +15,7 @@ for i=1:64
     [Pxx,f]=periodogram(x,window,nfft,Fs);
     lpxx=Pxx(:,1);%取这一列
     
-    P=10*log10(lpxx);
+    %     P=10*log10(lpxx);
     % plot(f,P);
     
     [lfall,pxxall]=fenmu(f,lpxx);
@@ -26,7 +26,7 @@ for i=1:64
     F2=Fc-2;
     F3=Fc+2;
     F4=Fc+26;
-    [f12,pxx12,f34,pxx34]= F1234(f,Pxx,F1,F2,F3,F4);
+    [~,pxx12,~,pxx34]= F1234(f,Pxx,F1,F2,F3,F4);
     
     Wlmn=sum(pxx12);
     Whmn=sum(pxx34);

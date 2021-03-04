@@ -22,7 +22,7 @@ else
     filtSpec.range = [4 8]; %thetaÂË²¨
 end
 [plv]=pn_eegPLV(B,500,filtSpec);
-T=plv(:,1,2);
+% T=plv(:,1,2);
 
 %%%%%%%%%%»­34.36PLVÍ¼
 % for i=35:40

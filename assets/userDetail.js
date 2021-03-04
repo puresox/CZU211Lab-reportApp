@@ -70,19 +70,9 @@ function getPowerLineChart(divId, titleText) {
     renderer: 'svg',
   });
   const option = getOptionTemplate(titleText, '电极位', '绝对功率');
-  option.series = [
-    {
-      name: '训练前',
-      type: 'line',
-      data: [],
-    },
-    {
-      name: '训练后',
-      type: 'line',
-      data: [],
-    },
-  ];
   myChart.setOption(option);
+  myChart.showLoading();
+  return myChart;
 }
 
 function getSasiLineChart(divId, titleText) {
@@ -100,19 +90,9 @@ function getDfaLineChart(divId, titleText) {
     renderer: 'svg',
   });
   const option = getOptionTemplate(titleText, '电极位', 'DFA值');
-  option.series = [
-    {
-      name: '训练前',
-      type: 'line',
-      data: [],
-    },
-    {
-      name: '训练后',
-      type: 'line',
-      data: [],
-    },
-  ];
   myChart.setOption(option);
+  myChart.showLoading();
+  return myChart;
 }
 
 function getPowerBoxplotChart(divId, titleText) {
@@ -122,71 +102,159 @@ function getPowerBoxplotChart(divId, titleText) {
   const option = getOptionTemplate(titleText, '指标', '绝对功率');
   option.xAxis.data = ['P3 Beta波', 'P4 Beta波', 'F3 Alpha波', 'F4 Alpha波'];
   option.dataZoom = undefined;
-  option.series = [
-    {
-      name: '训练前',
-      type: 'boxplot',
-      data: [],
-    },
-    {
-      name: '训练后',
-      type: 'boxplot',
-      data: [],
-    },
-  ];
   myChart.setOption(option);
+  myChart.showLoading();
+  return myChart;
 }
 
-function renderPowerArea() {
-  // 训练前后各电极位的Theta频段功率变化
-  getPowerLineChart('thetaPowerLine', '训练前后各电极位的Theta频段功率变化', [
-    Array.from({ length: 64 }, (_, i) => i + 1),
-    Array.from({ length: 64 }, (_, i) => i + 2),
+async function renderPowerArea() {
+  // 初始化：训练前后各电极位各频段功率变化
+  // powerLines:[
+  //   closeThetaPowerLine,
+  //   closeAlphaPowerLine,
+  //   closeHighBetaPowerLine,
+  //   closeGammaPowerLine,
+  //   openThetaPowerLine,
+  //   openAlphaPowerLine,
+  //   openHighBetaPowerLine,
+  //   openGammaPowerLine,
+  // ]
+  const powerLines = [
+    getPowerLineChart(
+      'closeThetaPowerLine',
+      '训练前后各电极位的Theta频段功率变化（闭眼）'
+    ),
+    getPowerLineChart(
+      'closeAlphaPowerLine',
+      '训练前后各电极位的Alpha频段功率变化（闭眼）'
+    ),
+    getPowerLineChart(
+      'closeHighBetaPowerLine',
+      '训练前后各电极位的高Beta频段功率变化（闭眼）'
+    ),
+    getPowerLineChart(
+      'closeGammaPowerLine',
+      '训练前后各电极位的Gamma频段功率变化（闭眼）'
+    ),
+    getPowerLineChart(
+      'openThetaPowerLine',
+      '训练前后各电极位的Theta频段功率变化（睁眼）'
+    ),
+    getPowerLineChart(
+      'openAlphaPowerLine',
+      '训练前后各电极位的Alpha频段功率变化（睁眼）'
+    ),
+    getPowerLineChart(
+      'openHighBetaPowerLine',
+      '训练前后各电极位的高Beta频段功率变化（睁眼）'
+    ),
+    getPowerLineChart(
+      'openGammaPowerLine',
+      '训练前后各电极位的Gamma频段功率变化（睁眼）'
+    ),
+  ];
+  // 初始化：箱线图
+  // powerBoxplots:[closePowerBoxplot, openPowerBoxplot]
+  const powerBoxplots = [
+    getPowerBoxplotChart('closePowerBoxplot', '各指标绝对功率箱型图（闭眼）'),
+    getPowerBoxplotChart('openPowerBoxplot', '各指标绝对功率箱型图（睁眼）'),
+  ];
+  // 异步更新数据
+  // POWERResult:[beforeEyeClose, afterEyeClose, beforeEyeOpen, afterEyeOpen]
+  const POWERResult = await calcIndexes.POWER([
+    userDataPaths.before.eyeClose,
+    userDataPaths.after.eyeClose,
+    userDataPaths.before.eyeOpen,
+    userDataPaths.after.eyeOpen,
   ]);
-  // 训练前后各电极位的Alpha频段功率变化
-  getPowerLineChart('alphaPowerLine', '训练前后各电极位的Alpha频段功率变化', [
-    Array.from({ length: 64 }, (_, i) => i + 1),
-    Array.from({ length: 64 }, (_, i) => i + 2),
-  ]);
-  // 训练前后各电极位的高Beta频段功率变化
-  getPowerLineChart(
-    'highBetaPowerLine',
-    '训练前后各电极位的高Beta频段功率变化',
-    [
-      Array.from({ length: 64 }, (_, i) => i + 1),
-      Array.from({ length: 64 }, (_, i) => i + 2),
-    ]
-  );
-  // 训练前后各电极位的Gamma频段功率变化
-  getPowerLineChart('gammaPowerLine', '训练前后各电极位的Gamma频段功率变化', [
-    Array.from({ length: 64 }, (_, i) => i + 1),
-    Array.from({ length: 64 }, (_, i) => i + 2),
-  ]);
-  // 箱线图
-  getPowerBoxplotChart('powerBoxplot', '各指标绝对功率箱型图', [
-    [
-      [655, 850, 940, 980, 1175],
-      [672.5, 800, 845, 885, 1012.5],
-      [780, 840, 855, 880, 940],
-      [621.25, 767.5, 815, 865, 1011.25],
-    ],
-    [
-      [621.25, 767.5, 815, 865, 1011.25],
-      [655, 850, 940, 980, 1175],
-      [672.5, 800, 845, 885, 1012.5],
-      [780, 840, 855, 880, 940],
-    ],
-  ]);
+  // 异步更新：训练前后各电极位各频段功率变化
+  powerLines.forEach((powerLine, index) => {
+    powerLine.hideLoading();
+    powerLine.setOption({
+      series: [
+        {
+          name: '训练前',
+          type: 'line',
+          data: POWERResult[2 * Math.floor(index / 4)][index % 4],
+        },
+        {
+          name: '训练后',
+          type: 'line',
+          data: POWERResult[2 * Math.floor(index / 4) + 1][index % 4],
+        },
+      ],
+    });
+  });
+  // 异步更新：箱线图
+  powerBoxplots.forEach((powerBoxplot) => {
+    powerBoxplot.hideLoading();
+    powerBoxplot.setOption({
+      series: [
+        {
+          name: '训练前',
+          type: 'boxplot',
+          data: [
+            [655, 850, 940, 980, 1175],
+            [672.5, 800, 845, 885, 1012.5],
+            [780, 840, 855, 880, 940],
+            [621.25, 767.5, 815, 865, 1011.25],
+          ],
+        },
+        {
+          name: '训练后',
+          type: 'boxplot',
+          data: [
+            [621.25, 767.5, 815, 865, 1011.25],
+            [655, 850, 940, 980, 1175],
+            [672.5, 800, 845, 885, 1012.5],
+            [780, 840, 855, 880, 940],
+          ],
+        },
+      ],
+    });
+  });
   // 地形图
+  const datavectors = [];
+  for (let index = 0; index < powerLines.length; index += 1) {
+    const datavector = {
+      datas: [
+        POWERResult[2 * Math.floor(index / 4)][index % 4],
+        POWERResult[2 * Math.floor(index / 4) + 1][index % 4],
+      ],
+      picPaths: [],
+    };
+    let range = 'Theta';
+    if (index % 4 === 0) {
+      range = 'Theta';
+    } else if (index % 4 === 1) {
+      range = 'Alpha';
+    } else if (index % 4 === 2) {
+      range = 'Beta';
+    } else {
+      range = 'Gamma';
+    }
+    for (let j = 1; j <= 3; j += 1) {
+      datavector.picPaths.push(
+        path.join(
+          userInfo.userDataPath,
+          './数据缓存',
+          `POWER${index <= 3 ? 'Close' : 'Open'}${range}${j}.png`
+        )
+      );
+    }
+    datavectors.push(datavector);
+  }
+  await calcIndexes.getTopoplot(datavectors);
   const topographicalMapCells = document.querySelectorAll(
-    '#powerTopographicalMaps tbody td'
+    '#powerArea tbody td'
   );
-  topographicalMapCells.forEach((topographicalMapCell) => {
-    const img = document.createElement('img');
-    img.src =
-      '../appData/刘禹超_69a88b69-3f4c-4daf-a264-a58254c73799/训练前/2.png';
-    img.className = 'topographicalMap';
-    topographicalMapCell.appendChild(img);
+  datavectors.forEach(({ picPaths }, i) => {
+    picPaths.forEach((picPath, j) => {
+      const img = document.createElement('img');
+      img.src = picPath;
+      img.className = 'topographicalMap';
+      topographicalMapCells[3 * i + j].appendChild(img);
+    });
   });
 }
 
@@ -260,6 +328,7 @@ async function renderSasiArea() {
       },
     ],
   });
+  // 地形图
   const datavectors = [
     {
       datas: [beforeEyeClose, afterEyeClose],
@@ -279,7 +348,6 @@ async function renderSasiArea() {
     },
   ];
   await calcIndexes.getTopoplot(datavectors);
-  // 地形图
   const topographicalMapCells = document.querySelectorAll(
     '#sasiTopographicalMaps tbody td'
   );
@@ -293,7 +361,7 @@ async function renderSasiArea() {
   });
 }
 
-function renderDfaArea() {
+async function renderDfaArea() {
   // DFA特征值对照-闭眼
   getDfaLineChart('closeDfaLine', 'DFA特征值对照-闭眼', [
     Array.from({ length: 64 }, (_, i) => i + 1),
@@ -494,11 +562,11 @@ ipcRenderer.on('getUser', (event, user) => {
   userInfo = user;
   const { name: username, age, gender } = userInfo;
   getUserDataPaths();
-  // renderPowerArea();
+  renderPowerArea();
   // renderAiaArea();
   // renderSasiArea();
   // renderDfaArea();
-  renderPlvArea();
+  // renderPlvArea();
   // 监听打印报告事件
   const printReportBtn = document.getElementById('printButton');
   printReportBtn.addEventListener('click', () => {

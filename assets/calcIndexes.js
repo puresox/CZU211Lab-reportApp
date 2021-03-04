@@ -44,6 +44,22 @@ async function getTopoplot(datavectors) {
   await spawnChild(pythonPath, [getTopoplotPath, JSON.stringify(datavectors)]);
 }
 /**
+ * @description 生成四个频段的POWER数据
+ * @param {*} datas [mat数据]
+ * @returns [[theta一维数组,alpha一维数组,beta一维数组,gamma一维数组]]
+ */
+async function POWER(datas) {
+  const POWERPath = path.join(
+    __dirname,
+    '../matlab-engine-for-python/POWER/POWER.py'
+  );
+  const POWERResult = await spawnChild(pythonPath, [
+    POWERPath,
+    JSON.stringify(datas),
+  ]).then(({ stdout }) => JSON.parse(stdout));
+  return POWERResult;
+}
+/**
  * @description 生成AIA表格数据
  * @param {*} datas [[训练前mat数据,训练后mat数据]]
  * @returns [AIA表格二维数组]
@@ -108,4 +124,4 @@ async function PLV(datavectors) {
   return PLVResult;
 }
 
-module.exports = { getTopoplot, AIA, SASI, DFA, PLV };
+module.exports = { getTopoplot, POWER, AIA, SASI, DFA, PLV };

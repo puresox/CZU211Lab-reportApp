@@ -2,15 +2,6 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-    />
-    <meta
-      http-equiv="X-Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-    />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>被试报告</title>
     <link rel="stylesheet" href="../assets/userDetail.css" />
@@ -23,28 +14,90 @@
     <!-- 1. 各电极位的各频段绝对功率值 -->
     <div id="powerArea">
       <h2>1. 各电极位的各频段绝对功率值</h2>
-      <div id="thetaPowerLine" class="lineChart"></div>
-      <p>
-        Theta频段(4-8Hz)：与情绪加工有关；与健康被试相比，抑郁症患者的Theta频段绝对功率更高。
-        主要关注。
-      </p>
-      <div id="alphaPowerLine" class="lineChart"></div>
-      <p>
-        Alpha频段(8-13Hz)：反映大脑的不活动性和放松；抑郁症患者大脑左侧的Alpha频段功率更高，右侧的Alpha功率更低。主要关注额区电极（左侧（10，11，12，19），右侧（5，2，60，56））。
-      </p>
-      <div id="highBetaPowerLine" class="lineChart"></div>
-      <p>
-        高Beta频段(20-30Hz)：与抑郁患者常见的焦虑和反刍思维有关；Beta波活动增强与抑郁症的反复发作呈正相关，抑郁症患者大脑两侧前部脑区的Beta波绝对功率更高。
-        主要关注P3、P4电极（27、45）。
-      </p>
-      <div id="gammaPowerLine" class="lineChart"></div>
-      <p>
-        Gamma频段(30-45Hz)：与注意和感觉系统有关，可能与情绪波动有关；适当的gamma波功率可以保证情绪平稳；抑郁症患者的gamma波功率较低。
-      </p>
-      <div id="powerBoxplot" class="boxplotChart"></div>
-      <table id="powerTopographicalMaps" class="topographicalMapTable">
+      <div id="closePowerLines">
+        <div id="closeThetaPowerLine" class="lineChart"></div>
+        <p>
+          Theta频段(4-8Hz)：与情绪加工有关；与健康被试相比，抑郁症患者的Theta频段绝对功率更高。
+          主要关注。
+        </p>
+        <div id="closeAlphaPowerLine" class="lineChart"></div>
+        <p>
+          Alpha频段(8-13Hz)：反映大脑的不活动性和放松；抑郁症患者大脑左侧的Alpha频段功率更高，右侧的Alpha功率更低。主要关注额区电极（左侧（10，11，12，19），右侧（5，2，60，56））。
+        </p>
+        <div id="closeHighBetaPowerLine" class="lineChart"></div>
+        <p>
+          高Beta频段(20-30Hz)：与抑郁患者常见的焦虑和反刍思维有关；Beta波活动增强与抑郁症的反复发作呈正相关，抑郁症患者大脑两侧前部脑区的Beta波绝对功率更高。
+          主要关注P3、P4电极（27、45）。
+        </p>
+        <div id="closeGammaPowerLine" class="lineChart"></div>
+        <p>
+          Gamma频段(30-45Hz)：与注意和感觉系统有关，可能与情绪波动有关；适当的gamma波功率可以保证情绪平稳；抑郁症患者的gamma波功率较低。
+        </p>
+      </div>
+      <div id="openPowerLines">
+        <div id="openThetaPowerLine" class="lineChart"></div>
+        <p>
+          Theta频段(4-8Hz)：与情绪加工有关；与健康被试相比，抑郁症患者的Theta频段绝对功率更高。
+          主要关注。
+        </p>
+        <div id="openAlphaPowerLine" class="lineChart"></div>
+        <p>
+          Alpha频段(8-13Hz)：反映大脑的不活动性和放松；抑郁症患者大脑左侧的Alpha频段功率更高，右侧的Alpha功率更低。主要关注额区电极（左侧（10，11，12，19），右侧（5，2，60，56））。
+        </p>
+        <div id="openHighBetaPowerLine" class="lineChart"></div>
+        <p>
+          高Beta频段(20-30Hz)：与抑郁患者常见的焦虑和反刍思维有关；Beta波活动增强与抑郁症的反复发作呈正相关，抑郁症患者大脑两侧前部脑区的Beta波绝对功率更高。
+          主要关注P3、P4电极（27、45）。
+        </p>
+        <div id="openGammaPowerLine" class="lineChart"></div>
+        <p>
+          Gamma频段(30-45Hz)：与注意和感觉系统有关，可能与情绪波动有关；适当的gamma波功率可以保证情绪平稳；抑郁症患者的gamma波功率较低。
+        </p>
+      </div>
+      <div id="closePowerBoxplot" class="boxplotChart"></div>
+      <div id="openPowerBoxplot" class="boxplotChart"></div>
+      <table id="closePowerTopographicalMaps" class="topographicalMapTable">
         <caption>
-          训练前后各频段功率值地形图表
+          训练前后各频段功率值地形图表（闭眼）
+        </caption>
+        <thead>
+          <tr>
+            <th></th>
+            <th>训练前</th>
+            <th>训练后</th>
+            <th>训练前后差值</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Theta</th>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>Alpha</th>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>高Beta</th>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>Gamma</th>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+      <table id="openPowerTopographicalMaps" class="topographicalMapTable">
+        <caption>
+          训练前后各频段功率值地形图表（睁眼）
         </caption>
         <thead>
           <tr>
