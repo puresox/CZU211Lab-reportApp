@@ -563,7 +563,7 @@ ipcRenderer.on('getUser', (event, user) => {
   const { name: username, age, gender } = userInfo;
   getUserDataPaths();
   // renderPowerArea();
-  renderAiaArea();
+  // renderAiaArea();
   // renderSasiArea();
   // renderDfaArea();
   // renderPlvArea();
