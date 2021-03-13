@@ -4,7 +4,7 @@ const echarts = require('echarts');
 const path = require('path');
 const fs = require('fs');
 // eslint-disable-next-line import/no-dynamic-require
-const calcIndexes = require(path.join(process.cwd(), './assets/calcIndexes'));
+const calcIndexes = require(path.join(__filename, '../../assets/calcIndexes'));
 
 let userInfo;
 const userDataPaths = {
@@ -562,11 +562,11 @@ ipcRenderer.on('getUser', (event, user) => {
   userInfo = user;
   const { name: username, age, gender } = userInfo;
   getUserDataPaths();
-  renderPowerArea();
+  // renderPowerArea();
   renderAiaArea();
-  renderSasiArea();
+  // renderSasiArea();
   // renderDfaArea();
-  renderPlvArea();
+  // renderPlvArea();
   // 监听打印报告事件
   const printReportBtn = document.getElementById('printButton');
   printReportBtn.addEventListener('click', () => {
