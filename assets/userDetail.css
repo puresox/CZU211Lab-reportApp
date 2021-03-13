@@ -13,7 +13,7 @@
     max-height: 100%;
   }
   .topographicalMapTable td,
-  .brainNetMap td {
+  .brainNetMapTable td {
     height: 150px;
   }
   td {
@@ -52,11 +52,12 @@
     display: none;
   }
   h2 {
-    page-break-before: auto;
+    page-break-before: always;
     page-break-after: avoid;
   }
-  div,
-  figure,
+  p {
+    page-break-before: avoid;
+  }
   .lineChart,
   .boxplotChart {
     page-break-inside: avoid;
