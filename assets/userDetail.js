@@ -563,10 +563,10 @@ ipcRenderer.on('getUser', (event, user) => {
   const { name: username, age, gender } = userInfo;
   getUserDataPaths();
   renderPowerArea();
-  // renderAiaArea();
-  // renderSasiArea();
+  renderAiaArea();
+  renderSasiArea();
   // renderDfaArea();
-  // renderPlvArea();
+  renderPlvArea();
   // 监听打印报告事件
   const printReportBtn = document.getElementById('printButton');
   printReportBtn.addEventListener('click', () => {

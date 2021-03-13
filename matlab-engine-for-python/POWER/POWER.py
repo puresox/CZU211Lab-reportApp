@@ -22,5 +22,8 @@ def POWERs(dataPath):
 
 
 POWERResults = list(map(POWERs, datas))
+normalized = eng.powerNormalize(
+    POWERResults[0], POWERResults[1], POWERResults[2], POWERResults[3], nargout=4
+)
 # 输出
-print(eng.jsonencode(POWERResults))
+print(eng.jsonencode(normalized))
