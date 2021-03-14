@@ -75,6 +75,26 @@ function getPowerLineChart(divId, titleText) {
   return myChart;
 }
 
+function getAIALineChart(divId, titleText) {
+  const myChart = echarts.init(document.getElementById(divId), null, {
+    renderer: 'svg',
+  });
+  const option = getOptionTemplate(
+    titleText,
+    '不同额区电极组合',
+    '额叶不对称分数'
+  );
+  option.xAxis.data = [
+    'F3/F4',
+    '(Fp1, F3, F7)/\n(Fp2, F4, F8)',
+    '(Fp1, F3, F7,\nF1, F5, AF3)/\n(Fp2, F4, F8,\nF2, F6, AF4)',
+  ];
+  option.dataZoom = undefined;
+  myChart.setOption(option);
+  myChart.showLoading();
+  return myChart;
+}
+
 function getSasiLineChart(divId, titleText) {
   const myChart = echarts.init(document.getElementById(divId), null, {
     renderer: 'svg',
@@ -160,8 +180,8 @@ async function renderPowerArea() {
     getPowerBoxplotChart('openPowerBoxplot', '各指标绝对功率箱型图（睁眼）'),
   ];
   // 异步获取数据
-  // POWERResult:[beforeEyeClose, afterEyeClose, beforeEyeOpen, afterEyeOpen]
-  const POWERResult = await calcIndexes.POWER([
+  // POWERResults:[beforeEyeClose, afterEyeClose, beforeEyeOpen, afterEyeOpen]
+  const POWERResults = await calcIndexes.POWER([
     userDataPaths.before.eyeClose,
     userDataPaths.after.eyeClose,
     userDataPaths.before.eyeOpen,
@@ -175,12 +195,12 @@ async function renderPowerArea() {
         {
           name: '训练前',
           type: 'line',
-          data: POWERResult[2 * (index % 2)][Math.floor(index / 2)],
+          data: POWERResults[2 * (index % 2)][Math.floor(index / 2)],
         },
         {
           name: '训练后',
           type: 'line',
-          data: POWERResult[2 * (index % 2) + 1][Math.floor(index / 2)],
+          data: POWERResults[2 * (index % 2) + 1][Math.floor(index / 2)],
         },
       ],
     });
@@ -219,8 +239,8 @@ async function renderPowerArea() {
   for (let index = 0; index < powerLines.length; index += 1) {
     const datavector = {
       datas: [
-        POWERResult[2 * (index % 2)][Math.floor(index / 2)],
-        POWERResult[2 * (index % 2) + 1][Math.floor(index / 2)],
+        POWERResults[2 * (index % 2)][Math.floor(index / 2)],
+        POWERResults[2 * (index % 2) + 1][Math.floor(index / 2)],
       ],
       picPaths: [],
     };
@@ -262,20 +282,54 @@ async function renderPowerArea() {
 }
 
 async function renderAiaArea() {
+  // 初始化：训练前后不同额区额叶不对称分数对照
+  // [closeFAALine, closeFBALine, openFAALine, openFBALine]
+  const aiaLines = [
+    getAIALineChart('closeFAALine', '训练前后不同额区Alpha不对称分数对照-闭眼'),
+    getAIALineChart(
+      'closeFBALine',
+      '训练前后不同额区高Beta不对称分数对照-闭眼'
+    ),
+    getAIALineChart('openFAALine', '训练前后不同额区Alpha不对称分数对照-睁眼'),
+    getAIALineChart('openFBALine', '训练前后不同额区高Beta不对称分数对照-睁眼'),
+  ];
   // 获取数据
-  const [eyeClose, eyeOpen] = await calcIndexes.AIA([
+  // [eyeClose, eyeOpen]
+  const aiaResults = await calcIndexes.AIA([
     [userDataPaths.before.eyeClose, userDataPaths.after.eyeClose],
     [userDataPaths.before.eyeOpen, userDataPaths.after.eyeOpen],
   ]);
   // 处理闭眼数据
   const ClosetableCells = document.querySelectorAll('#closeAiaTable tbody td');
-  eyeClose.flat().forEach((num, index) => {
+  aiaResults[0].flat().forEach((num, index) => {
     ClosetableCells[index].insertAdjacentText('afterbegin', num.toFixed(3));
   });
   // 处理睁眼数据
   const OpentableCells = document.querySelectorAll('#openAiaTable tbody td');
-  eyeOpen.flat().forEach((num, index) => {
+  aiaResults[1].flat().forEach((num, index) => {
     OpentableCells[index].insertAdjacentText('afterbegin', num.toFixed(3));
+  });
+  // 异步更新：折线图-训练前后不同额区额叶不对称分数对照
+  aiaLines.forEach((aiaLine, index) => {
+    aiaLine.hideLoading();
+    aiaLine.setOption({
+      series: [
+        {
+          name: '训练前',
+          type: 'line',
+          data: aiaResults[Math.floor(index / 2)].map(
+            (matrix) => matrix[2 * (index % 2)]
+          ),
+        },
+        {
+          name: '训练后',
+          type: 'line',
+          data: aiaResults[Math.floor(index / 2)].map(
+            (matrix) => matrix[2 * (index % 2) + 1]
+          ),
+        },
+      ],
+    });
   });
 }
 
@@ -566,10 +620,10 @@ ipcRenderer.on('getUser', (event, user) => {
   const { name: username, age, gender } = userInfo;
   getUserDataPaths();
   renderPowerArea();
-  // renderAiaArea();
-  // renderSasiArea();
+  renderAiaArea();
+  renderSasiArea();
   // renderDfaArea();
-  // renderPlvArea();
+  renderPlvArea();
   // 监听打印报告事件
   const printReportBtn = document.getElementById('printButton');
   printReportBtn.addEventListener('click', () => {
