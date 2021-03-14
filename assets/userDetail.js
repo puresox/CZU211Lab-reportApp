@@ -23,6 +23,13 @@ function getOptionTemplate(titleText, xAxisName, yAxisName) {
   return {
     title: {
       text: titleText,
+      left: 'center',
+      top: 'bottom',
+      textStyle: {
+        fontSize: 16,
+        fontStyle: 'normal',
+        fontWeight: 'normal',
+      },
     },
     tooltip: {},
     legend: {
@@ -619,11 +626,11 @@ ipcRenderer.on('getUser', (event, user) => {
   userInfo = user;
   const { name: username, age, gender } = userInfo;
   getUserDataPaths();
-  renderPowerArea();
+  // renderPowerArea();
   renderAiaArea();
-  renderSasiArea();
-  // renderDfaArea();
-  renderPlvArea();
+  // renderSasiArea();
+  // // renderDfaArea();
+  // renderPlvArea();
   // 监听打印报告事件
   const printReportBtn = document.getElementById('printButton');
   printReportBtn.addEventListener('click', () => {

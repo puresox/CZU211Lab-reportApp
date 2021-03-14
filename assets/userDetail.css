@@ -3,10 +3,13 @@
   #printerSelect {
     display: none;
   }
+  p {
+    text-indent: 2em; /* 首行缩进两个字符 */
+  }
   .lineChart,
   .boxplotChart {
     width: 600px;
-    height: 230px;
+    height: 220px;
   }
   .topographicalMap,
   .brainNetMap {
@@ -19,6 +22,8 @@
   }
   table {
     min-width: 500px;
+    caption-side: bottom;
+    margin: auto; /* 表格居中 */
   }
   td {
     text-align: center;
