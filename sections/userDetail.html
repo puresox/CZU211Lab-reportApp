@@ -13,140 +13,240 @@
     </div>
     <!-- 1. 各电极位的各频段绝对功率值 -->
     <div id="powerArea">
-      <h2>1. 各电极位的各频段绝对功率值</h2>
-      <div id="closePowerLines">
-        <div id="closeThetaPowerLine" class="lineChart"></div>
+      <h2>1. 全脑各频段绝对功率</h2>
+      <div id="thetaPower" class="pageBreakAfter">
         <p>
-          Theta频段(4-8Hz)：与情绪加工有关；与健康被试相比，抑郁症患者的Theta频段绝对功率更高。
-          主要关注。
+          <strong>Theta频段(4-8Hz)：</strong>
+          与情绪加工有关；与健康被试相比，抑郁症患者的Theta频段绝对功率更高。主要关注顶区（P3
+          P4 P7 P8）（28 42 30 44）和枕区（O1 O2 PO3 PO4）（35 39 33 38）。
+        </p>
+        <div id="closeThetaPowerLine" class="lineChart"></div>
+        <table
+          id="closeThetaPowerTopographicalMaps"
+          class="topographicalMapTable"
+        >
+          <caption>
+            训练前后Theta频段功率值地形图表（闭眼）
+          </caption>
+          <thead>
+            <tr>
+              <th>训练前</th>
+              <th>训练后</th>
+              <th>训练前后差值</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <div id="openThetaPowerLine" class="lineChart"></div>
+        <table
+          id="openThetaPowerTopographicalMaps"
+          class="topographicalMapTable"
+        >
+          <caption>
+            训练前后Theta频段功率值地形图表（睁眼）
+          </caption>
+          <thead>
+            <tr>
+              <th>训练前</th>
+              <th>训练后</th>
+              <th>训练前后差值</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="alphaPower" class="pageBreakAfter">
+        <p>
+          <strong>Alpha频段(8-13Hz)：</strong>
+          反映大脑的不活动性和放松；抑郁症患者大脑左侧的Alpha频段功率更高，右侧的Alpha功率更低。主要关注额区电极（左侧（10，11，12，19），右侧（5，2，60，56））。
         </p>
         <div id="closeAlphaPowerLine" class="lineChart"></div>
+        <table
+          id="closeAlphaPowerTopographicalMaps"
+          class="topographicalMapTable"
+        >
+          <caption>
+            训练前后Alpha频段功率值地形图表（闭眼）
+          </caption>
+          <thead>
+            <tr>
+              <th>训练前</th>
+              <th>训练后</th>
+              <th>训练前后差值</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <div id="openAlphaPowerLine" class="lineChart"></div>
+        <table
+          id="openAlphaPowerTopographicalMaps"
+          class="topographicalMapTable"
+        >
+          <caption>
+            训练前后Alpha频段功率值地形图表（睁眼）
+          </caption>
+          <thead>
+            <tr>
+              <th>训练前</th>
+              <th>训练后</th>
+              <th>训练前后差值</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="highBetaPower" class="pageBreakAfter">
         <p>
-          Alpha频段(8-13Hz)：反映大脑的不活动性和放松；抑郁症患者大脑左侧的Alpha频段功率更高，右侧的Alpha功率更低。主要关注额区电极（左侧（10，11，12，19），右侧（5，2，60，56））。
+          <strong>高Beta频段(20-30Hz)：</strong>
+          与抑郁患者常见的焦虑和反刍思维有关；Beta波活动增强与抑郁症的反复发作呈正相关，抑郁症患者大脑两侧前部脑区的Beta波绝对功率更高。主要关注P3、P4电极（27、45）。
         </p>
         <div id="closeHighBetaPowerLine" class="lineChart"></div>
+        <table
+          id="closeHighBetaPowerTopographicalMaps"
+          class="topographicalMapTable"
+        >
+          <caption>
+            训练前后高Beta频段功率值地形图表（闭眼）
+          </caption>
+          <thead>
+            <tr>
+              <th>训练前</th>
+              <th>训练后</th>
+              <th>训练前后差值</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <div id="openHighBetaPowerLine" class="lineChart"></div>
+        <table
+          id="openHighBetaPowerTopographicalMaps"
+          class="topographicalMapTable"
+        >
+          <caption>
+            训练前后高Beta频段功率值地形图表（睁眼）
+          </caption>
+          <thead>
+            <tr>
+              <th></th>
+              <th>训练前</th>
+              <th>训练后</th>
+              <th>训练前后差值</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="gammaPower" class="pageBreakAfter">
         <p>
-          高Beta频段(20-30Hz)：与抑郁患者常见的焦虑和反刍思维有关；Beta波活动增强与抑郁症的反复发作呈正相关，抑郁症患者大脑两侧前部脑区的Beta波绝对功率更高。
-          主要关注P3、P4电极（27、45）。
+          <strong>Gamma频段(30-45Hz)：</strong>
+          与注意和感觉系统有关，可能与情绪波动有关；适当的gamma波功率可以保证情绪平稳；抑郁症患者的gamma波功率较低。
         </p>
         <div id="closeGammaPowerLine" class="lineChart"></div>
-        <p>
-          Gamma频段(30-45Hz)：与注意和感觉系统有关，可能与情绪波动有关；适当的gamma波功率可以保证情绪平稳；抑郁症患者的gamma波功率较低。
-        </p>
-      </div>
-      <div id="openPowerLines">
-        <div id="openThetaPowerLine" class="lineChart"></div>
-        <p>
-          Theta频段(4-8Hz)：与情绪加工有关；与健康被试相比，抑郁症患者的Theta频段绝对功率更高。
-          主要关注。
-        </p>
-        <div id="openAlphaPowerLine" class="lineChart"></div>
-        <p>
-          Alpha频段(8-13Hz)：反映大脑的不活动性和放松；抑郁症患者大脑左侧的Alpha频段功率更高，右侧的Alpha功率更低。主要关注额区电极（左侧（10，11，12，19），右侧（5，2，60，56））。
-        </p>
-        <div id="openHighBetaPowerLine" class="lineChart"></div>
-        <p>
-          高Beta频段(20-30Hz)：与抑郁患者常见的焦虑和反刍思维有关；Beta波活动增强与抑郁症的反复发作呈正相关，抑郁症患者大脑两侧前部脑区的Beta波绝对功率更高。
-          主要关注P3、P4电极（27、45）。
-        </p>
+        <table
+          id="closeGammaPowerTopographicalMaps"
+          class="topographicalMapTable"
+        >
+          <caption>
+            训练前后Gamma频段功率值地形图表（闭眼）
+          </caption>
+          <thead>
+            <tr>
+              <th>训练前</th>
+              <th>训练后</th>
+              <th>训练前后差值</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
         <div id="openGammaPowerLine" class="lineChart"></div>
-        <p>
-          Gamma频段(30-45Hz)：与注意和感觉系统有关，可能与情绪波动有关；适当的gamma波功率可以保证情绪平稳；抑郁症患者的gamma波功率较低。
-        </p>
+        <table
+          id="openGammaPowerTopographicalMaps"
+          class="topographicalMapTable"
+        >
+          <caption>
+            训练前后Gamma频段功率值地形图表（睁眼）
+          </caption>
+          <thead>
+            <tr>
+              <th>训练前</th>
+              <th>训练后</th>
+              <th>训练前后差值</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <div id="closePowerBoxplot" class="boxplotChart"></div>
       <div id="openPowerBoxplot" class="boxplotChart"></div>
-      <table id="closePowerTopographicalMaps" class="topographicalMapTable">
-        <caption>
-          训练前后各频段功率值地形图表（闭眼）
-        </caption>
-        <thead>
-          <tr>
-            <th></th>
-            <th>训练前</th>
-            <th>训练后</th>
-            <th>训练前后差值</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th>Theta</th>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <th>Alpha</th>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <th>高Beta</th>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <th>Gamma</th>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
-      <table id="openPowerTopographicalMaps" class="topographicalMapTable">
-        <caption>
-          训练前后各频段功率值地形图表（睁眼）
-        </caption>
-        <thead>
-          <tr>
-            <th></th>
-            <th>训练前</th>
-            <th>训练后</th>
-            <th>训练前后差值</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th>Theta</th>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <th>Alpha</th>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <th>高Beta</th>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <th>Gamma</th>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
     </div>
-    <!-- 2.	Alpha左右脑不对称分数（AIA） -->
+    <!-- 2.	额叶不对称分数 -->
     <div id="aiaArea">
-      <h2>2. Alpha左右脑不对称分数（AIA）</h2>
+      <h2>2. 额叶不对称分数</h2>
+      <p>
+        额叶区域(Fp1, F3, F7, F1, F5, AF3) (Fp2, F4, F8, F2, F6,
+        AF4)训练前后Alpha频段、Beta频段不对称性变化明显。Alpha不对称分数：FAA=
+        lnR - lnL ，高Beta不对称分数：FBA= lnL -
+        lnR。其中R为右脑额叶电极的平均alpha(或Beta)波功率、L为左脑额叶电极的平均alpha(或Beta)波功率。
+        左侧额脑活动与接近行为有关，右侧额脑活动与远离行为有关。抑郁患者左侧alpha频段增强表明活跃度降低，表明缺乏接近行为。
+        训练前后，不同电极组合的额叶不对称分数FAA、FBA值如表1所示。FAA、FBA增大，说明抑郁程度减轻。
+      </p>
       <table id="closeAiaTable">
         <caption>
-          训练前后不同脑区alpha不对称分数值（闭眼）
+          训练前后不同额区额叶不对称分数（闭眼）
         </caption>
         <thead>
           <tr>
-            <th colspan="2">不同脑区电极组合</th>
-            <th colspan="2">A1</th>
-            <th colspan="2">A2</th>
+            <th colspan="2">不同额区电极组合</th>
+            <th colspan="2">Alpha</th>
+            <th colspan="2">高Beta</th>
           </tr>
           <tr>
             <th>L</th>
@@ -177,30 +277,6 @@
           <tr>
             <th>(Fp1, F3, F7, F1, F5, AF3)</th>
             <th>(Fp2, F4, F8, F2, F6, AF4)</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <th>(P3, P7)</th>
-            <th>(P4, P8)</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <th>O1</th>
-            <th>O2</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <th>O3</th>
-            <th>O4</th>
             <td></td>
             <td></td>
             <td></td>
@@ -210,13 +286,13 @@
       </table>
       <table id="openAiaTable">
         <caption>
-          训练前后不同脑区alpha不对称分数值（睁眼）
+          训练前后不同额区额叶不对称分数（睁眼）
         </caption>
         <thead>
           <tr>
             <th colspan="2">不同脑区电极组合</th>
-            <th colspan="2">A1</th>
-            <th colspan="2">A2</th>
+            <th colspan="2">Alpha</th>
+            <th colspan="2">高Beta</th>
           </tr>
           <tr>
             <th>L</th>
@@ -252,36 +328,8 @@
             <td></td>
             <td></td>
           </tr>
-          <tr>
-            <th>(P3, P7)</th>
-            <th>(P4, P8)</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <th>O1</th>
-            <th>O2</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <th>O3</th>
-            <th>O4</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
         </tbody>
       </table>
-      <p>
-        alpha频段偏侧化，度量了大脑半球之间特别是额电极之间的相对alpha频段活跃度。左侧额脑活动与接近行为有关，右侧额脑活动与远离行为有关。抑郁患者左侧alpha频段增强表明活跃度降低，表明缺乏接近行为。
-        不对称分数A1、A2增大，说明抑郁程度减轻。
-      </p>
     </div>
     <!-- 3.	频谱不对称指数（SASI） -->
     <div id="sasiArea">

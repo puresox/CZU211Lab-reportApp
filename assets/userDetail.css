@@ -1,20 +1,24 @@
 /* 通用样式 */
 @media all {
+  #printerSelect {
+    display: none;
+  }
   .lineChart,
   .boxplotChart {
     width: 600px;
-    height: 250px;
+    height: 230px;
   }
   .topographicalMap,
   .brainNetMap {
-    width: auto;
-    height: auto;
     max-width: 100%;
     max-height: 100%;
   }
   .topographicalMapTable td,
   .brainNetMapTable td {
     height: 150px;
+  }
+  table {
+    min-width: 500px;
   }
   td {
     text-align: center;
@@ -55,9 +59,11 @@
     page-break-before: always;
     page-break-after: avoid;
   }
-  p {
-    page-break-before: avoid;
+  .pageBreakAfter {
+    page-break-inside: avoid;
+    page-break-after: always;
   }
+  table,
   .lineChart,
   .boxplotChart {
     page-break-inside: avoid;

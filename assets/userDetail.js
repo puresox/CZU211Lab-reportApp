@@ -108,15 +108,15 @@ function getPowerBoxplotChart(divId, titleText) {
 }
 
 async function renderPowerArea() {
-  // 初始化：训练前后各电极位各频段功率变化
+  // 初始化：折线图-训练前后各电极位各频段功率变化
   // powerLines:[
   //   closeThetaPowerLine,
-  //   closeAlphaPowerLine,
-  //   closeHighBetaPowerLine,
-  //   closeGammaPowerLine,
   //   openThetaPowerLine,
+  //   closeAlphaPowerLine,
   //   openAlphaPowerLine,
+  //   closeHighBetaPowerLine,
   //   openHighBetaPowerLine,
+  //   closeGammaPowerLine,
   //   openGammaPowerLine,
   // ]
   const powerLines = [
@@ -125,28 +125,28 @@ async function renderPowerArea() {
       '训练前后各电极位的Theta频段功率变化（闭眼）'
     ),
     getPowerLineChart(
-      'closeAlphaPowerLine',
-      '训练前后各电极位的Alpha频段功率变化（闭眼）'
-    ),
-    getPowerLineChart(
-      'closeHighBetaPowerLine',
-      '训练前后各电极位的高Beta频段功率变化（闭眼）'
-    ),
-    getPowerLineChart(
-      'closeGammaPowerLine',
-      '训练前后各电极位的Gamma频段功率变化（闭眼）'
-    ),
-    getPowerLineChart(
       'openThetaPowerLine',
       '训练前后各电极位的Theta频段功率变化（睁眼）'
+    ),
+    getPowerLineChart(
+      'closeAlphaPowerLine',
+      '训练前后各电极位的Alpha频段功率变化（闭眼）'
     ),
     getPowerLineChart(
       'openAlphaPowerLine',
       '训练前后各电极位的Alpha频段功率变化（睁眼）'
     ),
     getPowerLineChart(
+      'closeHighBetaPowerLine',
+      '训练前后各电极位的高Beta频段功率变化（闭眼）'
+    ),
+    getPowerLineChart(
       'openHighBetaPowerLine',
       '训练前后各电极位的高Beta频段功率变化（睁眼）'
+    ),
+    getPowerLineChart(
+      'closeGammaPowerLine',
+      '训练前后各电极位的Gamma频段功率变化（闭眼）'
     ),
     getPowerLineChart(
       'openGammaPowerLine',
@@ -159,7 +159,7 @@ async function renderPowerArea() {
     getPowerBoxplotChart('closePowerBoxplot', '各指标绝对功率箱型图（闭眼）'),
     getPowerBoxplotChart('openPowerBoxplot', '各指标绝对功率箱型图（睁眼）'),
   ];
-  // 异步更新数据
+  // 异步获取数据
   // POWERResult:[beforeEyeClose, afterEyeClose, beforeEyeOpen, afterEyeOpen]
   const POWERResult = await calcIndexes.POWER([
     userDataPaths.before.eyeClose,
@@ -167,7 +167,7 @@ async function renderPowerArea() {
     userDataPaths.before.eyeOpen,
     userDataPaths.after.eyeOpen,
   ]);
-  // 异步更新：训练前后各电极位各频段功率变化
+  // 异步更新：折线图-训练前后各电极位各频段功率变化
   powerLines.forEach((powerLine, index) => {
     powerLine.hideLoading();
     powerLine.setOption({
@@ -175,12 +175,12 @@ async function renderPowerArea() {
         {
           name: '训练前',
           type: 'line',
-          data: POWERResult[2 * Math.floor(index / 4)][index % 4],
+          data: POWERResult[2 * (index % 2)][Math.floor(index / 2)],
         },
         {
           name: '训练后',
           type: 'line',
-          data: POWERResult[2 * Math.floor(index / 4) + 1][index % 4],
+          data: POWERResult[2 * (index % 2) + 1][Math.floor(index / 2)],
         },
       ],
     });
@@ -214,21 +214,22 @@ async function renderPowerArea() {
     });
   });
   // 地形图
+  // 构造参数
   const datavectors = [];
   for (let index = 0; index < powerLines.length; index += 1) {
     const datavector = {
       datas: [
-        POWERResult[2 * Math.floor(index / 4)][index % 4],
-        POWERResult[2 * Math.floor(index / 4) + 1][index % 4],
+        POWERResult[2 * (index % 2)][Math.floor(index / 2)],
+        POWERResult[2 * (index % 2) + 1][Math.floor(index / 2)],
       ],
       picPaths: [],
     };
     let range = 'Theta';
-    if (index % 4 === 0) {
+    if (Math.floor(index / 2) === 0) {
       range = 'Theta';
-    } else if (index % 4 === 1) {
+    } else if (Math.floor(index / 2) === 1) {
       range = 'Alpha';
-    } else if (index % 4 === 2) {
+    } else if (Math.floor(index / 2) === 2) {
       range = 'Beta';
     } else {
       range = 'Gamma';
@@ -238,13 +239,15 @@ async function renderPowerArea() {
         path.join(
           userInfo.userDataPath,
           './数据缓存',
-          `POWER${index <= 3 ? 'Close' : 'Open'}${range}${j}.png`
+          `POWER${index % 2 === 0 ? 'Close' : 'Open'}${range}${j}.png`
         )
       );
     }
     datavectors.push(datavector);
   }
+  // 获取地形图
   await calcIndexes.getTopoplot(datavectors);
+  // 填充数据
   const topographicalMapCells = document.querySelectorAll(
     '#powerArea tbody td'
   );
@@ -562,7 +565,7 @@ ipcRenderer.on('getUser', (event, user) => {
   userInfo = user;
   const { name: username, age, gender } = userInfo;
   getUserDataPaths();
-  // renderPowerArea();
+  renderPowerArea();
   // renderAiaArea();
   // renderSasiArea();
   // renderDfaArea();
@@ -570,14 +573,15 @@ ipcRenderer.on('getUser', (event, user) => {
   // 监听打印报告事件
   const printReportBtn = document.getElementById('printButton');
   printReportBtn.addEventListener('click', () => {
-    const deviceName = document.getElementById('printerSelect').value;
-    const options = {
-      silent: true,
-      deviceName,
-      header: '年龄：',
-      footer: `姓名：${username}    年龄：${age}    性别：${gender}`,
-    };
-    ipcRenderer.send('print', options);
+    window.print();
+    // const deviceName = document.getElementById('printerSelect').value;
+    // const options = {
+    //   silent: true,
+    //   deviceName,
+    //   header: '年龄：',
+    //   footer: `姓名：${username}    年龄：${age}    性别：${gender}`,
+    // };
+    // ipcRenderer.send('print', options);
   });
 });
 
