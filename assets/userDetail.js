@@ -18,15 +18,74 @@ const userDataPaths = {
   },
 };
 
+function getUserDataPaths() {
+  const { userDataPath } = userInfo;
+  const userBeforeDir = fs.readdirSync(path.join(userDataPath, './训练前'), {
+    withFileTypes: true,
+  });
+  userBeforeDir.forEach((userBefore) => {
+    if (!userBefore.isDirectory()) {
+      if (userBefore.name.endsWith('o.mat')) {
+        userDataPaths.before.eyeOpen = path.join(
+          userDataPath,
+          './训练前',
+          userBefore.name
+        );
+      } else if (userBefore.name.endsWith('c.mat')) {
+        userDataPaths.before.eyeClose = path.join(
+          userDataPath,
+          './训练前',
+          userBefore.name
+        );
+      }
+    }
+  });
+  const userAfterDir = fs.readdirSync(path.join(userDataPath, './训练后'), {
+    withFileTypes: true,
+  });
+  userAfterDir.forEach((userAfter) => {
+    if (!userAfter.isDirectory()) {
+      if (userAfter.name.endsWith('o.mat')) {
+        userDataPaths.after.eyeOpen = path.join(
+          userDataPath,
+          './训练后',
+          userAfter.name
+        );
+      } else if (userAfter.name.endsWith('c.mat')) {
+        userDataPaths.after.eyeClose = path.join(
+          userDataPath,
+          './训练后',
+          userAfter.name
+        );
+      }
+    }
+  });
+}
+
+function loadingAllImgTable() {
+  const allImgTableCells = document.querySelectorAll(
+    '.topographicalMapTable td, .brainNetMapTable td'
+  );
+  allImgTableCells.forEach((allImgTableCell) => {
+    const loadingDiv = document.createElement('div');
+    loadingDiv.classList.add('loader-inner', 'ball-pulse');
+    for (let index = 0; index < 3; index += 1) {
+      const subLoadingDiv = document.createElement('div');
+      loadingDiv.appendChild(subLoadingDiv);
+    }
+    allImgTableCell.appendChild(loadingDiv);
+  });
+}
+
 function getOptionTemplate(titleText, xAxisName, yAxisName) {
   const xAxisData = Array.from({ length: 64 }, (_, i) => i + 1); // 横坐标是64导联
   return {
     title: {
       text: titleText,
       left: 'center',
-      top: 'bottom',
+      top: '12%',
       textStyle: {
-        fontSize: 16,
+        fontSize: 14,
         fontStyle: 'normal',
         fontWeight: 'normal',
       },
@@ -93,8 +152,8 @@ function getAIALineChart(divId, titleText) {
   );
   option.xAxis.data = [
     'F3/F4',
-    '(Fp1, F3, F7)/\n(Fp2, F4, F8)',
-    '(Fp1, F3, F7,\nF1, F5, AF3)/\n(Fp2, F4, F8,\nF2, F6, AF4)',
+    '(Fp1,F3,F7)/\n(Fp2,F4,F8)',
+    '(Fp1,F3,F7,F1,F5,AF3)/\n(Fp2,F4,F8,F2,F6,AF4)',
   ];
   option.dataZoom = undefined;
   myChart.setOption(option);
@@ -576,58 +635,16 @@ async function renderPlvArea() {
   });
 }
 
-function getUserDataPaths() {
-  const { userDataPath } = userInfo;
-  const userBeforeDir = fs.readdirSync(path.join(userDataPath, './训练前'), {
-    withFileTypes: true,
-  });
-  userBeforeDir.forEach((userBefore) => {
-    if (!userBefore.isDirectory()) {
-      if (userBefore.name.endsWith('o.mat')) {
-        userDataPaths.before.eyeOpen = path.join(
-          userDataPath,
-          './训练前',
-          userBefore.name
-        );
-      } else if (userBefore.name.endsWith('c.mat')) {
-        userDataPaths.before.eyeClose = path.join(
-          userDataPath,
-          './训练前',
-          userBefore.name
-        );
-      }
-    }
-  });
-  const userAfterDir = fs.readdirSync(path.join(userDataPath, './训练后'), {
-    withFileTypes: true,
-  });
-  userAfterDir.forEach((userAfter) => {
-    if (!userAfter.isDirectory()) {
-      if (userAfter.name.endsWith('o.mat')) {
-        userDataPaths.after.eyeOpen = path.join(
-          userDataPath,
-          './训练后',
-          userAfter.name
-        );
-      } else if (userAfter.name.endsWith('c.mat')) {
-        userDataPaths.after.eyeClose = path.join(
-          userDataPath,
-          './训练后',
-          userAfter.name
-        );
-      }
-    }
-  });
-}
-
-window.addEventListener('DOMContentLoaded', () => {});
+window.addEventListener('DOMContentLoaded', () => {
+  loadingAllImgTable();
+});
 
 ipcRenderer.on('getUser', (event, user) => {
   userInfo = user;
   const { name: username, age, gender } = userInfo;
   getUserDataPaths();
   // renderPowerArea();
-  renderAiaArea();
+  // renderAiaArea();
   // renderSasiArea();
   // // renderDfaArea();
   // renderPlvArea();

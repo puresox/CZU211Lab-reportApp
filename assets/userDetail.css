@@ -6,10 +6,17 @@
   p {
     text-indent: 2em; /* 首行缩进两个字符 */
   }
+  caption {
+    font-size: 14px;
+  }
+  .ball-pulse > div {
+    background-color: rgb(91, 171, 245);
+  }
   .lineChart,
   .boxplotChart {
     width: 600px;
     height: 220px;
+    margin: auto; /* 居中 */
   }
   .topographicalMap,
   .brainNetMap {
@@ -19,11 +26,13 @@
   .topographicalMapTable td,
   .brainNetMapTable td {
     height: 150px;
+    min-width: 150px;
   }
   table {
     min-width: 500px;
     caption-side: bottom;
-    margin: auto; /* 表格居中 */
+    margin: auto; /* 居中 */
+    margin-bottom: 1em;
   }
   td {
     text-align: center;
@@ -50,7 +59,9 @@
 @media print {
   @page {
     size: A4 portrait;
-    margin-top: 2cm;
+    margin-left: 2cm;
+    margin-right: 2cm;
+    margin-top: 1cm;
     margin-bottom: 1cm;
   }
   body {
