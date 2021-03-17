@@ -64,7 +64,7 @@ function getUserDataPaths() {
 
 function loadingAllImgTable() {
   const allImgTableCells = document.querySelectorAll(
-    '.topographicalMapTable td, .brainNetMapTable td'
+    '.topographicalMapTable tbody td, .brainNetMapTable tbody td'
   );
   allImgTableCells.forEach((allImgTableCell) => {
     const loadingDiv = document.createElement('div');
@@ -342,7 +342,11 @@ async function renderPowerArea() {
       const img = document.createElement('img');
       img.src = picPath;
       img.className = 'topographicalMap';
-      topographicalMapCells[3 * i + j].appendChild(img);
+      const topographicalMapCell = topographicalMapCells[3 * i + j];
+      while (topographicalMapCell.firstChild) {
+        topographicalMapCell.removeChild(topographicalMapCell.firstChild);
+      }
+      topographicalMapCell.appendChild(img);
     });
   });
 }
@@ -479,7 +483,11 @@ async function renderSasiArea() {
       const img = document.createElement('img');
       img.src = picPath;
       img.className = 'topographicalMap';
-      topographicalMapCells[3 * i + j].appendChild(img);
+      const topographicalMapCell = topographicalMapCells[3 * i + j];
+      while (topographicalMapCell.firstChild) {
+        topographicalMapCell.removeChild(topographicalMapCell.firstChild);
+      }
+      topographicalMapCell.appendChild(img);
     });
   });
 }
@@ -618,9 +626,12 @@ async function renderPlvArea() {
       const img = document.createElement('img');
       img.src = picPath;
       img.className = 'brainNetMap';
-      brainNetMapsCells[8 * Math.floor(i / 2) + 2 * j + (i % 2)].appendChild(
-        img
-      );
+      const brainNetMapsCell =
+        brainNetMapsCells[8 * Math.floor(i / 2) + 2 * j + (i % 2)];
+      while (brainNetMapsCell.firstChild) {
+        brainNetMapsCell.removeChild(brainNetMapsCell.firstChild);
+      }
+      brainNetMapsCell.appendChild(img);
     });
   });
   const tableCells = document.querySelectorAll('#aucArea tbody td');
@@ -643,11 +654,11 @@ ipcRenderer.on('getUser', (event, user) => {
   userInfo = user;
   const { name: username, age, gender } = userInfo;
   getUserDataPaths();
-  // renderPowerArea();
-  // renderAiaArea();
-  // renderSasiArea();
-  // // renderDfaArea();
-  // renderPlvArea();
+  renderPowerArea();
+  renderAiaArea();
+  renderSasiArea();
+  // renderDfaArea();
+  renderPlvArea();
   // 监听打印报告事件
   const printReportBtn = document.getElementById('printButton');
   printReportBtn.addEventListener('click', () => {

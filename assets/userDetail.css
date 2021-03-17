@@ -15,7 +15,7 @@
   .lineChart,
   .boxplotChart {
     width: 600px;
-    height: 220px;
+    height: 210px;
     margin: auto; /* 居中 */
   }
   .topographicalMap,
@@ -61,8 +61,8 @@
     size: A4 portrait;
     margin-left: 2cm;
     margin-right: 2cm;
-    margin-top: 1cm;
-    margin-bottom: 1cm;
+    margin-top: 1.5cm;
+    margin-bottom: 0cm;
   }
   body {
     color: #000;
