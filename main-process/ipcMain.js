@@ -6,8 +6,8 @@ const path = require('path');
 // 监听打开addUser窗口的消息
 ipcMain.on('open-addUser', () => {
   let addUserWin = new BrowserWindow({
-    width: 300,
-    height: 200,
+    width: 400,
+    height: 300,
     webPreferences: {
       nodeIntegration: true,
       preload: path.join(__dirname, '../assets/addUser.js'),

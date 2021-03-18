@@ -1,0 +1,16 @@
+/* 通用样式 */
+@media all {
+  table {
+    max-width: 800px;
+  }
+  td {
+    text-align: center;
+    min-width: 60px;
+  }
+}
+/* 屏幕显示时样式 */
+@media screen {
+}
+/* 打印时样式 */
+@media print {
+}

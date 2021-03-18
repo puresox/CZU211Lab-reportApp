@@ -1,10 +1,16 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { ipcRenderer } = require('electron');
-const XLSX = require('xlsx');
 const fs = require('fs');
 const path = require('path');
-const { v4: uuidv4 } = require('uuid');
+const Dexie = require('dexie');
 
+const db = new Dexie('reportApp');
+db.version(1).stores({
+  users: '++id,name,age,gender,type,calcState', // 性别（男/女），类型（健康/对照），计算状态（未计算，计算中，已计算）
+  calcResults: '&id', // power,aia,sasi,dfa,plv,auc
+});
+
+// 获取数据存储地址
 async function getAppDataPath() {
   ipcRenderer.send('getSetting', 'appDataPath');
 
@@ -16,6 +22,7 @@ async function getAppDataPath() {
   return appDataPath;
 }
 
+// 删除文件夹
 async function removeDir(dir) {
   const files = fs.readdirSync(dir, { withFileTypes: true });
   files.forEach((file) => {
@@ -29,53 +36,73 @@ async function removeDir(dir) {
   fs.rmdirSync(dir);
 }
 
+// 获取所有被试信息
 async function getUsers() {
   const appDataPath = await getAppDataPath();
-  const userDirs = fs.readdirSync(appDataPath, { withFileTypes: true });
-  const users = [];
-  userDirs.forEach((userDir) => {
-    if (userDir.isDirectory()) {
-      const [xlsxName] = userDir.name.split('_');
-      const userDataPath = path.join(appDataPath, `./${userDir.name}`);
-      const wb = XLSX.readFile(path.join(userDataPath, `./${xlsxName}.xlsx`));
-      const ws = wb.Sheets[wb.SheetNames[0]];
-      users.push({
-        id: userDir.name,
-        name: ws.B1 ? ws.B1.v : '',
-        age: ws.B2 ? ws.B2.v : '',
-        gender: ws.B3 ? ws.B3.v : '',
-        type: ws.B4 ? ws.B4.v : '',
-        userDataPath,
-      });
-    }
+  const usersWithoutDataPath = await db.users.toArray();
+  const usersWithDataPath = usersWithoutDataPath.map((user) => {
+    const copy = { ...user };
+    copy.userDataPath = path.join(appDataPath, `./${user.id}`);
+    return copy;
   });
-  return users;
+  return usersWithDataPath;
 }
 
-async function addUser(name) {
+// 获取指定id被试信息
+async function getUserById(id) {
+  const user = await db.users.where('id').equals(id);
+  return user;
+}
+
+// 添加被试
+async function addUser(name, age, gender, type) {
+  const userId = await db.users.add({
+    name,
+    age,
+    gender,
+    type,
+    calcState: '未计算',
+  });
   const appDataPath = await getAppDataPath();
-  const userDataPath = path.join(appDataPath, `./${name}_${uuidv4()}`);
+  const userDataPath = path.join(appDataPath, `./${userId}`);
   fs.mkdirSync(userDataPath);
   fs.mkdirSync(path.join(userDataPath, './训练前'));
   fs.mkdirSync(path.join(userDataPath, './训练中'));
   fs.mkdirSync(path.join(userDataPath, './训练后'));
   fs.mkdirSync(path.join(userDataPath, './数据缓存'));
-  const xlsxData = [
-    ['姓名', name],
-    ['年龄'],
-    ['性别（男/女）'],
-    ['类型（健康/对照）'],
-  ];
-  const ws = XLSX.utils.aoa_to_sheet(xlsxData);
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, '被试信息');
-  XLSX.writeFile(wb, path.join(userDataPath, `./${name}.xlsx`));
 }
 
+// 更新被试信息
+async function upgradeUser(data) {
+  await db.users.put(data);
+}
+
+// 删除被试和计算结果
 async function delUserById(id) {
+  await db.users.delete(id);
+  await db.calcResults.delete(id);
   const appDataPath = await getAppDataPath();
   const userDataPath = path.join(appDataPath, `./${id}`);
   removeDir(userDataPath);
 }
 
-module.exports = { getUsers, addUser, delUserById };
+// 获取指定id的计算结果
+async function getCalcResultById(id) {
+  const calcResult = await db.calcResults.where('id').equals(id);
+  return calcResult;
+}
+
+// 更新计算结果
+async function upgradeCalcResults(data) {
+  await db.calcResults.put(data);
+}
+
+module.exports = {
+  getUsers,
+  getUserById,
+  addUser,
+  upgradeUser,
+  delUserById,
+  getCalcResultById,
+  upgradeCalcResults,
+};

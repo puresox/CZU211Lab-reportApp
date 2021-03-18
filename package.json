@@ -28,11 +28,10 @@
     "prettier": "^2.2.1"
   },
   "dependencies": {
+    "dexie": "^3.0.3",
     "echarts": "^5.0.2",
     "electron-settings": "^4.0.2",
-    "electron-squirrel-startup": "^1.0.0",
-    "uuid": "^8.3.2",
-    "xlsx": "^0.16.9"
+    "electron-squirrel-startup": "^1.0.0"
   },
   "config": {
     "forge": {
