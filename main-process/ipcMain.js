@@ -18,6 +18,25 @@ ipcMain.on('open-addUser', () => {
   });
   addUserWin.loadFile(path.join(__dirname, '../sections/addUser.html'));
 });
+// 监听打开editUser窗口的消息
+ipcMain.on('open-editUser', (event, user) => {
+  let editUserWin = new BrowserWindow({
+    width: 400,
+    height: 300,
+    webPreferences: {
+      nodeIntegration: true,
+      preload: path.join(__dirname, '../assets/editUser.js'),
+    },
+  });
+  editUserWin.webContents.on('dom-ready', () => {
+    // 传递用户信息
+    editUserWin.webContents.send('getUser', user);
+  });
+  editUserWin.on('close', () => {
+    editUserWin = null;
+  });
+  editUserWin.loadFile(path.join(__dirname, '../sections/editUser.html'));
+});
 // 监听打开userDetail窗口的消息
 ipcMain.on('open-userDetail', (event, user) => {
   let userDetailWin = new BrowserWindow({

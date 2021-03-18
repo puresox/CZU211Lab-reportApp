@@ -102,8 +102,7 @@ async function powerPromise() {
   // 获取地形图
   await getTopoplot(datavectors);
   const picPathsArray = datavectors.map((datavector) => datavector.picPaths);
-  await upgradeCalcResults({
-    id: userInfo.id,
+  await upgradeCalcResults(userInfo.id, {
     power: { result: POWERResults, pic: picPathsArray },
   });
 }
@@ -114,8 +113,7 @@ async function aiaPromise() {
     [userDataPaths.before.eyeClose, userDataPaths.after.eyeClose],
     [userDataPaths.before.eyeOpen, userDataPaths.after.eyeOpen],
   ]);
-  await upgradeCalcResults({
-    id: userInfo.id,
+  await upgradeCalcResults(userInfo.id, {
     aia: { result: aiaResults },
   });
 }
@@ -153,8 +151,7 @@ async function sasiPromise() {
   ];
   await getTopoplot(datavectors);
   const picPathsArray = datavectors.map((datavector) => datavector.picPaths);
-  await upgradeCalcResults({
-    id: userInfo.id,
+  await upgradeCalcResults(userInfo.id, {
     sasi: {
       result: [beforeEyeClose, afterEyeClose, beforeEyeOpen, afterEyeOpen],
       pic: picPathsArray,
@@ -162,7 +159,46 @@ async function sasiPromise() {
   });
 }
 
-async function dfaPromise() {}
+async function dfaPromise() {
+  const [
+    beforeEyeClose,
+    afterEyeClose,
+    beforeEyeOpen,
+    afterEyeOpen,
+  ] = await DFA([
+    userDataPaths.before.eyeClose,
+    userDataPaths.after.eyeClose,
+    userDataPaths.before.eyeOpen,
+    userDataPaths.after.eyeOpen,
+  ]);
+  // 地形图
+  const datavectors = [
+    {
+      datas: [beforeEyeClose, afterEyeClose],
+      picPaths: [
+        path.join(userInfo.userDataPath, './数据缓存', 'DFAc1.png'),
+        path.join(userInfo.userDataPath, './数据缓存', 'DFAc2.png'),
+        path.join(userInfo.userDataPath, './数据缓存', 'DFAc3.png'),
+      ],
+    },
+    {
+      datas: [beforeEyeOpen, afterEyeOpen],
+      picPaths: [
+        path.join(userInfo.userDataPath, './数据缓存', 'DFAo1.png'),
+        path.join(userInfo.userDataPath, './数据缓存', 'DFAo2.png'),
+        path.join(userInfo.userDataPath, './数据缓存', 'DFAo3.png'),
+      ],
+    },
+  ];
+  await getTopoplot(datavectors);
+  const picPathsArray = datavectors.map((datavector) => datavector.picPaths);
+  await upgradeCalcResults(userInfo.id, {
+    dfa: {
+      result: [beforeEyeClose, afterEyeClose, beforeEyeOpen, afterEyeOpen],
+      pic: picPathsArray,
+    },
+  });
+}
 
 async function plvPromise() {
   const datavectors = [
@@ -269,8 +305,7 @@ async function plvPromise() {
   ];
   const AUCResult = await PLV(datavectors);
   const picPathsArray = datavectors.map((datavector) => datavector.picPaths);
-  await upgradeCalcResults({
-    id: userInfo.id,
+  await upgradeCalcResults(userInfo.id, {
     plv: {
       pic: picPathsArray,
     },
@@ -287,11 +322,10 @@ module.exports = async function calcIndicators(user) {
     powerPromise,
     aiaPromise,
     sasiPromise,
-    dfaPromise,
+    // dfaPromise,
     plvPromise,
   ]).then(async () => {
-    await upgradeUser({
-      id: user.id,
+    await upgradeUser(user.id, {
       calcState: '已计算',
     });
   });

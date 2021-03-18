@@ -20,7 +20,7 @@
     <button id="reload">刷新</button>
     <p>
       存储路径：<span id="appDataPath"></span>
-      <button id="editPath">修改</button>
+      <button id="editPath" title="请勿随意修改">修改</button>
     </p>
     <table>
       <thead>
@@ -31,7 +31,7 @@
           <th>性别</th>
           <th>类型</th>
           <th>计算状态</th>
-          <th colspan="4">操作</th>
+          <th colspan="5">操作</th>
         </tr>
       </thead>
       <tbody id="userRawsArea">
@@ -50,7 +50,10 @@
               <button name="detail">查看</button>
             </td>
             <td>
-              <button name="edit">修改</button>
+              <button name="print">打印</button>
+            </td>
+            <td>
+              <button name="manage">管理</button>
             </td>
             <td>
               <button name="del">删除</button>

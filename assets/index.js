@@ -1,8 +1,7 @@
 // All of the Node.js APIs are available in the process.
 // It has the same sandbox as a Chrome extension.
 // eslint-disable-next-line import/no-extraneous-dependencies
-const { ipcRenderer, shell } = require('electron');
-const path = require('path');
+const { ipcRenderer } = require('electron');
 const { getUsers, delUserById } = require('../db');
 
 // eslint-disable-next-line import/no-dynamic-require
@@ -41,6 +40,9 @@ function renderUserRaws(users) {
     }
     calcButton.title = '计算需要至少几个小时';
     calcButton.addEventListener('click', () => {
+      calcButton.disabled = true;
+      tds[5].textContent = '计算中';
+      tds[5].style.color = '#3366ff';
       calcIndicators(user);
     });
     // 监听查看被试事件
@@ -52,12 +54,10 @@ function renderUserRaws(users) {
     detailButton.addEventListener('click', () => {
       ipcRenderer.send('open-userDetail', user);
     });
-    // 监听修改被试事件
-    const editButton = userRaw.querySelector('button[name="edit"]');
-    editButton.addEventListener('click', () => {
-      const userDataFolder = path.join(user.userDataPath, `./训练前`);
-      shell.showItemInFolder(userDataFolder);
-      ipcRenderer.send('open-editDetail', user);
+    // 监听管理被试事件
+    const manageButton = userRaw.querySelector('button[name="manage"]');
+    manageButton.addEventListener('click', () => {
+      ipcRenderer.send('open-editUser', user);
     });
     // 监听删除被试事件
     const delButton = userRaw.querySelector('button[name="del"]');

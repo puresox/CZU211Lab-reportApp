@@ -12,9 +12,42 @@
       content="default-src 'self'; script-src 'self'"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>修改被试</title>
+    <title>被试信息管理</title>
   </head>
   <body>
-    <button>添加数据</button>
+    <button id="addData">添加数据</button>
+    <div id="formArea">
+      <div id="nameArea">
+        <label for="name">姓名：</label>
+        <input type="text" id="name" required />
+      </div>
+      <div id="ageArea">
+        <label for="age">年龄：</label>
+        <input type="text" id="age" required />
+      </div>
+      <div id="genderArea">
+        <legend>性别：</legend>
+        <div>
+          <input type="radio" name="gender" id="male" value="男" checked />
+          <label for="male">男</label>
+        </div>
+        <div>
+          <input type="radio" name="gender" id="female" value="女" />
+          <label for="female">女</label>
+        </div>
+      </div>
+      <div id="typeArea">
+        <legend>类型：</legend>
+        <div>
+          <input type="radio" name="type" id="health" value="健康" checked />
+          <label for="health">健康</label>
+        </div>
+        <div>
+          <input type="radio" name="type" id="compare" value="对照" />
+          <label for="compare">对照</label>
+        </div>
+      </div>
+      <button id="submit">修改</button>
+    </div>
   </body>
 </html>

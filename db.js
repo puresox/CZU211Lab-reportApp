@@ -54,7 +54,7 @@ async function getUserById(id) {
   return user;
 }
 
-// 添加被试
+// 添加被试和计算结果初始化
 async function addUser(name, age, gender, type) {
   const userId = await db.users.add({
     name,
@@ -62,6 +62,9 @@ async function addUser(name, age, gender, type) {
     gender,
     type,
     calcState: '未计算',
+  });
+  await db.calcResults.add({
+    id: userId,
   });
   const appDataPath = await getAppDataPath();
   const userDataPath = path.join(appDataPath, `./${userId}`);
@@ -73,8 +76,8 @@ async function addUser(name, age, gender, type) {
 }
 
 // 更新被试信息
-async function upgradeUser(data) {
-  await db.users.put(data);
+async function upgradeUser(id, changes) {
+  await db.users.update(id, changes);
 }
 
 // 删除被试和计算结果
@@ -93,8 +96,8 @@ async function getCalcResultById(id) {
 }
 
 // 更新计算结果
-async function upgradeCalcResults(data) {
-  await db.calcResults.put(data);
+async function upgradeCalcResults(id, changes) {
+  await db.calcResults.update(id, changes);
 }
 
 module.exports = {
