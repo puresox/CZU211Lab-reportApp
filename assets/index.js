@@ -39,11 +39,12 @@ function renderUserRaws(users) {
       calcButton.textContent = '重新计算';
     }
     calcButton.title = '计算需要至少几个小时';
-    calcButton.addEventListener('click', () => {
+    calcButton.addEventListener('click', async () => {
       calcButton.disabled = true;
       tds[5].textContent = '计算中';
       tds[5].style.color = '#3366ff';
-      calcIndicators(user);
+      await calcIndicators(user);
+      window.location.reload();
     });
     // 监听查看被试事件
     const detailButton = userRaw.querySelector('button[name="detail"]');

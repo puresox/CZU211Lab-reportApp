@@ -10,8 +10,22 @@
         "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron-forge-vscode-win.cmd"
       },
       // runtimeArgs will be passed directly to your Electron application
-      "runtimeArgs": ["foo", "bar"],
+      "runtimeArgs": ["--remote-debugging-port=9222", "."],
       "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Electron Renderer",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9222,
+      "webRoot": "${workspaceFolder}",
+      "timeout": 30000
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Electron All",
+      "configurations": ["Electron Main", "Electron Renderer"]
     }
   ]
 }

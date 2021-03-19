@@ -21,6 +21,12 @@ function getUserDataPaths() {
   const userBeforeDir = fs.readdirSync(path.join(userDataPath, './训练前'), {
     withFileTypes: true,
   });
+  const userAfterDir = fs.readdirSync(path.join(userDataPath, './训练后'), {
+    withFileTypes: true,
+  });
+  if (userBeforeDir.length !== 2 || userAfterDir.length !== 2) {
+    throw new Error('找不到数据文件');
+  }
   userBeforeDir.forEach((userBefore) => {
     if (!userBefore.isDirectory()) {
       if (userBefore.name.endsWith('o.mat')) {
@@ -37,9 +43,6 @@ function getUserDataPaths() {
         );
       }
     }
-  });
-  const userAfterDir = fs.readdirSync(path.join(userDataPath, './训练后'), {
-    withFileTypes: true,
   });
   userAfterDir.forEach((userAfter) => {
     if (!userAfter.isDirectory()) {
@@ -318,15 +321,17 @@ async function plvPromise() {
 module.exports = async function calcIndicators(user) {
   userInfo = user;
   getUserDataPaths();
-  Promise.all([
-    powerPromise,
-    aiaPromise,
-    sasiPromise,
-    // dfaPromise,
-    plvPromise,
-  ]).then(async () => {
-    await upgradeUser(user.id, {
-      calcState: '已计算',
-    });
+  await upgradeUser(user.id, {
+    calcState: '计算中',
+  });
+  await Promise.all([
+    powerPromise(),
+    aiaPromise(),
+    sasiPromise(),
+    // dfaPromise(),
+    plvPromise(),
+  ]);
+  await upgradeUser(user.id, {
+    calcState: '已计算',
   });
 };

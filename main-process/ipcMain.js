@@ -9,7 +9,6 @@ ipcMain.on('open-addUser', () => {
     width: 400,
     height: 300,
     webPreferences: {
-      nodeIntegration: true,
       preload: path.join(__dirname, '../assets/addUser.js'),
     },
   });
@@ -24,7 +23,6 @@ ipcMain.on('open-editUser', (event, user) => {
     width: 400,
     height: 300,
     webPreferences: {
-      nodeIntegration: true,
       preload: path.join(__dirname, '../assets/editUser.js'),
     },
   });
