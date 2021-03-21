@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { ipcRenderer } = require('electron')
-const echarts = require('echarts')
 const { getCalcResultById } = require('./db')
+const echarts = require('echarts')
 
 let userInfo
 let reportCalcResult
@@ -245,7 +245,7 @@ async function renderPowerArea () {
   const topographicalMapCells = document.querySelectorAll(
     '#powerArea tbody td'
   )
-  picPathsArray.forEach(({ picPaths }, i) => {
+  picPathsArray.forEach((picPaths, i) => {
     picPaths.forEach((picPath, j) => {
       const img = document.createElement('img')
       img.src = picPath
@@ -360,7 +360,7 @@ async function renderSasiArea () {
   const topographicalMapCells = document.querySelectorAll(
     '#sasiTopographicalMaps tbody td'
   )
-  picPathsArray.forEach(({ picPaths }, i) => {
+  picPathsArray.forEach((picPaths, i) => {
     picPaths.forEach((picPath, j) => {
       const img = document.createElement('img')
       img.src = picPath
@@ -402,7 +402,7 @@ async function renderPlvArea () {
   const datavectors = reportCalcResult.plv.pic
   const AUCResult = reportCalcResult.auc.result
   const brainNetMapsCells = document.querySelectorAll('#plvArea tbody td')
-  datavectors.forEach(({ picPaths }, i) => {
+  datavectors.forEach((picPaths, i) => {
     picPaths.forEach((picPath, j) => {
       const img = document.createElement('img')
       img.src = picPath

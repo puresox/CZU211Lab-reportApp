@@ -44,7 +44,7 @@ async function getUsers () {
 
 // 获取指定id被试信息
 async function getUserById (id) {
-  const user = await db.users.where('id').equals(id)
+  const [user] = await db.users.where('id').equals(id).toArray()
   return user
 }
 
@@ -85,7 +85,7 @@ async function delUserById (id) {
 
 // 获取指定id的计算结果
 async function getCalcResultById (id) {
-  const calcResult = await db.calcResults.where('id').equals(id)
+  const [calcResult] = await db.calcResults.where('id').equals(id).toArray()
   return calcResult
 }
 
