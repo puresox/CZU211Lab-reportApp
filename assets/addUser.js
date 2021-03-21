@@ -1,6 +1,6 @@
 // All of the Node.js APIs are available in the process.
 // It has the same sandbox as a Chrome extension.
-const { addUser } = require('../db');
+const { addUser } = require('./db');
 
 function getRadioCheckedValue(name) {
   const radios = document.getElementsByName(name);

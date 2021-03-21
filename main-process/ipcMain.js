@@ -59,19 +59,17 @@ ipcMain.on('open-userDetail', (event, user) => {
   userDetailWin.loadFile(path.join(__dirname, '../sections/userDetail.html'));
 });
 // 监听选择文件夹事件
-ipcMain.on('selectAppDataPath', (event) => {
-  dialog
-    .showOpenDialog({
-      properties: ['openDirectory', 'promptToCreate'],
-    })
-    .then(({ canceled, filePaths: [dir] }) => {
-      if (!canceled && dir) {
-        event.reply('selectedAppDataPath', dir);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+ipcMain.handle('selectAppDataPath', async () => {
+  const {
+    canceled,
+    filePaths: [dir],
+  } = await dialog.showOpenDialog({
+    properties: ['openDirectory', 'promptToCreate'],
+  });
+  if (!canceled && dir) {
+    return dir;
+  }
+  return '';
 });
 // 监听打印事件
 ipcMain.on('print', (event, options) => {
@@ -83,10 +81,24 @@ ipcMain.on('print', (event, options) => {
   );
 });
 // 监听获取设置事件
-ipcMain.on('getSetting', (event, key) => {
-  event.reply('gottenSetting', settings.getSync(key));
-});
+ipcMain.handle('getSetting', async (event, key) => settings.getSync(key));
 // 监听设置设置事件
 ipcMain.on('setSetting', (event, key, value) => {
   settings.setSync(key, value);
+});
+// 监听计算指标事件
+ipcMain.on('calcIndicators', (event, user) => {
+  let calcIndicatorsWin = new BrowserWindow({
+    show: false,
+    webPreferences: {
+      preload: path.join(__dirname, '../assets/calcIndicators.js'),
+    },
+  });
+  calcIndicatorsWin.webContents.on('dom-ready', () => {
+    // 传递用户信息
+    calcIndicatorsWin.webContents.send('getUser', user);
+  });
+  calcIndicatorsWin.on('close', () => {
+    calcIndicatorsWin = null;
+  });
 });

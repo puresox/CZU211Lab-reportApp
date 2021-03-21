@@ -2,10 +2,7 @@
 // It has the same sandbox as a Chrome extension.
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { ipcRenderer } = require('electron');
-const { getUsers, delUserById } = require('../db');
-
-// eslint-disable-next-line import/no-dynamic-require
-const calcIndicators = require('./calcIndicators');
+const { getUsers, delUserById } = require('./db');
 
 // 显示数据存储路径
 function renderPath(appDataPath) {
@@ -43,8 +40,7 @@ function renderUserRaws(users) {
       calcButton.disabled = true;
       tds[5].textContent = '计算中';
       tds[5].style.color = '#3366ff';
-      await calcIndicators(user);
-      window.location.reload();
+      ipcRenderer.send('calcIndicators', user);
     });
     // 监听查看被试事件
     const detailButton = userRaw.querySelector('button[name="detail"]');
@@ -71,8 +67,11 @@ function renderUserRaws(users) {
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
-  // 获取appDataPath
-  ipcRenderer.send('getSetting', 'appDataPath');
+  // 异步执行获取appDataPath，无需await
+  ipcRenderer.invoke('getSetting', 'appDataPath').then((value) => {
+    // 显示数据存储路径
+    renderPath(value);
+  });
   // 监听添加被试事件
   const addUserBtn = document.getElementById('addUser');
   addUserBtn.addEventListener('click', () => {
@@ -85,8 +84,12 @@ window.addEventListener('DOMContentLoaded', async () => {
   });
   // 监听修改路径事件
   const editPathBtn = document.getElementById('editPath');
-  editPathBtn.addEventListener('click', () => {
-    ipcRenderer.send('selectAppDataPath');
+  editPathBtn.addEventListener('click', async () => {
+    const newAppDataPath = await ipcRenderer.invoke('selectAppDataPath');
+    if (newAppDataPath) {
+      ipcRenderer.send('setSetting', 'appDataPath', newAppDataPath);
+      // 不需要刷新
+    }
   });
   // 生成用户列表
   const users = await getUsers();
@@ -95,10 +98,3 @@ window.addEventListener('DOMContentLoaded', async () => {
 window.onfocus = () => {
   window.location.reload();
 };
-ipcRenderer.on('selectedAppDataPath', (event, newAppDataPath) => {
-  ipcRenderer.send('setSetting', 'appDataPath', newAppDataPath);
-});
-ipcRenderer.on('gottenSetting', (event, value) => {
-  // 显示数据存储路径
-  renderPath(value);
-});

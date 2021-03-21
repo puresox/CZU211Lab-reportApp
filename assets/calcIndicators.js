@@ -1,6 +1,8 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+const { ipcRenderer } = require('electron');
 const fs = require('fs');
 const path = require('path');
-const { upgradeUser, upgradeCalcResults } = require('../db');
+const { upgradeUser, upgradeCalcResults } = require('./db');
 const { getTopoplot, POWER, AIA, SASI, DFA, PLV } = require('./indicatorApi');
 
 let userInfo;
@@ -318,20 +320,20 @@ async function plvPromise() {
   });
 }
 
-module.exports = async function calcIndicators(user) {
+ipcRenderer.on('getUser', async (event, user) => {
   userInfo = user;
   getUserDataPaths();
   await upgradeUser(user.id, {
     calcState: '计算中',
   });
   await Promise.all([
-    powerPromise(),
+    // powerPromise(),
     aiaPromise(),
-    sasiPromise(),
+    // sasiPromise(),
     // dfaPromise(),
-    plvPromise(),
+    // plvPromise(),
   ]);
   await upgradeUser(user.id, {
     calcState: '已计算',
   });
-};
+});

@@ -3,7 +3,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { ipcRenderer, shell } = require('electron');
 const path = require('path');
-const { upgradeUser } = require('../db');
+const { upgradeUser } = require('./db');
 
 function getRadioCheckedValue(name) {
   const radios = document.getElementsByName(name);
