@@ -1,3 +1,5 @@
+[![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
+
 # reportApp
 
 实验室生成报告的应用。
@@ -6,10 +8,11 @@
 
 1. 额外安装 python，matlab。
 2. 安装用于 Python 的 MATLAB 引擎 API（在默认位置安装）。
-3. MATLAB安装EEGLAB。
+3. MATLAB 安装 EEGLAB。
 
 ## 注意
-1. 数据文件以o结尾表示睁眼，以c结尾表示闭眼。
+
+1. 数据文件以 o 结尾表示睁眼，以 c 结尾表示闭眼。
 
 ## 开发
 
