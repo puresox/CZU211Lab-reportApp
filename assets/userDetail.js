@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { ipcRenderer } = require('electron')
-const { getCalcResultById } = require('./db')
+const { getCalcResultById } = require('../assets/db')
 const echarts = require('echarts')
 
 let userInfo
