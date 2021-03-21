@@ -94,11 +94,16 @@ ipcMain.on('calcIndicators', (event, user) => {
       preload: path.join(__dirname, '../assets/calcIndicators.js'),
     },
   });
-  calcIndicatorsWin.webContents.on('dom-ready', () => {
+  calcIndicatorsWin.once('ready-to-show', () => {
     // 传递用户信息
     calcIndicatorsWin.webContents.send('getUser', user);
   });
   calcIndicatorsWin.on('close', () => {
     calcIndicatorsWin = null;
   });
+  calcIndicatorsWin.loadFile(path.join(__dirname, '../sections/blank.html'));
+});
+// 监听刷新主页事件
+ipcMain.on('reloadIndex', () => {
+  global.mainWindow.reload();
 });

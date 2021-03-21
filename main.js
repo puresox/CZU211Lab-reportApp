@@ -31,6 +31,9 @@ function createWindow() {
     },
   });
   mainWindow.loadFile(path.join(__dirname, './index.html'));
+  mainWindow.once('ready-to-show', () => {
+    global.mainWindow = mainWindow;
+  });
 }
 
 app.whenReady().then(() => {

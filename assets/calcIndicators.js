@@ -327,13 +327,15 @@ ipcRenderer.on('getUser', async (event, user) => {
     calcState: '计算中',
   });
   await Promise.all([
-    // powerPromise(),
+    powerPromise(),
     aiaPromise(),
-    // sasiPromise(),
+    sasiPromise(),
     // dfaPromise(),
-    // plvPromise(),
+    plvPromise(),
   ]);
   await upgradeUser(user.id, {
     calcState: '已计算',
   });
+  ipcRenderer.send('reloadIndex');
+  window.close();
 });

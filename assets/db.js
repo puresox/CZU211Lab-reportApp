@@ -12,13 +12,7 @@ db.version(1).stores({
 
 // 获取数据存储地址
 async function getAppDataPath() {
-  ipcRenderer.send('getSetting', 'appDataPath');
-
-  const appDataPath = await new Promise((resolve) => {
-    ipcRenderer.on('gottenSetting', (event, value) => {
-      resolve(value);
-    });
-  });
+  const appDataPath = await ipcRenderer.invoke('getSetting', 'appDataPath');
   return appDataPath;
 }
 
