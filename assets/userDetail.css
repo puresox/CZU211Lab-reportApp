@@ -1,10 +1,12 @@
 /* 通用样式 */
+
 @media all {
   #printerSelect {
     display: none;
   }
   p {
-    text-indent: 2em; /* 首行缩进两个字符 */
+    text-indent: 2em;
+    /* 首行缩进两个字符 */
   }
   caption {
     font-size: 14px;
@@ -16,7 +18,8 @@
   .boxplotChart {
     width: 600px;
     height: 210px;
-    margin: auto; /* 居中 */
+    margin: auto;
+    /* 居中 */
   }
   .topographicalMap,
   .brainNetMap {
@@ -31,7 +34,8 @@
   table {
     min-width: 500px;
     caption-side: bottom;
-    margin: auto; /* 居中 */
+    margin: auto;
+    /* 居中 */
     margin-bottom: 1em;
   }
   td {
@@ -52,10 +56,14 @@
     border: 1px solid black;
   }
 }
+
 /* 屏幕显示时样式 */
+
 @media screen {
 }
+
 /* 打印时样式 */
+
 @media print {
   @page {
     size: A4 portrait;
