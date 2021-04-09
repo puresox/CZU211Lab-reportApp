@@ -173,11 +173,11 @@ async function dfaPromise() {
     [afterEyeClose],
     [beforeEyeOpen],
     [afterEyeOpen],
-  ] = await Promise.all([
-    DFA([userDataPaths.before.eyeClose]),
-    DFA([userDataPaths.after.eyeClose]),
-    DFA([userDataPaths.before.eyeOpen]),
-    DFA([userDataPaths.after.eyeOpen]),
+  ] = await DFA([
+    userDataPaths.before.eyeClose,
+    userDataPaths.after.eyeClose,
+    userDataPaths.before.eyeOpen,
+    userDataPaths.after.eyeOpen,
   ]);
   // 地形图
   const datavectors = [

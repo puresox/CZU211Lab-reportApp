@@ -126,17 +126,17 @@ function getDfaLineChart(divId, titleText) {
   return myChart;
 }
 
-function getPowerBoxplotChart(divId, titleText) {
-  const myChart = echarts.init(document.getElementById(divId), null, {
-    renderer: 'svg',
-  });
-  const option = getOptionTemplate(titleText, '指标', '绝对功率');
-  option.xAxis.data = ['P3 Beta波', 'P4 Beta波', 'F3 Alpha波', 'F4 Alpha波'];
-  option.dataZoom = undefined;
-  myChart.setOption(option);
-  myChart.showLoading();
-  return myChart;
-}
+// function getPowerBoxplotChart(divId, titleText) {
+//   const myChart = echarts.init(document.getElementById(divId), null, {
+//     renderer: 'svg',
+//   });
+//   const option = getOptionTemplate(titleText, '指标', '绝对功率');
+//   option.xAxis.data = ['P3 Beta波', 'P4 Beta波', 'F3 Alpha波', 'F4 Alpha波'];
+//   option.dataZoom = undefined;
+//   myChart.setOption(option);
+//   myChart.showLoading();
+//   return myChart;
+// }
 
 async function renderPowerArea() {
   // 初始化：折线图-训练前后各电极位各频段功率变化
@@ -186,10 +186,10 @@ async function renderPowerArea() {
   ];
   // 初始化：箱线图
   // powerBoxplots:[closePowerBoxplot, openPowerBoxplot]
-  const powerBoxplots = [
-    getPowerBoxplotChart('closePowerBoxplot', '各指标绝对功率箱型图（闭眼）'),
-    getPowerBoxplotChart('openPowerBoxplot', '各指标绝对功率箱型图（睁眼）'),
-  ];
+  // const powerBoxplots = [
+  //   getPowerBoxplotChart('closePowerBoxplot', '各指标绝对功率箱型图（闭眼）'),
+  //   getPowerBoxplotChart('openPowerBoxplot', '各指标绝对功率箱型图（睁眼）'),
+  // ];
   // 异步获取数据
   // POWERResults:[beforeEyeClose, afterEyeClose, beforeEyeOpen, afterEyeOpen]
   const POWERResults = reportCalcResult.power.result;
@@ -212,33 +212,33 @@ async function renderPowerArea() {
     });
   });
   // 异步更新：箱线图
-  powerBoxplots.forEach((powerBoxplot) => {
-    powerBoxplot.hideLoading();
-    powerBoxplot.setOption({
-      series: [
-        {
-          name: '训练前',
-          type: 'boxplot',
-          data: [
-            [655, 850, 940, 980, 1175],
-            [672.5, 800, 845, 885, 1012.5],
-            [780, 840, 855, 880, 940],
-            [621.25, 767.5, 815, 865, 1011.25],
-          ],
-        },
-        {
-          name: '训练后',
-          type: 'boxplot',
-          data: [
-            [621.25, 767.5, 815, 865, 1011.25],
-            [655, 850, 940, 980, 1175],
-            [672.5, 800, 845, 885, 1012.5],
-            [780, 840, 855, 880, 940],
-          ],
-        },
-      ],
-    });
-  });
+  // powerBoxplots.forEach((powerBoxplot) => {
+  //   powerBoxplot.hideLoading();
+  //   powerBoxplot.setOption({
+  //     series: [
+  //       {
+  //         name: '训练前',
+  //         type: 'boxplot',
+  //         data: [
+  //           [655, 850, 940, 980, 1175],
+  //           [672.5, 800, 845, 885, 1012.5],
+  //           [780, 840, 855, 880, 940],
+  //           [621.25, 767.5, 815, 865, 1011.25],
+  //         ],
+  //       },
+  //       {
+  //         name: '训练后',
+  //         type: 'boxplot',
+  //         data: [
+  //           [621.25, 767.5, 815, 865, 1011.25],
+  //           [655, 850, 940, 980, 1175],
+  //           [672.5, 800, 845, 885, 1012.5],
+  //           [780, 840, 855, 880, 940],
+  //         ],
+  //       },
+  //     ],
+  //   });
+  // });
   // 地形图
   // 构造参数
   const picPathsArray = reportCalcResult.power.pic;

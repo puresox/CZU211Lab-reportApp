@@ -17,10 +17,13 @@ datas = json.loads(sys.argv[1])
 
 
 def DFAs(dataPath):
-    [DFAResult] = eng.mainDFAchannels(dataPath)  # 返回二维矩阵
+    DFAResult = eng.mainDFAchannels(dataPath)  # 返回二维矩阵
     return DFAResult
 
 
 DFAResults = list(map(DFAs, datas))
+normalized = eng.dfaNormalize(
+    DFAResults[0], DFAResults[1], DFAResults[2], DFAResults[3], nargout=4
+)
 # 输出
-print(eng.jsonencode(DFAResults))
+print(eng.jsonencode(normalized))
