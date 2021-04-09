@@ -167,16 +167,17 @@ async function sasiPromise() {
 }
 
 async function dfaPromise() {
+  // 多进程计算
   const [
-    beforeEyeClose,
-    afterEyeClose,
-    beforeEyeOpen,
-    afterEyeOpen,
-  ] = await DFA([
-    userDataPaths.before.eyeClose,
-    userDataPaths.after.eyeClose,
-    userDataPaths.before.eyeOpen,
-    userDataPaths.after.eyeOpen,
+    [beforeEyeClose],
+    [afterEyeClose],
+    [beforeEyeOpen],
+    [afterEyeOpen],
+  ] = await Promise.all([
+    DFA([userDataPaths.before.eyeClose]),
+    DFA([userDataPaths.after.eyeClose]),
+    DFA([userDataPaths.before.eyeOpen]),
+    DFA([userDataPaths.after.eyeOpen]),
   ]);
   // 地形图
   const datavectors = [
@@ -332,7 +333,7 @@ ipcRenderer.on('getUser', async (event, user) => {
     powerPromise(),
     aiaPromise(),
     sasiPromise(),
-    // dfaPromise(),
+    dfaPromise(),
     plvPromise(),
   ]);
   await upgradeUser(user.id, {

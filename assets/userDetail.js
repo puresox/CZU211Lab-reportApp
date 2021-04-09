@@ -376,25 +376,68 @@ async function renderSasiArea() {
 }
 
 async function renderDfaArea() {
-  // DFA特征值对照-闭眼
-  getDfaLineChart('closeDfaLine', 'DFA特征值对照-闭眼', [
-    Array.from({ length: 64 }, (_, i) => i + 1),
-    Array.from({ length: 64 }, (_, i) => i + 2),
-  ]);
-  // DFA特征值对照-睁眼
-  getDfaLineChart('openDfaLine', 'DFA特征值对照-睁眼', [
-    Array.from({ length: 64 }, (_, i) => i + 1),
-    Array.from({ length: 64 }, (_, i) => i + 2),
-  ]);
+  // 初始化：DFA特征值对照-闭眼
+  const closeDFALine = getDfaLineChart(
+    'closeDfaLine',
+    'DFA特征值对照-闭眼',
+  );
+  // 初始化：DFA特征值对照-睁眼
+  const openDFALine = getDfaLineChart('openDfaLine', 'DFA特征值对照-睁眼');
+  // 异步更新数据
+  const [
+    beforeEyeClose,
+    afterEyeClose,
+    beforeEyeOpen,
+    afterEyeOpen,
+  ] = reportCalcResult.dfa.result;
+  // 更新：DFA特征值对照-闭眼
+  closeDFALine.hideLoading();
+  closeDFALine.setOption({
+    series: [
+      {
+        name: '训练前',
+        type: 'line',
+        data: beforeEyeClose,
+      },
+      {
+        name: '训练后',
+        type: 'line',
+        data: afterEyeClose,
+      },
+    ],
+  });
+  // 更新：DFA特征值对照-睁眼
+  openDFALine.hideLoading();
+  openDFALine.setOption({
+    series: [
+      {
+        name: '训练前',
+        type: 'line',
+        data: beforeEyeOpen,
+      },
+      {
+        name: '训练后',
+        type: 'line',
+        data: afterEyeOpen,
+      },
+    ],
+  });
   // 地形图
+  const picPathsArray = reportCalcResult.dfa.pic;
   const topographicalMapCells = document.querySelectorAll(
     '#dfaTopographicalMaps tbody td',
   );
-  topographicalMapCells.forEach((topographicalMapCell) => {
-    const img = document.createElement('img');
-    img.src = '../appData/刘禹超_69a88b69-3f4c-4daf-a264-a58254c73799/训练前/2.png';
-    img.className = 'topographicalMap';
-    topographicalMapCell.appendChild(img);
+  picPathsArray.forEach((picPaths, i) => {
+    picPaths.forEach((picPath, j) => {
+      const img = document.createElement('img');
+      img.src = picPath;
+      img.className = 'topographicalMap';
+      const topographicalMapCell = topographicalMapCells[3 * i + j];
+      while (topographicalMapCell.firstChild) {
+        topographicalMapCell.removeChild(topographicalMapCell.firstChild);
+      }
+      topographicalMapCell.appendChild(img);
+    });
   });
 }
 
@@ -437,7 +480,7 @@ ipcRenderer.on('getUser', async (event, user) => {
   renderPowerArea();
   renderAiaArea();
   renderSasiArea();
-  // renderDfaArea();
+  renderDfaArea();
   renderPlvArea();
   // 监听打印报告事件
   const printReportBtn = document.getElementById('printButton');

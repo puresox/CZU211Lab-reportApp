@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const { spawn } = require('child_process');
 const path = require('path');
 
@@ -43,6 +44,7 @@ async function getTopoplot(datavectors) {
   );
   await spawnChild(pythonPath, [getTopoplotPath, JSON.stringify(datavectors)]);
 }
+
 /**
  * @description 生成四个频段的POWER数据
  * @param {*} datas [mat数据]
@@ -59,6 +61,7 @@ async function POWER(datas) {
   ]).then(({ stdout }) => JSON.parse(stdout));
   return POWERResult;
 }
+
 /**
  * @description 生成AIA表格数据
  * @param {*} datas [[训练前mat数据,训练后mat数据]]
@@ -75,6 +78,7 @@ async function AIA(datas) {
   ]).then(({ stdout }) => JSON.parse(stdout));
   return AIAResult;
 }
+
 /**
  * @description 生成SASI数据
  * @param {*} datas [mat数据]
@@ -91,6 +95,7 @@ async function SASI(datas) {
   ]).then(({ stdout }) => JSON.parse(stdout));
   return SASIResult;
 }
+
 /**
  * @description 生成DFA数据
  * @param {*} datas [mat数据]
@@ -107,6 +112,7 @@ async function DFA(datas) {
   ]).then(({ stdout }) => JSON.parse(stdout));
   return DFAResult;
 }
+
 /**
  * @description 生成脑网络图片和AUC数据
  * @param {*} datavectors [{data:mat数据,picPaths:[theta矩阵图存储地址,alpha矩阵图存储地址,theta拓扑图存储地址,alpha拓扑图存储地址,]}]

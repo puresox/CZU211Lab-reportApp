@@ -1,5 +1,3 @@
-[![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
-
 # reportApp
 
 实验室生成报告的应用。
@@ -32,14 +30,6 @@ npm start
 Note: If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.
 
 1. npm 要换源，electron 也要换源。
-
-
-
-## TODO
-
-- [ ] 数据计算的进度条
-
-
 
 ## License
 
