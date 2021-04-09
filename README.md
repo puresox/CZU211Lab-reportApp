@@ -33,6 +33,14 @@ Note: If you're using Linux Bash for Windows, [see this guide](https://www.howto
 
 1. npm 要换源，electron 也要换源。
 
+
+
+## TODO
+
+- [ ] 数据计算的进度条
+
+
+
 ## License
 
 [CC0 1.0 (Public Domain)](LICENSE.md)

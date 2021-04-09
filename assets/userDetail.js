@@ -1,7 +1,8 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { ipcRenderer } = require('electron');
 const echarts = require('echarts');
-const { getCalcResultById } = require('./db'); // html引用的js引用模块路径以html为基准
+// eslint-disable-next-line import/no-useless-path-segments
+const { getCalcResultById } = require('../assets/db'); // html引用的js引用模块路径以html为基准
 
 let userInfo;
 let reportCalcResult;
