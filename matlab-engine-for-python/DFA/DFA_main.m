@@ -18,9 +18,9 @@ end
 
 n=n';
 %plot(log(n),log(F_n));
-scatter(log(n),log(F_n),'*');
-xlabel('log(n)')
-ylabel('log(F(n))')
+%scatter(log(n),log(F_n),'*');
+%xlabel('log(n)');
+%ylabel('log(F(n))');
 A=polyfit(log(n(1:end)),log(F_n(1:end)),1);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%增加拟合阶数
 %  B=polyfit(log(n(1:end)),log(F_n2(1:end)),1);

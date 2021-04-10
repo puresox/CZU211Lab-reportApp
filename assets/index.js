@@ -44,7 +44,7 @@ function renderUserRaws(users) {
     });
     // 监听查看被试事件
     const detailButton = userRaw.querySelector('button[name="detail"]');
-    if (user.calcState !== '已计算') {
+    if (user.calcState === '未计算') {
       detailButton.disabled = true;
       detailButton.title = '请先计算';
     }

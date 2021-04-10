@@ -169,10 +169,10 @@ async function sasiPromise() {
 async function dfaPromise() {
   // 多进程计算
   const [
-    [beforeEyeClose],
-    [afterEyeClose],
-    [beforeEyeOpen],
-    [afterEyeOpen],
+    beforeEyeClose,
+    afterEyeClose,
+    beforeEyeOpen,
+    afterEyeOpen,
   ] = await DFA([
     userDataPaths.before.eyeClose,
     userDataPaths.after.eyeClose,
