@@ -1,5 +1,7 @@
 // All of the Node.js APIs are available in the process.
 // It has the same sandbox as a Chrome extension.
+// eslint-disable-next-line import/no-extraneous-dependencies
+const { ipcRenderer } = require('electron');
 const { addUser } = require('./db');
 
 function getRadioCheckedValue(name) {
@@ -26,6 +28,7 @@ window.addEventListener('DOMContentLoaded', () => {
   addUserBtn.addEventListener('click', async () => {
     addUserBtn.disabled = true;
     await addUserTodb();
+    ipcRenderer.send('reloadIndex');
     window.close();
   });
 });

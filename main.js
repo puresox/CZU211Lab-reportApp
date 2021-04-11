@@ -17,6 +17,12 @@ function settingInit() {
     } catch (error) {
       console.log(error);
     }
+  } else if (!fs.existsSync(appDataPath)) {
+    try {
+      fs.mkdirSync(appDataPath);
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 /**

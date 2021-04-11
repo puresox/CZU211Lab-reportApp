@@ -57,6 +57,7 @@ ipcRenderer.on('getUser', async (event, user) => {
   editUserBtn.addEventListener('click', async () => {
     editUserBtn.disabled = true;
     await upgradeUserTodb(user.id);
+    ipcRenderer.send('reloadIndex');
     window.close();
   });
 });

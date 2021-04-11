@@ -88,13 +88,10 @@ window.addEventListener('DOMContentLoaded', async () => {
     const newAppDataPath = await ipcRenderer.invoke('selectAppDataPath');
     if (newAppDataPath) {
       ipcRenderer.send('setSetting', 'appDataPath', newAppDataPath);
-      // 不需要刷新
+      window.location.reload();
     }
   });
   // 生成用户列表
   const users = await getUsers();
   renderUserRaws(users);
 });
-window.onfocus = () => {
-  window.location.reload();
-};
