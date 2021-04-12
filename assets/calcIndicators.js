@@ -1,11 +1,9 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-const { ipcRenderer } = require('electron');
-const fs = require('fs');
-const path = require('path');
-const { upgradeUser, upgradeCalcResults } = require('./db');
-const {
-  getTopoplot, POWER, AIA, SASI, DFA, PLV,
-} = require('./indicatorApi');
+const { ipcRenderer } = require("electron");
+const fs = require("fs");
+const path = require("path");
+const { upgradeUser, upgradeCalcResults } = require("./db");
+const { getTopoplot, POWER, AIA, SASI, DFA, PLV } = require("./indicatorApi");
 
 let userInfo;
 const userDataPaths = {
@@ -22,45 +20,45 @@ const userDataPaths = {
 // 获取脑电数据地址
 function getUserDataPaths() {
   const { userDataPath } = userInfo;
-  const userBeforeDir = fs.readdirSync(path.join(userDataPath, './训练前'), {
+  const userBeforeDir = fs.readdirSync(path.join(userDataPath, "./训练前"), {
     withFileTypes: true,
   });
-  const userAfterDir = fs.readdirSync(path.join(userDataPath, './训练后'), {
+  const userAfterDir = fs.readdirSync(path.join(userDataPath, "./训练后"), {
     withFileTypes: true,
   });
   if (userBeforeDir.length !== 2 || userAfterDir.length !== 2) {
-    throw new Error('找不到数据文件');
+    throw new Error("找不到数据文件");
   }
   userBeforeDir.forEach((userBefore) => {
     if (!userBefore.isDirectory()) {
-      if (userBefore.name.endsWith('o.mat')) {
+      if (userBefore.name.endsWith("o.mat")) {
         userDataPaths.before.eyeOpen = path.join(
           userDataPath,
-          './训练前',
-          userBefore.name,
+          "./训练前",
+          userBefore.name
         );
-      } else if (userBefore.name.endsWith('c.mat')) {
+      } else if (userBefore.name.endsWith("c.mat")) {
         userDataPaths.before.eyeClose = path.join(
           userDataPath,
-          './训练前',
-          userBefore.name,
+          "./训练前",
+          userBefore.name
         );
       }
     }
   });
   userAfterDir.forEach((userAfter) => {
     if (!userAfter.isDirectory()) {
-      if (userAfter.name.endsWith('o.mat')) {
+      if (userAfter.name.endsWith("o.mat")) {
         userDataPaths.after.eyeOpen = path.join(
           userDataPath,
-          './训练后',
-          userAfter.name,
+          "./训练后",
+          userAfter.name
         );
-      } else if (userAfter.name.endsWith('c.mat')) {
+      } else if (userAfter.name.endsWith("c.mat")) {
         userDataPaths.after.eyeClose = path.join(
           userDataPath,
-          './训练后',
-          userAfter.name,
+          "./训练后",
+          userAfter.name
         );
       }
     }
@@ -85,23 +83,23 @@ async function powerPromise() {
       ],
       picPaths: [],
     };
-    let range = 'Theta';
+    let range = "Theta";
     if (Math.floor(index / 2) === 0) {
-      range = 'Theta';
+      range = "Theta";
     } else if (Math.floor(index / 2) === 1) {
-      range = 'Alpha';
+      range = "Alpha";
     } else if (Math.floor(index / 2) === 2) {
-      range = 'Beta';
+      range = "Beta";
     } else {
-      range = 'Gamma';
+      range = "Gamma";
     }
     for (let j = 1; j <= 3; j += 1) {
       datavector.picPaths.push(
         path.join(
           userInfo.userDataPath,
-          './数据缓存',
-          `POWER${index % 2 === 0 ? 'Close' : 'Open'}${range}${j}.png`,
-        ),
+          "./数据缓存",
+          `POWER${index % 2 === 0 ? "Close" : "Open"}${range}${j}.png`
+        )
       );
     }
     datavectors.push(datavector);
@@ -142,17 +140,17 @@ async function sasiPromise() {
     {
       datas: [beforeEyeClose, afterEyeClose],
       picPaths: [
-        path.join(userInfo.userDataPath, './数据缓存', 'SASIc1.png'),
-        path.join(userInfo.userDataPath, './数据缓存', 'SASIc2.png'),
-        path.join(userInfo.userDataPath, './数据缓存', 'SASIc3.png'),
+        path.join(userInfo.userDataPath, "./数据缓存", "SASIc1.png"),
+        path.join(userInfo.userDataPath, "./数据缓存", "SASIc2.png"),
+        path.join(userInfo.userDataPath, "./数据缓存", "SASIc3.png"),
       ],
     },
     {
       datas: [beforeEyeOpen, afterEyeOpen],
       picPaths: [
-        path.join(userInfo.userDataPath, './数据缓存', 'SASIo1.png'),
-        path.join(userInfo.userDataPath, './数据缓存', 'SASIo2.png'),
-        path.join(userInfo.userDataPath, './数据缓存', 'SASIo3.png'),
+        path.join(userInfo.userDataPath, "./数据缓存", "SASIo1.png"),
+        path.join(userInfo.userDataPath, "./数据缓存", "SASIo2.png"),
+        path.join(userInfo.userDataPath, "./数据缓存", "SASIo3.png"),
       ],
     },
   ];
@@ -184,17 +182,17 @@ async function dfaPromise() {
     {
       datas: [beforeEyeClose, afterEyeClose],
       picPaths: [
-        path.join(userInfo.userDataPath, './数据缓存', 'DFAc1.png'),
-        path.join(userInfo.userDataPath, './数据缓存', 'DFAc2.png'),
-        path.join(userInfo.userDataPath, './数据缓存', 'DFAc3.png'),
+        path.join(userInfo.userDataPath, "./数据缓存", "DFAc1.png"),
+        path.join(userInfo.userDataPath, "./数据缓存", "DFAc2.png"),
+        path.join(userInfo.userDataPath, "./数据缓存", "DFAc3.png"),
       ],
     },
     {
       datas: [beforeEyeOpen, afterEyeOpen],
       picPaths: [
-        path.join(userInfo.userDataPath, './数据缓存', 'DFAo1.png'),
-        path.join(userInfo.userDataPath, './数据缓存', 'DFAo2.png'),
-        path.join(userInfo.userDataPath, './数据缓存', 'DFAo3.png'),
+        path.join(userInfo.userDataPath, "./数据缓存", "DFAo1.png"),
+        path.join(userInfo.userDataPath, "./数据缓存", "DFAo2.png"),
+        path.join(userInfo.userDataPath, "./数据缓存", "DFAo3.png"),
       ],
     },
   ];
@@ -215,23 +213,23 @@ async function plvPromise() {
       picPaths: [
         path.join(
           userInfo.userDataPath,
-          './数据缓存',
-          'PLVCloseBeforeTheta1.png',
+          "./数据缓存",
+          "PLVCloseBeforeTheta1.png"
         ),
         path.join(
           userInfo.userDataPath,
-          './数据缓存',
-          'PLVCloseBeforeAlpha1.png',
+          "./数据缓存",
+          "PLVCloseBeforeAlpha1.png"
         ),
         path.join(
           userInfo.userDataPath,
-          './数据缓存',
-          'PLVCloseBeforeTheta2.png',
+          "./数据缓存",
+          "PLVCloseBeforeTheta2.png"
         ),
         path.join(
           userInfo.userDataPath,
-          './数据缓存',
-          'PLVCloseBeforeAlpha2.png',
+          "./数据缓存",
+          "PLVCloseBeforeAlpha2.png"
         ),
       ],
     },
@@ -240,23 +238,23 @@ async function plvPromise() {
       picPaths: [
         path.join(
           userInfo.userDataPath,
-          './数据缓存',
-          'PLVCloseAfterTheta1.png',
+          "./数据缓存",
+          "PLVCloseAfterTheta1.png"
         ),
         path.join(
           userInfo.userDataPath,
-          './数据缓存',
-          'PLVCloseAfterAlpha1.png',
+          "./数据缓存",
+          "PLVCloseAfterAlpha1.png"
         ),
         path.join(
           userInfo.userDataPath,
-          './数据缓存',
-          'PLVCloseAfterTheta2.png',
+          "./数据缓存",
+          "PLVCloseAfterTheta2.png"
         ),
         path.join(
           userInfo.userDataPath,
-          './数据缓存',
-          'PLVCloseAfterAlpha2.png',
+          "./数据缓存",
+          "PLVCloseAfterAlpha2.png"
         ),
       ],
     },
@@ -265,23 +263,23 @@ async function plvPromise() {
       picPaths: [
         path.join(
           userInfo.userDataPath,
-          './数据缓存',
-          'PLVOpenBeforeTheta1.png',
+          "./数据缓存",
+          "PLVOpenBeforeTheta1.png"
         ),
         path.join(
           userInfo.userDataPath,
-          './数据缓存',
-          'PLVOpenBeforeAlpha1.png',
+          "./数据缓存",
+          "PLVOpenBeforeAlpha1.png"
         ),
         path.join(
           userInfo.userDataPath,
-          './数据缓存',
-          'PLVOpenBeforeTheta2.png',
+          "./数据缓存",
+          "PLVOpenBeforeTheta2.png"
         ),
         path.join(
           userInfo.userDataPath,
-          './数据缓存',
-          'PLVOpenBeforeAlpha2.png',
+          "./数据缓存",
+          "PLVOpenBeforeAlpha2.png"
         ),
       ],
     },
@@ -290,23 +288,23 @@ async function plvPromise() {
       picPaths: [
         path.join(
           userInfo.userDataPath,
-          './数据缓存',
-          'PLVOpenAfterTheta1.png',
+          "./数据缓存",
+          "PLVOpenAfterTheta1.png"
         ),
         path.join(
           userInfo.userDataPath,
-          './数据缓存',
-          'PLVOpenAfterAlpha1.png',
+          "./数据缓存",
+          "PLVOpenAfterAlpha1.png"
         ),
         path.join(
           userInfo.userDataPath,
-          './数据缓存',
-          'PLVOpenAfterTheta2.png',
+          "./数据缓存",
+          "PLVOpenAfterTheta2.png"
         ),
         path.join(
           userInfo.userDataPath,
-          './数据缓存',
-          'PLVOpenAfterAlpha2.png',
+          "./数据缓存",
+          "PLVOpenAfterAlpha2.png"
         ),
       ],
     },
@@ -323,11 +321,11 @@ async function plvPromise() {
   });
 }
 
-ipcRenderer.on('getUser', async (event, user) => {
+ipcRenderer.on("getUser", async (event, user) => {
   userInfo = user;
   getUserDataPaths();
   await upgradeUser(user.id, {
-    calcState: '计算中',
+    calcState: "计算中",
   });
   await Promise.all([
     powerPromise(),
@@ -337,15 +335,15 @@ ipcRenderer.on('getUser', async (event, user) => {
     plvPromise(),
   ]);
   await upgradeUser(user.id, {
-    calcState: '已计算',
+    calcState: "已计算",
   });
-  ipcRenderer.send('reloadIndex');
+  ipcRenderer.send("reloadIndex");
   window.close();
 });
 
-window.addEventListener('error', (error) => {
-  ipcRenderer.send('showError', error);
+window.addEventListener("error", (error) => {
+  ipcRenderer.send("showError", error);
 });
-window.addEventListener('unhandledrejection', (error) => {
-  ipcRenderer.send('showError', error);
+window.addEventListener("unhandledrejection", (error) => {
+  ipcRenderer.send("showError", error);
 });

@@ -1,41 +1,41 @@
 /* eslint-disable max-len */
 // eslint-disable-next-line import/no-extraneous-dependencies
-const { ipcRenderer } = require('electron');
-const { spawn } = require('child_process');
-const path = require('path');
+const { ipcRenderer } = require("electron");
+const { spawn } = require("child_process");
+const path = require("path");
 
 let pythonPath;
 (async function setPythonPath() {
-  const isPackaged = await ipcRenderer.invoke('isPackaged');
+  const isPackaged = await ipcRenderer.invoke("isPackaged");
   if (isPackaged) {
-    pythonPath = 'python';
+    pythonPath = "python";
   } else {
     pythonPath = String.raw`C:\Users\10748\.virtualenvs\matlab-engine-for-python-YOtp9JHU\Scripts\python.exe`;
   }
-}());
+})();
 
 async function spawnChild(command, args = []) {
   const child = spawn(command, args);
-  let data = '';
-  let error = '';
-  child.stdout.on('data', (chunk) => {
+  let data = "";
+  let error = "";
+  child.stdout.on("data", (chunk) => {
     data += chunk;
   });
-  child.stderr.on('data', (chunk) => {
+  child.stderr.on("data", (chunk) => {
     error += chunk;
   });
   const exitCode = await new Promise((resolve) => {
-    child.on('close', resolve);
+    child.on("close", resolve);
   });
 
   if (exitCode) {
     throw new Error(`subprocess error exit ${exitCode}, ${error}`);
   }
   // 返回最后一次输出
-  const stdoutArray = data.toString().split('\n');
-  let stdoutResult = '';
+  const stdoutArray = data.toString().split("\n");
+  let stdoutResult = "";
   for (let i = stdoutArray.length - 1; i >= 0; i -= 1) {
-    if (stdoutArray[i] !== '') {
+    if (stdoutArray[i] !== "") {
       stdoutResult = stdoutArray[i];
       break;
     }
@@ -50,7 +50,7 @@ async function spawnChild(command, args = []) {
 async function getTopoplot(datavectors) {
   const getTopoplotPath = path.join(
     __dirname,
-    '../matlab-engine-for-python/topoplot/getTopoplot.py',
+    "../matlab-engine-for-python/topoplot/getTopoplot.py"
   );
   await spawnChild(pythonPath, [getTopoplotPath, JSON.stringify(datavectors)]);
 }
@@ -63,7 +63,7 @@ async function getTopoplot(datavectors) {
 async function POWER(datas) {
   const POWERPath = path.join(
     __dirname,
-    '../matlab-engine-for-python/POWER/POWER.py',
+    "../matlab-engine-for-python/POWER/POWER.py"
   );
   const POWERResult = await spawnChild(pythonPath, [
     POWERPath,
@@ -80,7 +80,7 @@ async function POWER(datas) {
 async function AIA(datas) {
   const AIAPath = path.join(
     __dirname,
-    '../matlab-engine-for-python/AIA/AIA.py',
+    "../matlab-engine-for-python/AIA/AIA.py"
   );
   const AIAResult = await spawnChild(pythonPath, [
     AIAPath,
@@ -97,7 +97,7 @@ async function AIA(datas) {
 async function SASI(datas) {
   const SASIPath = path.join(
     __dirname,
-    '../matlab-engine-for-python/SASI/SASI.py',
+    "../matlab-engine-for-python/SASI/SASI.py"
   );
   const SASIResult = await spawnChild(pythonPath, [
     SASIPath,
@@ -114,7 +114,7 @@ async function SASI(datas) {
 async function DFA(datas) {
   const DFAPath = path.join(
     __dirname,
-    '../matlab-engine-for-python/DFA/DFA.py',
+    "../matlab-engine-for-python/DFA/DFA.py"
   );
   const DFAResult = await spawnChild(pythonPath, [
     DFAPath,
@@ -131,7 +131,7 @@ async function DFA(datas) {
 async function PLV(datavectors) {
   const PLVPath = path.join(
     __dirname,
-    '../matlab-engine-for-python/PLV/PLV.py',
+    "../matlab-engine-for-python/PLV/PLV.py"
   );
   const PLVResult = await spawnChild(pythonPath, [
     PLVPath,
@@ -141,5 +141,10 @@ async function PLV(datavectors) {
 }
 
 module.exports = {
-  getTopoplot, POWER, AIA, SASI, DFA, PLV,
+  getTopoplot,
+  POWER,
+  AIA,
+  SASI,
+  DFA,
+  PLV,
 };

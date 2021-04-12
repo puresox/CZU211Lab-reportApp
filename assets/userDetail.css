@@ -1,9 +1,6 @@
 /* 通用样式 */
 
 @media all {
-  #printerSelect {
-    display: none;
-  }
   p {
     text-indent: 2em;
     /* 首行缩进两个字符 */

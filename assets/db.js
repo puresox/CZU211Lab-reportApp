@@ -1,18 +1,18 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-const { ipcRenderer } = require('electron');
-const fs = require('fs');
-const path = require('path');
-const Dexie = require('dexie');
+const { ipcRenderer } = require("electron");
+const fs = require("fs");
+const path = require("path");
+const Dexie = require("dexie");
 
-const db = new Dexie('reportApp');
+const db = new Dexie("reportApp");
 db.version(1).stores({
-  users: '++id,name,age,gender,type,calcState', // 性别（男/女），类型（健康/对照），计算状态（未计算，计算中，已计算）
-  calcResults: '&id', // power,aia,sasi,dfa,plv,auc
+  users: "++id,name,age,gender,type,calcState", // 性别（男/女），类型（健康/对照），计算状态（未计算，计算中，已计算）
+  calcResults: "&id", // power,aia,sasi,dfa,plv,auc
 });
 
 // 获取数据存储地址
 async function getAppDataPath() {
-  const appDataPath = await ipcRenderer.invoke('getSetting', 'appDataPath');
+  const appDataPath = await ipcRenderer.invoke("getSetting", "appDataPath");
   return appDataPath;
 }
 
@@ -44,7 +44,7 @@ async function getUsers() {
 
 // 获取指定id被试信息
 async function getUserById(id) {
-  const [user] = await db.users.where('id').equals(id).toArray();
+  const [user] = await db.users.where("id").equals(id).toArray();
   return user;
 }
 
@@ -55,7 +55,7 @@ async function addUser(name, age, gender, type) {
     age,
     gender,
     type,
-    calcState: '未计算',
+    calcState: "未计算",
   });
   await db.calcResults.add({
     id: userId,
@@ -63,10 +63,10 @@ async function addUser(name, age, gender, type) {
   const appDataPath = await getAppDataPath();
   const userDataPath = path.join(appDataPath, `./${userId}`);
   fs.mkdirSync(userDataPath);
-  fs.mkdirSync(path.join(userDataPath, './训练前'));
-  fs.mkdirSync(path.join(userDataPath, './训练中'));
-  fs.mkdirSync(path.join(userDataPath, './训练后'));
-  fs.mkdirSync(path.join(userDataPath, './数据缓存'));
+  fs.mkdirSync(path.join(userDataPath, "./训练前"));
+  fs.mkdirSync(path.join(userDataPath, "./训练中"));
+  fs.mkdirSync(path.join(userDataPath, "./训练后"));
+  fs.mkdirSync(path.join(userDataPath, "./数据缓存"));
 }
 
 // 更新被试信息
@@ -85,7 +85,7 @@ async function delUserById(id) {
 
 // 获取指定id的计算结果
 async function getCalcResultById(id) {
-  const [calcResult] = await db.calcResults.where('id').equals(id).toArray();
+  const [calcResult] = await db.calcResults.where("id").equals(id).toArray();
   return calcResult;
 }
 
