@@ -10,6 +10,8 @@ const {
 const settings = require("electron-settings");
 const path = require("path");
 const fs = require("fs");
+const { PDFDocument } = require("pdf-lib");
+const fontkit = require("@pdf-lib/fontkit");
 
 // 监听打开addUser窗口的消息
 ipcMain.on("open-addUser", () => {
@@ -87,10 +89,28 @@ ipcMain.on("print", async (event, options, userInfo) => {
     dialog.showErrorBox("错误", error);
   });
   if (!canceled && pdfPath) {
-    fs.writeFile(pdfPath, pdfBuffer, (error) => {
+    const pdfDoc = await PDFDocument.load(pdfBuffer);
+    pdfDoc.registerFontkit(fontkit);
+    const STSONG = await pdfDoc.embedFont(
+      fs.readFileSync("C:/Windows/Fonts/STSONG.TTF")
+    );
+    const pages = pdfDoc.getPages();
+    pages.forEach((page) => {
+      page.drawText(
+        `姓名：${userInfo.name}        年龄：${userInfo.age}\n` +
+          `性别：${userInfo.gender}        类型：${userInfo.type}`,
+        {
+          x: 50,
+          y: page.getHeight() - 20,
+          lineHeight: 15,
+          size: 12,
+          font: STSONG,
+        }
+      );
+    });
+    const pdfBytes = await pdfDoc.save();
+    fs.writeFile(pdfPath, pdfBytes, (error) => {
       if (error) throw error;
-      // 添加页眉页脚
-
       shell.openPath(pdfPath);
     });
   }
