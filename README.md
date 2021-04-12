@@ -6,7 +6,7 @@
 
 1. 额外安装 python，matlab。
 2. 安装用于 Python 的 MATLAB 引擎 API（在默认位置安装）。
-3. MATLAB 安装 EEGLAB。
+3. MATLAB 安装 EEGLAB，EEGLAB 要添加所有子目录。
 
 ## 注意
 

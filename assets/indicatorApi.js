@@ -1,8 +1,18 @@
 /* eslint-disable max-len */
+// eslint-disable-next-line import/no-extraneous-dependencies
+const { ipcRenderer } = require('electron');
 const { spawn } = require('child_process');
 const path = require('path');
 
-const pythonPath = String.raw`C:\Users\10748\.virtualenvs\matlab-engine-for-python-YOtp9JHU\Scripts\python.exe`;
+let pythonPath;
+(async function setPythonPath() {
+  const isPackaged = await ipcRenderer.invoke('isPackaged');
+  if (isPackaged) {
+    pythonPath = 'python';
+  } else {
+    pythonPath = String.raw`C:\Users\10748\.virtualenvs\matlab-engine-for-python-YOtp9JHU\Scripts\python.exe`;
+  }
+}());
 
 async function spawnChild(command, args = []) {
   const child = spawn(command, args);

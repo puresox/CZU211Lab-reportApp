@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, dialog } = require('electron');
 const settings = require('electron-settings');
 const fs = require('fs');
 const path = require('path');
@@ -15,13 +15,13 @@ function settingInit() {
     try {
       fs.mkdirSync(appDataPath);
     } catch (error) {
-      console.log(error);
+      dialog.showErrorBox('错误', error);
     }
   } else if (!fs.existsSync(appDataPath)) {
     try {
       fs.mkdirSync(appDataPath);
     } catch (error) {
-      console.log(error);
+      dialog.showErrorBox('错误', error);
     }
   }
 }

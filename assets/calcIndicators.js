@@ -342,3 +342,10 @@ ipcRenderer.on('getUser', async (event, user) => {
   ipcRenderer.send('reloadIndex');
   window.close();
 });
+
+window.addEventListener('error', (error) => {
+  ipcRenderer.send('showError', error);
+});
+window.addEventListener('unhandledrejection', (error) => {
+  ipcRenderer.send('showError', error);
+});

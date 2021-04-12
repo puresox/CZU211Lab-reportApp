@@ -1,6 +1,6 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 const {
-  ipcMain, BrowserWindow, dialog, screen,
+  ipcMain, BrowserWindow, dialog, screen, app,
+// eslint-disable-next-line import/no-extraneous-dependencies
 } = require('electron');
 const settings = require('electron-settings');
 const path = require('path');
@@ -78,12 +78,14 @@ ipcMain.on('print', (event, options) => {
   BrowserWindow.getFocusedWindow().webContents.print(
     options,
     (success, errorType) => {
-      if (!success) console.log(errorType);
+      if (!success) dialog.showErrorBox('错误', errorType);
     },
   );
 });
 // 监听获取设置事件
 ipcMain.handle('getSetting', async (event, key) => settings.getSync(key));
+// 监听获取是否打包事件
+ipcMain.handle('isPackaged', async () => app.isPackaged);
 // 监听设置设置事件
 ipcMain.on('setSetting', (event, key, value) => {
   settings.setSync(key, value);
@@ -108,4 +110,8 @@ ipcMain.on('calcIndicators', (event, user) => {
 // 监听刷新主页事件
 ipcMain.on('reloadIndex', () => {
   global.mainWindow.reload();
+});
+// 监听显示错误事件
+ipcMain.on('showError', (event, error) => {
+  dialog.showErrorBox('错误', error);
 });
