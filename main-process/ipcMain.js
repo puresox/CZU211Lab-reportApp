@@ -10,6 +10,7 @@ const {
 const settings = require("electron-settings");
 const path = require("path");
 const fs = require("fs");
+const os = require("os");
 const { PDFDocument } = require("pdf-lib");
 const fontkit = require("@pdf-lib/fontkit");
 
@@ -83,6 +84,12 @@ ipcMain.on("print", async (event, options, userInfo) => {
   const [pdfBuffer, { canceled, filePath: pdfPath }] = await Promise.all([
     BrowserWindow.getFocusedWindow().webContents.printToPDF(options),
     dialog.showSaveDialog({
+      defaultPath: path.join(
+        os.homedir(),
+        "Desktop",
+        `${userInfo.name}报告.pdf`
+      ),
+      filters: [{ extensions: ["pdf"] }],
       properties: ["createDirectory", "showOverwriteConfirmation"],
     }),
   ]).catch((error) => {
@@ -95,7 +102,9 @@ ipcMain.on("print", async (event, options, userInfo) => {
       fs.readFileSync("C:/Windows/Fonts/STSONG.TTF")
     );
     const pages = pdfDoc.getPages();
-    pages.forEach((page) => {
+    for (let index = 0; index < pages.length; index += 1) {
+      const page = pages[index];
+      // 添加页眉
       page.drawText(
         `姓名：${userInfo.name}        年龄：${userInfo.age}\n` +
           `性别：${userInfo.gender}        类型：${userInfo.type}`,
@@ -107,7 +116,15 @@ ipcMain.on("print", async (event, options, userInfo) => {
           font: STSONG,
         }
       );
-    });
+      // 添加页脚
+      page.drawText(`第${index + 1}页/共${pages.length}页`, {
+        x: page.getWidth() - 80,
+        y: 10,
+        lineHeight: 15,
+        size: 12,
+        font: STSONG,
+      });
+    }
     const pdfBytes = await pdfDoc.save();
     fs.writeFile(pdfPath, pdfBytes, (error) => {
       if (error) throw error;
