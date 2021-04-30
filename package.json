@@ -1,5 +1,5 @@
 {
-  "name": "reportapp",
+  "name": "czu211lab-reportapp",
   "version": "0.3.0",
   "description": "实验室生成报告应用",
   "main": "main.js",
@@ -9,7 +9,7 @@
     "make": "electron-forge make",
     "install": "electron-rebuild"
   },
-  "repository": "https://github.com/puresox/reportApp",
+  "repository": "https://github.com/puresox/CZU211Lab-reportApp",
   "keywords": [
     "Electron"
   ],
@@ -30,7 +30,7 @@
   "dependencies": {
     "@pdf-lib/fontkit": "^1.1.1",
     "dexie": "^3.0.3",
-    "echarts": "^5.1.0",
+    "echarts": "^5.1.1",
     "electron-settings": "^4.0.2",
     "pdf-lib": "^1.16.0"
   },
@@ -48,7 +48,7 @@
             "win32"
           ],
           "config": {
-            "name": "reportapp"
+            "name": "CZU211Lab-reportApp"
           }
         }
       ]
