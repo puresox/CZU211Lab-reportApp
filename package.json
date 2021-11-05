@@ -18,21 +18,21 @@
   "devDependencies": {
     "@electron-forge/cli": "6.0.0-beta.61",
     "@electron-forge/maker-zip": "6.0.0-beta.61",
-    "electron": "^14.0.0",
+    "electron": "^15.3.0",
     "electron-rebuild": "^3.2.3",
-    "eslint": "^7.32.0",
+    "eslint": "^8.1.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.24.2",
-    "prettier": "^2.4.0",
+    "eslint-plugin-import": "^2.25.2",
+    "prettier": "^2.4.1",
     "trim-newlines": "^4.0.2"
   },
   "dependencies": {
     "@pdf-lib/fontkit": "^1.1.1",
     "dexie": "^3.0.3",
-    "echarts": "^5.2.0",
+    "echarts": "^5.2.2",
     "electron-settings": "^4.0.2",
-    "pdf-lib": "^1.16.0"
+    "pdf-lib": "^1.17.0"
   },
   "config": {
     "forge": {

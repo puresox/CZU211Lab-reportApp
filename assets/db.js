@@ -6,7 +6,7 @@ const Dexie = require("dexie");
 
 const db = new Dexie("reportApp");
 db.version(1).stores({
-  users: "++id,name,age,gender,type,calcState", // 性别（男/女），类型（健康/对照），计算状态（未计算，计算中，已计算）
+  users: "++id,name,age,gender,type,calcState", // 性别（男/女），类型（健康/患者），计算状态（未计算，计算中，已计算）
   calcResults: "&id", // power,aia,sasi,dfa,plv,auc
 });
 

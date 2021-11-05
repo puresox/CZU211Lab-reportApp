@@ -5,12 +5,13 @@
 ## 安装说明
 
 1. 额外安装 python，matlab。
-2. 安装用于 Python 的 MATLAB 引擎 API（在默认位置安装）。
+2. 安装用于 Python 的 MATLAB 引擎 API（在默认位置安装）。[安装用于 Python 的 MATLAB 引擎 API - MATLAB & Simulink - MathWorks 中国](https://ww2.mathworks.cn/help/matlab/matlab_external/install-the-matlab-engine-for-python.html)
 3. MATLAB 安装 EEGLAB，EEGLAB 要添加所有子目录。
 
 ## 注意
 
 1. 数据文件以 o 结尾表示睁眼，以 c 结尾表示闭眼。
+2. 代码中填写python路径。
 
 ## 开发
 

@@ -10,7 +10,7 @@ let pythonPath;
   if (isPackaged) {
     pythonPath = "python";
   } else {
-    pythonPath = String.raw`C:\Users\10748\.virtualenvs\matlab-engine-for-python-YOtp9JHU\Scripts\python.exe`;
+    pythonPath = String.raw`C:\Users\10748\.virtualenvs\matlab-engine-for-python-asXTSC0I\Scripts\python.exe`;
   }
 })();
 

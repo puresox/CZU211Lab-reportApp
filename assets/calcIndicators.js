@@ -124,17 +124,13 @@ async function aiaPromise() {
 }
 
 async function sasiPromise() {
-  const [
-    beforeEyeClose,
-    afterEyeClose,
-    beforeEyeOpen,
-    afterEyeOpen,
-  ] = await SASI([
-    userDataPaths.before.eyeClose,
-    userDataPaths.after.eyeClose,
-    userDataPaths.before.eyeOpen,
-    userDataPaths.after.eyeOpen,
-  ]);
+  const [beforeEyeClose, afterEyeClose, beforeEyeOpen, afterEyeOpen] =
+    await SASI([
+      userDataPaths.before.eyeClose,
+      userDataPaths.after.eyeClose,
+      userDataPaths.before.eyeOpen,
+      userDataPaths.after.eyeOpen,
+    ]);
   // 地形图
   const datavectors = [
     {
@@ -166,17 +162,13 @@ async function sasiPromise() {
 
 async function dfaPromise() {
   // 多进程计算
-  const [
-    beforeEyeClose,
-    afterEyeClose,
-    beforeEyeOpen,
-    afterEyeOpen,
-  ] = await DFA([
-    userDataPaths.before.eyeClose,
-    userDataPaths.after.eyeClose,
-    userDataPaths.before.eyeOpen,
-    userDataPaths.after.eyeOpen,
-  ]);
+  const [beforeEyeClose, afterEyeClose, beforeEyeOpen, afterEyeOpen] =
+    await DFA([
+      userDataPaths.before.eyeClose,
+      userDataPaths.after.eyeClose,
+      userDataPaths.before.eyeOpen,
+      userDataPaths.after.eyeOpen,
+    ]);
   // 地形图
   const datavectors = [
     {
