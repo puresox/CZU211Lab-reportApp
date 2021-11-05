@@ -124,6 +124,23 @@ async function DFA(datas) {
 }
 
 /**
+ * @description 生成LZC数据
+ * @param {*} datas [mat数据]
+ * @returns [LZC一维数组]
+ */
+async function LZC(datas) {
+  const LZCPath = path.join(
+    __dirname,
+    "../matlab-engine-for-python/LZC/LZC.py"
+  );
+  const LZCResult = await spawnChild(pythonPath, [
+    LZCPath,
+    JSON.stringify(datas),
+  ]).then(({ stdout }) => JSON.parse(stdout));
+  return LZCResult;
+}
+
+/**
  * @description 生成脑网络图片和AUC数据
  * @param {*} datavectors [{data:mat数据,picPaths:[theta矩阵图存储地址,alpha矩阵图存储地址,theta拓扑图存储地址,alpha拓扑图存储地址,]}]
  * @returns [[[thetaaucs,thetaaucpath,thetaauccluster],[alphaaucs,alphaaucpath,alphaauccluster]]]
@@ -146,5 +163,6 @@ module.exports = {
   AIA,
   SASI,
   DFA,
+  LZC,
   PLV,
 };

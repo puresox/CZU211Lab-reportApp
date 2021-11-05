@@ -383,7 +383,7 @@
       </table>
     </div>
     <!-- 4. 去趋势波动（DFA） -->
-    <div id="dfaArea">
+    <div hidden id="dfaArea">
       <h2>4. 去趋势波动（DFA）</h2>
       <p>
         抑郁患者在 1~51 导联的 SE 值大于健康者，在 52-61 导联的 SE 值差异不大。
@@ -395,6 +395,43 @@
       <table id="dfaTopographicalMaps" class="topographicalMapTable">
         <caption>
           静息态闭眼、睁眼DFA值地形图（训练前后）
+        </caption>
+        <thead>
+          <tr>
+            <th></th>
+            <th>训练前</th>
+            <th>训练后</th>
+            <th>训练前后差值</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>闭眼</th>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>睁眼</th>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- 4. Lempel-Ziv复杂度（LZC） -->
+    <div id="lzcArea">
+      <h2>4. Lempel-Ziv复杂度（LZC）</h2>
+      <p>
+        LZC值表示大脑信号的复杂度，抑郁患者在各个导联的LZC值基本都高于健康者。且后脑枕区普遍较额叶区域LZC值高。
+        LZC值降低说明抑郁程度减轻。
+      </p>
+      <div id="closeLzcLine" class="lineChart"></div>
+      <div id="openLzcLine" class="lineChart"></div>
+      <table id="lzcTopographicalMaps" class="topographicalMapTable">
+        <caption>
+          静息态闭眼、睁眼LZC值地形图（训练前后）
         </caption>
         <thead>
           <tr>

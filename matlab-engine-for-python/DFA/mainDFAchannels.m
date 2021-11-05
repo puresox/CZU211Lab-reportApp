@@ -4,7 +4,7 @@ warning off;
 load(dataPath);
 Alphaploy=[];
 for i=1:64
-    data=EEG.data';
+    data=EEG.data(:,1:30000)';
     DATA=data(:,i);
     [~,Alpha1]=DFA_main(DATA);
     Alphaploy(i)=Alpha1;

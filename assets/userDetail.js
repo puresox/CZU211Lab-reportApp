@@ -126,6 +126,16 @@ function getDfaLineChart(divId, titleText) {
   return myChart;
 }
 
+function getLzcLineChart(divId, titleText) {
+  const myChart = echarts.init(document.getElementById(divId), null, {
+    renderer: "svg",
+  });
+  const option = getOptionTemplate(titleText, "电极位", "LZC值");
+  myChart.setOption(option);
+  myChart.showLoading();
+  return myChart;
+}
+
 // function getPowerBoxplotChart(divId, titleText) {
 //   const myChart = echarts.init(document.getElementById(divId), null, {
 //     renderer: 'svg',
@@ -318,12 +328,8 @@ async function renderSasiArea() {
   // 初始化：SASI特征值对照-睁眼
   const openSASILine = getSasiLineChart("openSasiLine", "SASI特征值对照-睁眼");
   // 异步更新数据
-  const [
-    beforeEyeClose,
-    afterEyeClose,
-    beforeEyeOpen,
-    afterEyeOpen,
-  ] = reportCalcResult.sasi.result;
+  const [beforeEyeClose, afterEyeClose, beforeEyeOpen, afterEyeOpen] =
+    reportCalcResult.sasi.result;
   // 更新：SASI特征值对照-闭眼
   closeSASILine.hideLoading();
   closeSASILine.setOption({
@@ -381,12 +387,8 @@ async function renderDfaArea() {
   // 初始化：DFA特征值对照-睁眼
   const openDFALine = getDfaLineChart("openDfaLine", "DFA特征值对照-睁眼");
   // 异步更新数据
-  const [
-    beforeEyeClose,
-    afterEyeClose,
-    beforeEyeOpen,
-    afterEyeOpen,
-  ] = reportCalcResult.dfa.result;
+  const [beforeEyeClose, afterEyeClose, beforeEyeOpen, afterEyeOpen] =
+    reportCalcResult.dfa.result;
   // 更新：DFA特征值对照-闭眼
   closeDFALine.hideLoading();
   closeDFALine.setOption({
@@ -423,6 +425,65 @@ async function renderDfaArea() {
   const picPathsArray = reportCalcResult.dfa.pic;
   const topographicalMapCells = document.querySelectorAll(
     "#dfaTopographicalMaps tbody td"
+  );
+  picPathsArray.forEach((picPaths, i) => {
+    picPaths.forEach((picPath, j) => {
+      const img = document.createElement("img");
+      img.src = picPath;
+      img.className = "topographicalMap";
+      const topographicalMapCell = topographicalMapCells[3 * i + j];
+      while (topographicalMapCell.firstChild) {
+        topographicalMapCell.removeChild(topographicalMapCell.firstChild);
+      }
+      topographicalMapCell.appendChild(img);
+    });
+  });
+}
+
+async function renderLzcArea() {
+  // 初始化：LZC特征值对照-闭眼
+  const closeLZCLine = getLzcLineChart("closeLzcLine", "LZC特征值对照-闭眼");
+  // 初始化：LZC特征值对照-睁眼
+  const openLZCLine = getLzcLineChart("openLzcLine", "LZC特征值对照-睁眼");
+  // 异步更新数据
+  const [beforeEyeClose, afterEyeClose, beforeEyeOpen, afterEyeOpen] =
+    reportCalcResult.lzc.result;
+  // 更新：LZC特征值对照-闭眼
+  closeLZCLine.hideLoading();
+  closeLZCLine.setOption({
+    series: [
+      {
+        name: "训练前",
+        type: "line",
+        data: beforeEyeClose,
+      },
+      {
+        name: "训练后",
+        type: "line",
+        data: afterEyeClose,
+      },
+    ],
+  });
+  // 更新：LZC特征值对照-睁眼
+  openLZCLine.hideLoading();
+  openLZCLine.setOption({
+    series: [
+      {
+        name: "训练前",
+        type: "line",
+        data: beforeEyeOpen,
+      },
+      {
+        name: "训练后",
+        type: "line",
+        data: afterEyeOpen,
+      },
+    ],
+  });
+  // 地形图
+  const picPathsArray = reportCalcResult.lzc.pic;
+  const topographicalMapCells = document.querySelectorAll(
+    "#lzcTopographicalMaps tbody td"
   );
   picPathsArray.forEach((picPaths, i) => {
     picPaths.forEach((picPath, j) => {
@@ -478,6 +539,7 @@ ipcRenderer.on("getUser", async (event, user) => {
   renderAiaArea();
   renderSasiArea();
   renderDfaArea();
+  renderLzcArea();
   renderPlvArea();
   // 监听打印报告事件
   const printReportBtn = document.getElementById("printButton");

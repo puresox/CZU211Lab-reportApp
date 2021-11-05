@@ -3,7 +3,15 @@ const { ipcRenderer } = require("electron");
 const fs = require("fs");
 const path = require("path");
 const { upgradeUser, upgradeCalcResults } = require("./db");
-const { getTopoplot, POWER, AIA, SASI, DFA, PLV } = require("./indicatorApi");
+const {
+  getTopoplot,
+  POWER,
+  AIA,
+  SASI,
+  DFA,
+  LZC,
+  PLV,
+} = require("./indicatorApi");
 
 let userInfo;
 const userDataPaths = {
@@ -198,6 +206,44 @@ async function dfaPromise() {
   });
 }
 
+async function lzcPromise() {
+  // 多进程计算
+  const [beforeEyeClose, afterEyeClose, beforeEyeOpen, afterEyeOpen] =
+    await LZC([
+      userDataPaths.before.eyeClose,
+      userDataPaths.after.eyeClose,
+      userDataPaths.before.eyeOpen,
+      userDataPaths.after.eyeOpen,
+    ]);
+  // 地形图
+  const datavectors = [
+    {
+      datas: [beforeEyeClose, afterEyeClose],
+      picPaths: [
+        path.join(userInfo.userDataPath, "./数据缓存", "LZCc1.png"),
+        path.join(userInfo.userDataPath, "./数据缓存", "LZCc2.png"),
+        path.join(userInfo.userDataPath, "./数据缓存", "LZCc3.png"),
+      ],
+    },
+    {
+      datas: [beforeEyeOpen, afterEyeOpen],
+      picPaths: [
+        path.join(userInfo.userDataPath, "./数据缓存", "LZCo1.png"),
+        path.join(userInfo.userDataPath, "./数据缓存", "LZCo2.png"),
+        path.join(userInfo.userDataPath, "./数据缓存", "LZCo3.png"),
+      ],
+    },
+  ];
+  await getTopoplot(datavectors);
+  const picPathsArray = datavectors.map((datavector) => datavector.picPaths);
+  await upgradeCalcResults(userInfo.id, {
+    lzc: {
+      result: [beforeEyeClose, afterEyeClose, beforeEyeOpen, afterEyeOpen],
+      pic: picPathsArray,
+    },
+  });
+}
+
 async function plvPromise() {
   const datavectors = [
     {
@@ -320,11 +366,12 @@ ipcRenderer.on("getUser", async (event, user) => {
     calcState: "计算中",
   });
   await Promise.all([
-    powerPromise(),
-    aiaPromise(),
-    sasiPromise(),
-    dfaPromise(),
-    plvPromise(),
+    // powerPromise(),
+    // aiaPromise(),
+    // sasiPromise(),
+    // dfaPromise(),
+    lzcPromise(),
+    // plvPromise(),
   ]);
   await upgradeUser(user.id, {
     calcState: "已计算",
