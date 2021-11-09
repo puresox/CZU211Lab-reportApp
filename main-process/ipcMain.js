@@ -105,6 +105,14 @@ ipcMain.on("print", async (event, options, userInfo) => {
     for (let index = 0; index < pages.length; index += 1) {
       const page = pages[index];
       // 添加页眉
+      page.drawText(`${userInfo.name}报告`, {
+        x: page.getWidth() / 2 - 50,
+        y: page.getHeight() - 25,
+        lineHeight: 15,
+        size: 20,
+        font: STSONG,
+      });
+      // 添加页眉
       page.drawText(
         `姓名：${userInfo.name}        年龄：${userInfo.age}\n` +
           `性别：${userInfo.gender}        类型：${userInfo.type}`,
