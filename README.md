@@ -1,6 +1,9 @@
 # reportApp
 
-实验室生成报告的应用。
+EEG指标分析与呈现。
+
+![image](https://user-images.githubusercontent.com/17718921/202400252-54306cd4-6505-4934-b0f0-008eca254c0c.png)
+
 
 ## 安装说明
 
