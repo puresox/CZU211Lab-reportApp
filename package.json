@@ -22,7 +22,7 @@
     "electron-rebuild": "^3.2.5",
     "eslint": "^8.3.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.25.3",
     "prettier": "^2.4.1",
     "trim-newlines": "^4.0.2"
